@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 16:20:31 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/01 16:21:25 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/05 15:48:54 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,5 +16,5 @@ int	main(int argc, char **argv)
 {
 	(void)argc;
 	(void)argv;
-	return (printf("Initial commit."));
+	return (printf("\n"));
 }
