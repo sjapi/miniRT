@@ -19,6 +19,13 @@ RESET = \033[0m
 MAIN = \
 	main.c
 
+PARSER = \
+	parser.c parser_utils.c
+
+UTILS_STRING = \
+	ft_strlen.c ft_strcmp.c
+
+
 GNL = \
 	get_next_line.c get_next_line_utils.c
 
@@ -26,6 +33,8 @@ GNL = \
 SRCS = \
 	$(addprefix $(SRCS_DIR)main/, $(MAIN)) \
 	$(addprefix $(SRCS_DIR)get_next_line/, $(GNL)) \
+	$(addprefix $(SRCS_DIR)parser/, $(PARSER)) \
+	$(addprefix $(SRCS_DIR)utils/string/, $(UTILS_STRING))
 
 OBJS = $(patsubst $(SRCS_DIR)%.c, $(OBJS_DIR)%.o, $(SRCS))
 

@@ -31,6 +31,8 @@ int	main(int argc, char **argv)
 		return (printf("miniRT: wrong arguments count\n"), 1);
 	if (!init_info(&info, argv[1]))
 		return (1);
+	if (!parser(argv[1]))
+		return (printf("miniRT: invalid file\n"), 1);
 	printf("hi there\n");
 	return (printf("\n"));
 }

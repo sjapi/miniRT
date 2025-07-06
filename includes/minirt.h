@@ -13,6 +13,10 @@
 #ifndef MINIRT_H
 # define MINIRT_H
 
+#include "parser.h"
+#include "utils.h"
+
+
 typedef struct	s_point3
 {
 	float	x;
