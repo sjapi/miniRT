@@ -18,6 +18,24 @@
 #include "renderer.h"
 #include "mlx.h"
 
+void	mock_init(t_rt *info)
+{
+	info->scene = malloc(sizeof(t_scene));
+	info->scene->objs = NULL;
+	info->scene->objs_count = 0;
+	info->scene->amb = malloc(sizeof(t_amb_light));
+	info->scene->amb->color = 0xffffff;
+	info->scene->amb->ratio = 0.2;
+	info->scene->cam = NULL;
+	info->scene->lights = NULL;
+	info->scene->lights_count = 0;
+}
+
+static void	free_scene(t_scene *scene)
+{
+	(void)scene;
+}
+
 /* MacOS does not have mlx_destoy_display func */
 static int	destroy(void *param)
 {
@@ -28,7 +46,7 @@ static int	destroy(void *param)
 	mlx_destroy_window(info->mlx, info->win);
 //	mlx_destroy_display(info->mlx);
 	free(info->mlx);
-//	free_scene(info->scene);
+	free_scene(info->scene);
 	exit(0);
 }
 
@@ -36,8 +54,7 @@ static bool	init_info(t_rt *info, char *filename)
 {
 //	info->scene = parser(filename);
 //	if (!info->scene)
-//	if (!parser(filename))
-//		return (false);
+	mock_init(info);
 	info->mlx = mlx_init();
 	info->win = mlx_new_window(info->mlx, WIN_WIDTH, WIN_HEIGHT, "miniRT");
 	info->img = mlx_new_image(info->mlx, WIN_WIDTH, WIN_HEIGHT);
@@ -62,9 +79,7 @@ int	main(int argc, char **argv)
 		return (printf("miniRT: wrong arguments count\n"), 1);
 	if (!init_info(&info, argv[1]))
 		return (1);
-//	info.scene->amb->ratio = 0.2;
-//	info.scene->amb->color= 0xffffff;
-//	render_scene(&info);
+	render_scene(&info);
 	mlx_hook(info.win, 2, 1L >> 0, handle_key_hooks, &info);
 	mlx_hook(info.win, 17, 0, destroy, &info);
 	mlx_loop(info.mlx);
