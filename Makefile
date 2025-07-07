@@ -25,6 +25,8 @@ PARSER = \
 UTILS_STRING = \
 	ft_strlen.c ft_strcmp.c
 
+UTILS = \
+	vector.c ambient.c
 
 GNL = \
 	get_next_line.c get_next_line_utils.c
@@ -35,6 +37,7 @@ SRCS = \
 	$(addprefix $(SRCS_DIR)get_next_line/, $(GNL)) \
 	$(addprefix $(SRCS_DIR)parser/, $(PARSER)) \
 	$(addprefix $(SRCS_DIR)utils/string/, $(UTILS_STRING))
+	$(addprefix $(SRCS_DIR)utils/, $(UTILS))
 
 OBJS = $(patsubst $(SRCS_DIR)%.c, $(OBJS_DIR)%.o, $(SRCS))
 

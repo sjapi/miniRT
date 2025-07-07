@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 16:16:38 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/05 19:31:11 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/07 10:52:38 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 #include "parser.h"
 #include "utils.h"
-
 
 typedef struct	s_point3
 {
@@ -50,6 +49,10 @@ typedef struct	s_cam
 /*
  * IMO: parser should convert it to int val
  * color = 0xFF00FF (255,0,255)
+ * wanted to delete this struct, cause it useless in miniRT
+ * but decided to leave it, cause it may be helpfull if we'll decide to change ration during rendering
+ * (idk why)
+ * and to calculate final ambient light color
  */
 typedef struct	s_amb_light
 {
