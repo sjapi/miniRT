@@ -1,3 +1,6 @@
+#include "minirt.h"
+#include "parser.h"
+
 int	get_color(char *obj_data, int *num)
 {
 	int	color_code;
@@ -27,5 +30,7 @@ int	get_color(char *obj_data, int *num)
 
 int get_coordinates(char *obj_data, t_point3 *p)
 {
-	
+	(void)obj_data;
+	(void)p;
+	return (0);
 }

@@ -1,8 +1,4 @@
 NAME    = miniRT
-CC      = cc
-CFLAGS  = -Wall -Wextra -Werror -g3 -fsanitize=address
-
-LGFLAGS = -lreadline -Lmlx -lmlx -lXext -lX11 -lm
 SRCS_DIR = src/
 OBJS_DIR = objs/
 INC_DIR  = includes/
@@ -20,7 +16,7 @@ MAIN = \
 	main.c
 
 PARSER = \
-	parser.c parser_utils.c
+	parser.c parser_utils.c tools.c
 
 UTILS_STRING = \
 	ft_strlen.c ft_strcmp.c
@@ -43,6 +39,16 @@ SRCS = \
 	$(addprefix $(SRCS_DIR)utils/, $(UTILS))
 
 OBJS = $(patsubst $(SRCS_DIR)%.c, $(OBJS_DIR)%.o, $(SRCS))
+
+CC      = cc
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S), Darwin)
+	LGFLAGS = -Lmlx -lmlx -framework OpenGL -framework AppKit -lm -lreadline
+	SANITIZE = # sanitize disabled on macOS (optional)
+else
+	LGFLAGS = -lreadline -Lmlx -lmlx -lXext -lX11 -lm
+	SANITIZE = -fsanitize=address
+endif
 
 all: $(MLX_LIB) $(NAME)
 

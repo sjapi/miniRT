@@ -2,12 +2,33 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <fcntl.h>
 #include "parser.h"
+#include "get_next_line.h"
 
-int	parse_obj(char *obj_data);
-int	parse_ambient(char *light_data);
-int	parse_light(char *light_data);
-int	parse_camera(char *camera_data);
+int	parse_obj(char *obj_data)
+{
+	(void)obj_data;
+	return (0);
+}
+
+int	parse_ambient(char *light_data)
+{
+	(void)light_data;
+	return (0);
+}
+
+int	parse_light(char *light_data)
+{
+	(void)light_data;
+	return (0);
+}
+
+int	parse_camera(char *camera_data)
+{
+	(void)camera_data;
+	return (0);
+}
 
 int	parser(char *file_name)
 {

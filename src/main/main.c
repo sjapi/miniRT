@@ -18,6 +18,7 @@
 #include "renderer.h"
 #include "mlx.h"
 
+/* MacOS does not have mlx_destoy_display func */
 static int	destroy(void *param)
 {
 	t_rt	*info;
@@ -25,7 +26,7 @@ static int	destroy(void *param)
 	info = (t_rt *)param;
 	mlx_destroy_image(info->mlx, info->img);
 	mlx_destroy_window(info->mlx, info->win);
-	mlx_destroy_display(info->mlx);
+//	mlx_destroy_display(info->mlx);
 	free(info->mlx);
 //	free_scene(info->scene);
 	exit(0);
@@ -35,8 +36,8 @@ static bool	init_info(t_rt *info, char *filename)
 {
 //	info->scene = parser(filename);
 //	if (!info->scene)
-	if (!parser(filename))
-		return (false);
+//	if (!parser(filename))
+//		return (false);
 	info->mlx = mlx_init();
 	info->win = mlx_new_window(info->mlx, WIN_WIDTH, WIN_HEIGHT, "miniRT");
 	info->img = mlx_new_image(info->mlx, WIN_WIDTH, WIN_HEIGHT);
@@ -63,7 +64,7 @@ int	main(int argc, char **argv)
 		return (1);
 //	info.scene->amb->ratio = 0.2;
 //	info.scene->amb->color= 0xffffff;
-	render_scene(&info);
+//	render_scene(&info);
 	mlx_hook(info.win, 2, 1L >> 0, handle_key_hooks, &info);
 	mlx_hook(info.win, 17, 0, destroy, &info);
 	mlx_loop(info.mlx);
