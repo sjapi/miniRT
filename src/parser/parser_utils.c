@@ -1,49 +1,139 @@
 #include <unistd.h>
 #include "utils.h"
+#include "parser.h"
 
-int	is_valid_name(char *file_name)
+bool	is_valid_name(char *file_name)
 {
 	int	size;
 
 	size = ft_strlen(file_name);
 	if (size < 3)
-		return (0);
+		return (false);
 	if (ft_strcmp(&file_name[size - 3], ".rt") != 0)
-		return (0);
-	return (1);
+		return (false);
+	return (true);
 }
 
-int	is_white_space(char c)
+bool	is_whitespace(char c)
 {
 	return (c == ' ' || c == '\t');
 }
 
-char    *trim_spaces(char *str)
+bool	is_float(char *num)
 {
-    int size;
+	while (*num >= '0' && *num <= '9')
+		num++;
+	if (*num == '.')
+	{
+		while (*num >= '0' && *num <= '9')
+			num++;
+	}
+	if (*num && *num != '\n' && !is_whitespace(*num))
+		return (false);
+	return (true);
+}
 
-    while (*str && is_white_space(*str))
-        str++;
-    return (str);
+bool	is_int(char *num)
+{
+	while (*num >= '0' && *num <= '9')
+		num++;
+	if (*num && *num != '\n' && !is_whitespace(*num))
+		return (false);
+	return (true);
 }
 
 bool	is_correct_color(char *str)
 {
-	int	comas;
+	int	commas;
+	int	digits;
 
-	comas = 0;
-	while (*str && *str >= '0' && *str <= '9')
+	commas = 0;
+	skip_spaces(&str);
+	while (*str)
 	{
-		str++;
+		if (skip_integer(&str, &digits)	== 0 || digits > 3)
+			return (false);
+		if (!*str || *str == '\n')
+			break ;
 		if (*str == ',')
 		{
-			comas++;
+			commas++;
 			str++;
-			if (str[1] || str[1] != ',' || str[1] != '\n')
-				return (false);
 		}
+		else if (*str < 0 && *str > 9)
+			return (false);
 	}
-	if (comas != 2)
-		return (false);
-	return (true);
+	return (commas == 2);
 }
+
+bool is_correct_coordinate(char *str)
+{
+	int	commas;
+	int	digits;
+
+	commas = 0;
+	skip_spaces(&str);
+	while (str)
+	{
+		if (!parse_float(&str, &digits))
+		    return (false);
+		if (!*str || *str == '\n')
+			break ;
+		if (*str == ',')
+		{
+		    commas++;
+		    str++;
+		}
+		else if (*str < 0 && *str > 9)
+			return (false);
+	}
+	return (commas == 2);
+}
+// ================================================
+
+void	skip_spaces(char **str)
+{
+    while (is_whitespace(**str))
+        (*str)++;
+}
+
+bool	skip_integer(char **str, int *digits)
+{
+	*digits = 0;
+	while (**str >= '0' && **str <= '9')
+	{
+		(*digits)++;
+		(*str)++;
+	}
+	return (*digits > 0);
+}
+
+void	skip_info(char **data)
+{
+	while (data && !is_whitespace(**data))
+		(*data)++;
+}
+
+// ===============================================
+bool parse_float(char **str, int *digits)
+{
+	*digits = 0;
+	while (**str >= '0' && **str <= '9')
+	{
+		(*digits)++;
+		(*str)++;
+	}
+	if (!**str || **str == '\n' || is_whitespace(**str))
+		return (*digits > 0);
+	if (**str != '.' || *digits == 0)
+		return (false);
+	(*str)++;
+	*digits = 0;
+	while (**str >= '0' && **str <= '9')
+	{
+	    (*digits)++;
+	    (*str)++;
+	}
+	return (*digits > 0);
+}
+

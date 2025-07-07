@@ -38,9 +38,9 @@ typedef struct s_obj
 
 typedef struct	s_cam
 {
-	t_point3	viewpoint;
+	t_point3	view_point;
 	t_point3	orient_v;
-	char		field_of_view;
+	char		fov;
 }	t_cam;
 
 /*

@@ -16,13 +16,13 @@ MAIN = \
 	main.c
 
 PARSER = \
-	parser.c parser_utils.c tools.c
+	parser.c parser_utils.c parser_tools.c
+
+UTILS = \
+	vector.c ambient.c ft_atof.c ft_atoi.c
 
 UTILS_STRING = \
 	ft_strlen.c ft_strcmp.c
-
-UTILS = \
-	vector.c ambient.c
 
 GNL = \
 	get_next_line.c get_next_line_utils.c
