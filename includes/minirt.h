@@ -6,15 +6,12 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 16:16:38 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/07 10:52:38 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/07 15:24:50 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINIRT_H
 # define MINIRT_H
-
-#include "parser.h"
-#include "utils.h"
 
 typedef struct	s_point3
 {
@@ -69,15 +66,17 @@ typedef struct	t_light
 
 /*
  * need to figure out can be more than one light?
+ * yep, can be, in bonus part (which we will do)
  */
 typedef struct	s_scene
 {
 	t_obj		*objs;
 	int			objs_count;
 
-	t_amb_light	*light;
+	t_amb_light	*amb;
 	t_cam		*cam;
 	t_light		*lights;
+	int			lights_count;
 }	t_scene;
 
 typedef struct	s_rt
@@ -90,6 +89,8 @@ typedef struct	s_rt
 	int		bpp;
 	int		line_len;
 	int		endian;
+
+	t_scene	*scene;
 }	t_rt;
 
 #endif

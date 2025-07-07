@@ -1,28 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vector.c                                           :+:      :+:    :+:   */
+/*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
+/*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/07 09:45:42 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/07 15:31:08 by azolotar         ###   ########.fr       */
+/*   Created: 2025/07/07 15:43:55 by azolotar          #+#    #+#             */
+/*   Updated: 2025/07/07 15:55:15 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-#include <stdbool.h>
+#include "defines.h"
 
-static bool	in_range(float val, float min, float max)
+void	img_put_pixel_safe(t_rt *info, int x, int y, int color)
 {
-	return (val >= min && val <= max);
-}
+	char	*pixel;
 
-bool	v_normalized(t_point3 p)
-{
-	return (
-		in_range(p.x, -1.0, 1.0)
-		&& in_range(p.y, -1.0, 1.0)
-		&& in_range(p.z, -1.0, 1.0)
-	);
+	if (x < 0 || x >= WIN_WIDTH)
+		return ;
+	if (y < 0 || y >= WIN_HEIGHT)
+		return ;
+	pixel = info->addr + (info->line_len * y + x * (info->bpp / 8));
+	*(int *)pixel = color;
 }
