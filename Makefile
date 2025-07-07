@@ -31,12 +31,15 @@ UTILS = \
 GNL = \
 	get_next_line.c get_next_line_utils.c
 
+RENDERER = \
+	render.c draw.c
 
 SRCS = \
 	$(addprefix $(SRCS_DIR)main/, $(MAIN)) \
 	$(addprefix $(SRCS_DIR)get_next_line/, $(GNL)) \
 	$(addprefix $(SRCS_DIR)parser/, $(PARSER)) \
-	$(addprefix $(SRCS_DIR)utils/string/, $(UTILS_STRING))
+	$(addprefix $(SRCS_DIR)utils/string/, $(UTILS_STRING)) \
+	$(addprefix $(SRCS_DIR)renderer/, $(RENDERER)) \
 	$(addprefix $(SRCS_DIR)utils/, $(UTILS))
 
 OBJS = $(patsubst $(SRCS_DIR)%.c, $(OBJS_DIR)%.o, $(SRCS))

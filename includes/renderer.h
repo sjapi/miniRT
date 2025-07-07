@@ -1,28 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.h                                            :+:      :+:    :+:   */
+/*   renderer.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/07 15:23:26 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/07 15:23:31 by azolotar         ###   ########.fr       */
+/*   Created: 2025/07/07 15:51:00 by azolotar          #+#    #+#             */
+/*   Updated: 2025/07/07 15:53:13 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTILS_H
-# define UTILS_H
+#ifndef REDNERER_H
+# define REDNERER_H
 
-#include "minirt.h"
-#include <stdbool.h>
+# include "minirt.h"
 
-/* libft */
-int		ft_strlen(char *str);
-int		ft_strcmp(const char *s1, const char *s2);
-int		ft_strncmp(const char *s1, const char *s2, int n);
+void	render_scene(t_rt *info);
 
-/* miniRT related */
-bool	v_normalized(t_point3 p);
-int		get_amb_color(t_amb_light *amb);
+void	img_put_pixel_safe(t_rt *info, int x, int y, int color);
 
 #endif
