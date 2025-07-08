@@ -4,9 +4,8 @@
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/08 15:10:28 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/08 15:53:21 by azolotar         ###   ########.fr       */
+/*   Created: 2025/07/01 16:20:31 by azolotar          #+#    #+#             */
+/*   Updated: 2025/07/08 16:56:38 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,12 +114,13 @@ static int	destroy(void *param)
 	exit(0);
 }
 
-static bool	init_info(t_rt *info, char *filename)
+static bool	init_info(t_rt *info, char *file_name)
 {
-//	info->scene = parser(filename);
-//	if (!info->scene)
-	mock_init(info);
+//	mock_init(info);
 	info->win_aspect_ratio = (float)WIN_WIDTH / (float)WIN_HEIGHT;
+	info->scene = load_scene(file_name);
+	if (!info->scene)
+		return (false);
 	info->mlx = mlx_init();
 	info->win = mlx_new_window(info->mlx, WIN_WIDTH, WIN_HEIGHT, "miniRT");
 	info->img = mlx_new_image(info->mlx, WIN_WIDTH, WIN_HEIGHT);
@@ -134,6 +134,8 @@ static int	handle_key_hooks(int key, void *param)
 	
 	info = (t_rt *)param;
 	printf("Key [%d] pressed.\n", key);
+	if (key == 65307)
+		destroy(param);
 	return (0);
 }
 
@@ -145,8 +147,7 @@ int	main(int argc, char **argv)
 		return (printf("miniRT: wrong arguments count\n"), 1);
 	if (!init_info(&info, argv[1]))
 		return (1);
-	info.scene = load_scene(argv[1]);
-	//print_scene(info.scene);
+	print_scene(info.scene);
 	render_scene(&info);
 	mlx_hook(info.win, 2, 1L >> 0, handle_key_hooks, &info);
 	mlx_hook(info.win, 17, 0, destroy, &info);

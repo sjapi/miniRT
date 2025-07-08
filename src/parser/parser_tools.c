@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser_tools.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/08 17:05:46 by haaghaja          #+#    #+#             */
+/*   Updated: 2025/07/08 17:06:23 by haaghaja         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdbool.h>
 #include "minirt.h"
 #include "parser.h"
@@ -28,7 +40,7 @@ bool	get_color(char *obj_data, int *color_code)
 	return (true);
 }
 
-bool	get_coordinates(char *data, t_point3 *p) 
+bool	get_coordinates(char *data, t_point3 *p)
 {
 	skip_spaces(&data);
 	if (!is_correct_coordinate(data))
@@ -45,7 +57,7 @@ bool	get_coordinates(char *data, t_point3 *p)
 	return (true);
 }
 
-bool	get_orientation(char *data, t_point3 *o) 
+bool	get_orientation(char *data, t_point3 *o)
 {
 	skip_spaces(&data);
 	if (!is_correct_coordinate(data))
@@ -59,8 +71,8 @@ bool	get_orientation(char *data, t_point3 *o)
 		data++;
 	data++;
 	o->z = ft_atof(data);
-	if (o->x < -1.0 || o->x > 1.0 
-		|| o->y < -1.0 || o->y > 1.0 
+	if (o->x < -1.0 || o->x > 1.0
+		|| o->y < -1.0 || o->y > 1.0
 		|| o->z < -1.0 || o->z > 1.0)
 		return (false);
 	return (true);
@@ -74,7 +86,7 @@ bool	get_ratio(char *data, float *ratio)
 	*ratio = ft_atof(data);
 	if (*ratio < 0.0 || *ratio > 1.0)
 		return (false);
-	return (true);	
+	return (true);
 }
 
 bool	get_fov(char *data, unsigned char *fov)

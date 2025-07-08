@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:38:47 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/08 18:06:27 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/08 19:34:09 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #include "renderer.h"
 #include "defines.h"
 #include "mlx.h"
-#include "ray.h"
 #include <stdio.h>
 #include <math.h>
 
@@ -33,7 +32,7 @@ static t_point3	get_ray_dir(float nx, float ny, t_cam *cam)
 	else
 		world_up = (t_point3){0, 1, 0};
 	right = v_normalize(v_cross(world_up, forward));
-	up = v_cross(world_up, forward);
+	up = v_cross(forward, right);
 	dir = v_add(
 		v_add(forward, v_scale(right, nx)),
 		v_scale(up, ny)
@@ -60,12 +59,69 @@ static void	init_ray(t_ray *ray, t_rt *info, int x, int y)
 	ray->direction = get_ray_dir(nx, ny, info->scene->cam);
 }
 
+static int	intersect_plane(t_ray *ray, t_obj *plane)
+{
+	float	denom;
+	float	t;
+
+	denom = v_dot(ray->direction, plane->norm_vector);
+	if (fabsf(denom) < 1e-6)
+		return (-1);
+	t = v_dot(v_sub(plane->center, ray->origin), plane->norm_vector) / denom;
+	if (t < 0)
+		return (-1);
+	return (t);
+}
+
+static bool	find_hit(t_ray *ray, t_rt *info, t_hit *hit)
+{
+	int		i;
+	float	t;
+	t_obj	*obj;
+	bool	find = false;
+
+	i = -1;
+	while (++i < info->scene->objs_count)
+	{
+		t = -1;
+		obj = &info->scene->objs[i];
+		if (obj->type == PLANE)
+			t = intersect_plane(ray, obj);
+		// else work with other objs
+		if (t > 0)
+		{
+			find = true;
+			hit->t = t;
+			hit->hit_point = v_add(ray->origin, v_scale(ray->direction, t));
+			hit->normal = obj->norm_vector;
+			hit->obj = obj;
+		}
+	}
+	return (find);
+}
+
+int count = 0;
+
+static int	get_hit_color(t_hit *hit, t_scene *scene)
+{
+    int obj = hit->obj->color;
+    int amb = scene->amb->color;
+    float ratio = scene->amb->ratio;
+
+    int r = ((obj >> 16) & 0xFF) * ((amb >> 16) & 0xFF) / 255 * ratio;
+    int g = ((obj >> 8) & 0xFF) * ((amb >> 8) & 0xFF) / 255 * ratio;
+    int b = (obj & 0xFF) * (amb & 0xFF) / 255 * ratio;
+
+    return ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | (b & 0xFF);
+}
+
 void	render_scene(t_rt *info)
 {
-	int	y = 0;
-	int	x;
-	int	amb = get_amb_color(info->scene->amb);
+	int		y = 0;
+	int		x;
+	int		amb = get_amb_color(info->scene->amb);
 	t_ray	ray;
+	t_hit	hit;
 
 	while (y < WIN_HEIGHT)
 	{
@@ -73,10 +129,20 @@ void	render_scene(t_rt *info)
 		while (x < WIN_WIDTH)
 		{
 			init_ray(&ray, info, x, y);
-			img_put_pixel_safe(info, x, y, amb);
+			if (find_hit(&ray, info, &hit))
+			{
+				count += 1;
+				int color = get_hit_color(&hit, info->scene);
+				img_put_pixel_safe(info, x, y, color);
+			}
+			else
+			{
+				img_put_pixel_safe(info, x, y, amb);
+			}
 			x++;
 		}
 		y++;
 	}
+	printf("%d/%d\n", count, WIN_WIDTH * WIN_HEIGHT);
 	mlx_put_image_to_window(info->mlx, info->win, info->img, 0, 0);
 }
