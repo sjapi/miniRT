@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser_utils.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/08 17:03:20 by haaghaja          #+#    #+#             */
+/*   Updated: 2025/07/08 17:05:31 by haaghaja         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <unistd.h>
 #include "utils.h"
 #include "parser.h"
@@ -52,7 +64,7 @@ bool	is_correct_color(char *str)
 	skip_spaces(&str);
 	while (*str)
 	{
-		if (skip_integer(&str, &digits)	== 0 || digits > 3)
+		if (skip_integer(&str, &digits) == 0 || digits > 3)
 			return (false);
 		if (!*str || *str == '\n')
 			break ;
@@ -67,7 +79,7 @@ bool	is_correct_color(char *str)
 	return (commas == 2);
 }
 
-bool is_correct_coordinate(char *str)
+bool	is_correct_coordinate(char *str)
 {
 	int	commas;
 	int	digits;
@@ -77,13 +89,13 @@ bool is_correct_coordinate(char *str)
 	while (str)
 	{
 		if (!parse_float(&str, &digits))
-		    return (false);
+			return (false);
 		if (!*str || *str == '\n' || is_whitespace(*str))
 			break ;
 		if (*str == ',')
 		{
-		    commas++;
-		    str++;
+			commas++;
+			str++;
 		}
 		else if (*str < 0 && *str > 9)
 			return (false);
@@ -94,8 +106,8 @@ bool is_correct_coordinate(char *str)
 
 void	skip_spaces(char **str)
 {
-    while (is_whitespace(**str))
-        (*str)++;
+	while (is_whitespace(**str))
+		(*str)++;
 }
 
 bool	skip_integer(char **str, int *digits)
@@ -117,7 +129,7 @@ void	skip_info(char **str)
 }
 
 // ===============================================
-bool parse_float(char **str, int *digits)
+bool	parse_float(char **str, int *digits)
 {
 	*digits = 0;
 	if (**str == '-')
@@ -135,9 +147,8 @@ bool parse_float(char **str, int *digits)
 	*digits = 0;
 	while (**str >= '0' && **str <= '9')
 	{
-	    (*digits)++;
-	    (*str)++;
+		(*digits)++;
+		(*str)++;
 	}
 	return (*digits > 0);
 }
-

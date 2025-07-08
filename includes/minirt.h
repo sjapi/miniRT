@@ -6,14 +6,14 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 16:16:38 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/08 13:52:40 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/08 17:00:07 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINIRT_H
 # define MINIRT_H
 
-typedef struct	s_point3
+typedef struct s_point3
 {
 	float	x;
 	float	y;
@@ -36,7 +36,7 @@ typedef struct s_obj
 	float		*attrs;
 }	t_obj;
 
-typedef struct	s_cam
+typedef struct s_cam
 {
 	t_point3		view_point;
 	t_point3		orient_v;
@@ -51,24 +51,24 @@ typedef struct	s_cam
  * (idk why)
  * and to calculate final ambient light color
  */
-typedef struct	s_amb_light
+typedef struct s_amb_light
 {
 	float	ratio;
 	int		color;
 }	t_amb_light;
 
-typedef struct	t_light
+typedef struct t_light
 {
 	t_point3	point;
 	float		ratio;
-	int		color;
+	int			color;
 }	t_light;
 
 /*
  * need to figure out can be more than one light?
  * yep, can be, in bonus part (which we will do)
  */
-typedef struct	s_scene
+typedef struct s_scene
 {
 	t_obj		*objs;
 	int			objs_count;
@@ -79,7 +79,7 @@ typedef struct	s_scene
 	int			lights_count;
 }	t_scene;
 
-typedef struct	s_rt
+typedef struct s_rt
 {
 	void	*mlx;
 	void	*win;

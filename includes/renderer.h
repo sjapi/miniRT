@@ -6,12 +6,12 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:51:00 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/07 15:53:13 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/08 16:58:28 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef REDNERER_H
-# define REDNERER_H
+#ifndef RENDERER_H
+# define RENDERER_H
 
 # include "minirt.h"
 

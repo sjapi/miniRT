@@ -16,7 +16,8 @@ MAIN = \
 	main.c
 
 PARSER = \
-	parser.c parser_utils.c parser_tools.c
+	parser.c parser_utils.c parser_tools.c \
+	parse_elements.c
 
 UTILS = \
 	vector.c ambient.c ft_atof.c ft_atoi.c
