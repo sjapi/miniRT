@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 16:16:38 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/08 13:52:40 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/08 18:04:20 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ typedef struct	s_rt
 	int		line_len;
 	int		endian;
 
+	float	win_aspect_ratio;
 	t_scene	*scene;
 }	t_rt;
 

@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:38:47 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/07 18:53:59 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/08 18:06:27 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,68 @@
 #include "renderer.h"
 #include "defines.h"
 #include "mlx.h"
+#include "ray.h"
 #include <stdio.h>
+#include <math.h>
+
+static t_point3	get_ray_dir(float nx, float ny, t_cam *cam)
+{
+	t_point3	forward;
+	t_point3	world_up;
+	t_point3	right;
+	t_point3	up;
+	t_point3	dir;
+
+	forward = cam->orient_v;
+	if (fabsf(forward.x) < 1e-6 && fabsf(forward.z) < 1e-6)
+		world_up = (t_point3){0, 0, 1};
+	else
+		world_up = (t_point3){0, 1, 0};
+	right = v_normalize(v_cross(world_up, forward));
+	up = v_cross(world_up, forward);
+	dir = v_add(
+		v_add(forward, v_scale(right, nx)),
+		v_scale(up, ny)
+	);
+	return (v_normalize(dir));
+}
+
+/*
+ * at first nx, ny - normalized coordinates in range 0...1
+ * and after they are converted to range -1...1 and scaled to actual size of viewport
+ */
+static void	init_ray(t_ray *ray, t_rt *info, int x, int y)
+{
+	float		nx;
+	float		ny;
+	float		tan_fov;
+
+	nx = (float)(x + 0.5) / (float)WIN_WIDTH;
+	ny = (float)(y + 0.5) / (float)WIN_HEIGHT;
+	tan_fov = tanf(info->scene->cam->fov / 2.0);
+	nx = (2.0 * nx - 1.0) * info->win_aspect_ratio * tan_fov;
+	ny = (1.0 - 2.0 * ny) * tan_fov;
+	ray->origin = info->scene->cam->view_point;
+	ray->direction = get_ray_dir(nx, ny, info->scene->cam);
+}
 
 void	render_scene(t_rt *info)
 {
-	int	i = 0;
-	int	j;
+	int	y = 0;
+	int	x;
 	int	amb = get_amb_color(info->scene->amb);
+	t_ray	ray;
 
-	while (i < WIN_HEIGHT)
+	while (y < WIN_HEIGHT)
 	{
-		j = 0;
-		while (j < WIN_WIDTH)
+		x = 0;
+		while (x < WIN_WIDTH)
 		{
-			img_put_pixel_safe(info, j, i, amb);
-			j++;
+			init_ray(&ray, info, x, y);
+			img_put_pixel_safe(info, x, y, amb);
+			x++;
 		}
-		i++;
+		y++;
 	}
 	mlx_put_image_to_window(info->mlx, info->win, info->img, 0, 0);
 }

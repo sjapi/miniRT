@@ -6,12 +6,13 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 09:45:42 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/07 15:31:08 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/08 18:07:12 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 #include <stdbool.h>
+#include <math.h>
 
 static bool	in_range(float val, float min, float max)
 {
@@ -25,4 +26,31 @@ bool	v_normalized(t_point3 p)
 		&& in_range(p.y, -1.0, 1.0)
 		&& in_range(p.z, -1.0, 1.0)
 	);
+}
+
+t_point3	v_add(t_point3 a, t_point3 b)
+{
+	return ((t_point3){a.x + b.x, a.y + b.y, a.z + b.z});
+}
+
+t_point3	v_scale(t_point3 v, float s)
+{
+	return ((t_point3){v.x * s, v.y * s, v.z * s});
+}
+
+t_point3	v_cross(t_point3 a, t_point3 b)
+{
+	return ((t_point3){
+		a.y * b.z - a.z * b.y,
+		a.z * b.x - a.x * b.z,
+		a.x * b.y - a.y * b.x
+	});
+}
+
+t_point3	v_normalize(t_point3 v)
+{
+	float	len;
+
+	len = sqrtf(v.x * v.x + v.y * v.y + v.z * v.z);
+	return ((t_point3){v.x / len, v.y / len, v.z / len});
 }

@@ -43,10 +43,10 @@ OBJS = $(patsubst $(SRCS_DIR)%.c, $(OBJS_DIR)%.o, $(SRCS))
 CC      = cc
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S), Darwin)
-	LGFLAGS = -Lmlx -lmlx -framework OpenGL -framework AppKit -lm -lreadline
+	LGFLAGS = -Lmlx -lmlx -framework OpenGL -framework AppKit -lm 
 	SANITIZE = # sanitize disabled on macOS (optional)
 else
-	LGFLAGS = -lreadline -Lmlx -lmlx -lXext -lX11 -lm
+	LGFLAGS = -Lmlx -lmlx -lXext -lX11 -lm
 	SANITIZE = -fsanitize=address
 endif
 

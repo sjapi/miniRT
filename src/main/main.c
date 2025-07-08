@@ -4,8 +4,9 @@
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */ /*   Created: 2025/07/01 16:20:31 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/07 15:53:24 by azolotar         ###   ########.fr       */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/08 15:10:28 by azolotar          #+#    #+#             */
+/*   Updated: 2025/07/08 15:53:21 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +120,7 @@ static bool	init_info(t_rt *info, char *filename)
 //	info->scene = parser(filename);
 //	if (!info->scene)
 	mock_init(info);
+	info->win_aspect_ratio = (float)WIN_WIDTH / (float)WIN_HEIGHT;
 	info->mlx = mlx_init();
 	info->win = mlx_new_window(info->mlx, WIN_WIDTH, WIN_HEIGHT, "miniRT");
 	info->img = mlx_new_image(info->mlx, WIN_WIDTH, WIN_HEIGHT);
