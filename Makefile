@@ -20,7 +20,8 @@ PARSER = \
 	parse_elements.c
 
 UTILS = \
-	vector.c ambient.c ft_atof.c ft_atoi.c
+	vector.c ambient.c ft_atof.c ft_atoi.c \
+	ft_memcpy.c
 
 UTILS_STRING = \
 	ft_strlen.c ft_strcmp.c

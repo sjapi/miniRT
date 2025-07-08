@@ -73,6 +73,31 @@ static int	intersect_plane(t_ray *ray, t_obj *plane)
 	return (t);
 }
 
+static int intersect_sphere(t_ray *ray, t_obj *sphere)
+{
+    float radius = sphere->attrs[0] * 0.5f;
+    t_point3 oc = v_sub(ray->origin, sphere->center);
+
+    float a = v_dot(ray->direction, ray->direction);
+    float b = 2.0f * v_dot(oc, ray->direction);
+    float c = v_dot(oc, oc) - radius * radius;
+
+    float discriminant = b * b - 4 * a * c;
+    if (discriminant < 0)
+        return (-1);
+
+    float sqrt_disc = sqrtf(discriminant);
+    float t0 = (-b - sqrt_disc) / (2 * a);
+    float t1 = (-b + sqrt_disc) / (2 * a);
+
+    if (t0 > 1e-6)
+        return (t0);
+    if (t1 > 1e-6)
+        return (t1);
+    return (-1);
+}
+
+
 static bool	find_hit(t_ray *ray, t_rt *info, t_hit *hit)
 {
 	int		i;
@@ -87,6 +112,10 @@ static bool	find_hit(t_ray *ray, t_rt *info, t_hit *hit)
 		obj = &info->scene->objs[i];
 		if (obj->type == PLANE)
 			t = intersect_plane(ray, obj);
+		else if (obj->type == SPHERE)
+		{
+			t = intersect_sphere(ray, obj);
+		}
 		// else work with other objs
 		if (t > 0)
 		{

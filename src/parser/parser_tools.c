@@ -19,7 +19,6 @@ bool	get_color(char *obj_data, int *color_code)
 {
 	int	n;
 
-	skip_spaces(&obj_data);
 	if (!is_correct_color(obj_data))
 		return (false);
 	*color_code = 0;
@@ -42,7 +41,6 @@ bool	get_color(char *obj_data, int *color_code)
 
 bool	get_coordinates(char *data, t_point3 *p)
 {
-	skip_spaces(&data);
 	if (!is_correct_coordinate(data))
 		return (false);
 	p->x = ft_atof(data);
@@ -59,7 +57,6 @@ bool	get_coordinates(char *data, t_point3 *p)
 
 bool	get_orientation(char *data, t_point3 *o)
 {
-	skip_spaces(&data);
 	if (!is_correct_coordinate(data))
 		return (false);
 	o->x = ft_atof(data);
@@ -80,7 +77,6 @@ bool	get_orientation(char *data, t_point3 *o)
 
 bool	get_ratio(char *data, float *ratio)
 {
-	skip_spaces(&data);
 	if (!is_float(data))
 		return (false);
 	*ratio = ft_atof(data);
@@ -91,11 +87,20 @@ bool	get_ratio(char *data, float *ratio)
 
 bool	get_fov(char *data, unsigned char *fov)
 {
-	skip_spaces(&data);
 	if (!is_int(data))
 		return (false);
 	*fov = ft_atoi(data);
 	if (*fov < 0 || *fov > 180)
+		return (false);
+	return (true);
+}
+
+bool	get_diameter(char *data, float *d)
+{
+	if (!is_float(data))
+		return (false);
+	*d = ft_atof(data);
+	if (*d < 0.0)
 		return (false);
 	return (true);
 }

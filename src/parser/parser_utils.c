@@ -35,7 +35,7 @@ bool	is_float(char *num)
 {
 	while (*num >= '0' && *num <= '9')
 		num++;
-	if (*num == '.')
+	if (*num == '.' && num[1] >= '0' && num[1] <= '9')
 	{
 		num++;
 		while (*num >= '0' && *num <= '9')
@@ -62,19 +62,18 @@ bool	is_correct_color(char *str)
 
 	commas = 0;
 	skip_spaces(&str);
-	while (*str)
+	while (*str && !is_whitespace(*str))
 	{
+		printf("%s\n", str);
 		if (skip_integer(&str, &digits) == 0 || digits > 3)
 			return (false);
 		if (!*str || *str == '\n')
 			break ;
 		if (*str == ',')
-		{
 			commas++;
-			str++;
-		}
-		else if (*str < 0 && *str > 9)
+		else if (*str < 0 && *str > 9 && !is_whitespace(*str))
 			return (false);
+		str++;
 	}
 	return (commas == 2);
 }

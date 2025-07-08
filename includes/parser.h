@@ -40,6 +40,7 @@ bool	get_coordinates(char *data, t_point3 *p);
 bool	get_orientation(char *data, t_point3 *o);
 bool	get_ratio(char *data, float *ratio);
 bool	get_fov(char *data, unsigned char *fov);
+bool	get_diameter(char *data, float *d);
 
 /* parse_elements.c */
 bool	parse_ambient(char *light_data, t_scene *scene);

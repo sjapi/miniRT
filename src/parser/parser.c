@@ -25,6 +25,29 @@ bool	print_err(char *msg)
 	return (false);
 }
 
+bool	append_obj(t_scene *scene, t_obj *obj)
+{
+	t_obj	*objs;
+	int	i;
+
+	objs = malloc(sizeof(t_obj) * (scene->objs_count + 1));
+	if (!objs)
+		return (false);
+	i = 0;
+	while (i < scene->objs_count)
+	{
+		objs[i] = scene->objs[i];
+		objs[i].attrs = scene->objs[i].attrs;
+		i++;
+	}
+	objs[i] = *obj;
+	objs[i].attrs = obj->attrs;
+	free(scene->objs);
+	scene->objs = objs;
+	scene->objs_count++;
+	return (true);
+}
+
 bool	parse_plane(char *plane_data, t_obj *plane)
 {
 	plane->type = PLANE;
@@ -39,9 +62,35 @@ bool	parse_plane(char *plane_data, t_obj *plane)
 		return (free(plane), print_err("Plane has invalid color"));
 	skip_info(&plane_data);
 	if (*plane_data && *plane_data != '\n')
-		return (free(plane), print_err("Light has invalid data"));
+		return (free(plane), print_err("Plane has invalid data"));
 	return (true);
 }
+
+bool	parse_sphere(char *sphere_data, t_obj *sphere)
+{
+	sphere->type = SPHERE;
+	sphere->attrs = malloc(sizeof(float));
+	if (!sphere->attrs)
+		return (free(sphere), print_err("Can't allocate memory"));	
+	skip_info(&sphere_data);
+	if (!get_coordinates(sphere_data, &sphere->center))
+		return (free(sphere->attrs),
+			free(sphere), print_err("Sphere has invalid coordinates"));
+	skip_info(&sphere_data);
+	if (!get_diameter(sphere_data, &sphere->attrs[SPHERE_D_I]))
+		return (free(sphere->attrs),
+			free(sphere), print_err("Sphere has invalid diameter"));
+	skip_info(&sphere_data);
+	if (!get_color(sphere_data, &sphere->color))
+		return (free(sphere->attrs),
+			free(sphere), print_err("Sphere has invalid color"));
+	skip_info(&sphere_data);
+	if (*sphere_data && *sphere_data != '\n')
+		return (free(sphere->attrs),
+			free(sphere), print_err("Sphere has invalid data"));
+	return (true);
+}
+
 
 bool	parse_obj(char *obj_data, t_scene *scene)
 {
@@ -55,11 +104,14 @@ bool	parse_obj(char *obj_data, t_scene *scene)
 		if (!parse_plane(obj_data, obj))
 			return (false);
 	}
+	else if (ft_strncmp(obj_data, "sp ", 3) == 0)
+	{
+		if (!parse_sphere(obj_data, obj))
+			return (false);
+	}
 	else
 		return (true); // TODO: unkown type
-	scene->objs = obj;
-	scene->objs_count++;
-	return (true);
+	return (append_obj(scene, obj));
 }
 
 t_scene	*load_scene(char *file_name)

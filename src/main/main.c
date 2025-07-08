@@ -71,6 +71,8 @@ void print_scene(t_scene *scene)
             printf(" norm=");
             print_point(obj->norm_vector);
         }
+	if (obj->type == 2)
+		printf(" diameter=%.2f", obj->attrs[SPHERE_D_I]);
         printf("\n");
     }
 }
@@ -136,6 +138,15 @@ static int	handle_key_hooks(int key, void *param)
 	printf("Key [%d] pressed.\n", key);
 	if (key == 65307)
 		destroy(param);
+	if (key == 119)
+		info->scene->cam->orient_v.y += 0.1;
+	if (key == 115)
+		info->scene->cam->orient_v.y -= 0.1;
+	if (key == 97)
+		info->scene->cam->orient_v.z += 0.1;
+	if (key == 100)
+		info->scene->cam->orient_v.z -= 0.1;
+	render_scene(info);
 	return (0);
 }
 

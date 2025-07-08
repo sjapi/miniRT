@@ -15,6 +15,7 @@
 
 # include "minirt.h"
 # include <stdbool.h>
+# include <stdio.h>
 
 /* libft */
 int			ft_strlen(char *str);
@@ -22,6 +23,7 @@ int			ft_strcmp(const char *s1, const char *s2);
 int			ft_strncmp(const char *s1, const char *s2, int n);
 int			ft_atoi(char *str);
 float		ft_atof(char *str);
+void		*ft_memcpy(void *dest, const void *src, size_t n);
 
 /* miniRT related */
 int			get_amb_color(t_amb_light *amb);
