@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 16:16:38 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/07 15:24:50 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/08 13:52:40 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ typedef struct s_obj
 
 typedef struct	s_cam
 {
-	t_point3	view_point;
-	t_point3	orient_v;
-	char		fov;
+	t_point3		view_point;
+	t_point3		orient_v;
+	unsigned char	fov;
 }	t_cam;
 
 /*
@@ -60,7 +60,7 @@ typedef struct	s_amb_light
 typedef struct	t_light
 {
 	t_point3	point;
-	float		bright_ratio;
+	float		ratio;
 	int		color;
 }	t_light;
 

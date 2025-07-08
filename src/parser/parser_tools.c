@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include "minirt.h"
 #include "parser.h"
+#include "utils.h"
 
 bool	get_color(char *obj_data, int *color_code)
 {
@@ -65,7 +66,7 @@ bool	get_orientation(char *data, t_point3 *o)
 	return (true);
 }
 
-bool	get_ration(char *data, float *ratio)
+bool	get_ratio(char *data, float *ratio)
 {
 	skip_spaces(&data);
 	if (!is_float(data))
@@ -76,7 +77,7 @@ bool	get_ration(char *data, float *ratio)
 	return (true);	
 }
 
-bool	get_fov(char *data, char *fov)
+bool	get_fov(char *data, unsigned char *fov)
 {
 	skip_spaces(&data);
 	if (!is_int(data))

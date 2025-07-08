@@ -25,6 +25,7 @@ bool	is_float(char *num)
 		num++;
 	if (*num == '.')
 	{
+		num++;
 		while (*num >= '0' && *num <= '9')
 			num++;
 	}
@@ -77,7 +78,7 @@ bool is_correct_coordinate(char *str)
 	{
 		if (!parse_float(&str, &digits))
 		    return (false);
-		if (!*str || *str == '\n')
+		if (!*str || *str == '\n' || is_whitespace(*str))
 			break ;
 		if (*str == ',')
 		{
@@ -108,22 +109,25 @@ bool	skip_integer(char **str, int *digits)
 	return (*digits > 0);
 }
 
-void	skip_info(char **data)
+void	skip_info(char **str)
 {
-	while (data && !is_whitespace(**data))
-		(*data)++;
+	while (**str && !is_whitespace(**str))
+		(*str)++;
+	skip_spaces(str);
 }
 
 // ===============================================
 bool parse_float(char **str, int *digits)
 {
 	*digits = 0;
+	if (**str == '-')
+		(*str)++;
 	while (**str >= '0' && **str <= '9')
 	{
 		(*digits)++;
 		(*str)++;
 	}
-	if (!**str || **str == '\n' || is_whitespace(**str))
+	if (!**str || **str == '\n' || is_whitespace(**str) || **str == ',')
 		return (*digits > 0);
 	if (**str != '.' || *digits == 0)
 		return (false);

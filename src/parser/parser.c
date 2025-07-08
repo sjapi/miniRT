@@ -19,24 +19,40 @@ bool	parse_ambient(char *light_data, t_scene *scene)
 	amb = malloc(sizeof(t_amb_light));
 	if (!amb)
 		return (false);
-	light_data++;
-	if (!get_ration(light_data, &amb->ratio))
+	skip_info(&light_data);
+	if (!get_ratio(light_data, &amb->ratio))
 		return (free(amb), false);
 	skip_info(&light_data);
 	if (!get_color(light_data, &amb->color))
 		return (free(amb), false);
 	skip_info(&light_data);
-	skip_spaces(&light_data);
 	if (*light_data || *light_data == '\n')
 		return (false);
 	scene->amb = amb;
 	return (true);
 }
 
-int	parse_light(char *light_data)
+bool	parse_light(char *light_data, t_scene *scene)
 {
-	(void)light_data;
-	return (0);
+	t_light	*light;
+
+	light = malloc(sizeof(t_light));
+	if (!light)
+		return (false);
+	skip_info(&light_data);
+	if (!get_coordinates(light_data, &light->point))
+		return (free(light), false);
+	skip_info(&light_data);
+	if (!get_ratio(light_data, &light->ratio))
+		return (free(light), false);
+	skip_info(&light_data);
+	if (!get_color(light_data, &light->color))
+		return (free(light), false);
+	skip_info(&light_data);
+	if (*light_data || *light_data == '\n')
+		return (false);
+	scene->lights = light;
+	return (true);
 }
 
 bool	parse_camera(char *camera_data, t_scene *scene)
@@ -46,7 +62,7 @@ bool	parse_camera(char *camera_data, t_scene *scene)
 	cam = malloc(sizeof(t_cam));
 	if (!cam)
 		return (false);
-	camera_data++;
+	skip_info(&camera_data);
 	if (!get_coordinates(camera_data, &cam->view_point))
 		return (free(cam), false);
 	skip_info(&camera_data);
@@ -84,11 +100,20 @@ t_scene		*load_scene(char *file_name)
 		if (*line || *line != '\n')
 		{
 			if (line[0] == 'A')
+			{
 				if (!parse_ambient(line, scene))
 					return (NULL);
+			}
 			else if (line[0] == 'C')
+			{
 				if (!parse_camera(line, scene))
 					return (NULL);
+			}
+			else if (line[0] == 'L')
+			{
+				if (!parse_light(line, scene))
+					return (NULL);
+			}
 			else
 				printf("UNKONW TYPE )))\n");
 		}

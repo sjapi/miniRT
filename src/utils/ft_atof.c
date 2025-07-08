@@ -8,6 +8,7 @@ float	ft_atof(char *str)
 	result = 0.0f;
 	fraction = 0.0f;
 	divisor = 1.0f;
+	sign = 1;
 	if (*str == '-' || *str == '+')
 	{
 		if (*str == '-')

@@ -18,14 +18,78 @@
 #include "renderer.h"
 #include "mlx.h"
 
+// ========================================================================
+
+void print_point(t_point3 p)
+{
+    printf("(%.2f, %.2f, %.2f)", p.x, p.y, p.z);
+}
+
+void print_scene(t_scene *scene)
+{
+    // Ambient light
+    if (scene->amb)
+    {
+        printf("amb: ratio=%.2f color=#%06X\n", scene->amb->ratio, scene->amb->color);
+    }
+
+    // Camera
+    if (scene->cam)
+    {
+        printf("cam: view_point=");
+        print_point(scene->cam->view_point);
+        printf(" orient_v=");
+        print_point(scene->cam->orient_v);
+        printf(" fov=%u\n", scene->cam->fov);
+    }
+
+    // Lights
+    for (int i = 0; i < scene->lights_count; i++)
+    {
+        printf("light %d: point=", i + 1);
+        print_point(scene->lights[i].point);
+        printf(" ratio=%.2f color=#%06X\n", scene->lights[i].ratio, scene->lights[i].color);
+    }
+
+    // Objects
+    for (int i = 0; i < scene->objs_count; i++)
+    {
+        t_obj *obj = &scene->objs[i];
+        printf("obj %d: ", i + 1);
+        switch (obj->type)
+        {
+            case 1: printf("square"); break;
+            case 2: printf("sphere"); break;
+            case 3: printf("plane"); break;
+            default: printf("unknown"); break;
+        }
+        printf(" center=");
+        print_point(obj->center);
+        printf(" color=#%06X", obj->color);
+        if (obj->type != 2) // not sphere -> has norm vector
+        {
+            printf(" norm=");
+            print_point(obj->norm_vector);
+        }
+        printf("\n");
+    }
+}
+
+// ========================================================================
+
+
+
+
+
+
+
+
 void	mock_init(t_rt *info)
 {
 	info->scene = malloc(sizeof(t_scene));
 	info->scene->objs = NULL;
 	info->scene->objs_count = 0;
-	info->scene->amb = malloc(sizeof(t_amb_light));
-	info->scene->amb->color = 0xffffff;
-	info->scene->amb->ratio = 0.2;
+	info->scene->amb = NULL;
 	info->scene->cam = NULL;
 	info->scene->lights = NULL;
 	info->scene->lights_count = 0;
@@ -79,6 +143,8 @@ int	main(int argc, char **argv)
 		return (printf("miniRT: wrong arguments count\n"), 1);
 	if (!init_info(&info, argv[1]))
 		return (1);
+	info.scene = load_scene(argv[1]);
+	//print_scene(info.scene);
 	render_scene(&info);
 	mlx_hook(info.win, 2, 1L >> 0, handle_key_hooks, &info);
 	mlx_hook(info.win, 17, 0, destroy, &info);
