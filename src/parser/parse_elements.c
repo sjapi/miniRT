@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:01:21 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/08 17:01:23 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/08 17:49:23 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ bool	parse_camera(char *camera_data, t_scene *scene)
 	if (!get_fov(camera_data, &cam->fov))
 		return (free(cam), print_err("Camera has invalid fov"));
 	skip_info(&camera_data);
-	skip_spaces(&camera_data);
 	if (*camera_data && *camera_data != '\n')
 		return (free(cam), print_err("Camera has invalid data"));
 	scene->cam = cam;

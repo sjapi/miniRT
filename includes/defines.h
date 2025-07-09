@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 16:54:19 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/08 18:45:37 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/09 20:12:24 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@
 # define SQUARE 1
 # define SPHERE 2
 # define PLANE  3
-# define CONE 4
+# define CYLINDER 4
 
 /* SPHERE DIAMETER ATTRIBUTE INDEX */
 # define SPHERE_D_I 0
 /* CYLINDER DIAMETER ATTRIBUTE INDEX */
 # define CYLINDER_D_I 0
 /* CYLINDER HEIGHT ATTRIBUTE INDEX */
-# define CYLINDER_H_I 0
+# define CYLINDER_H_I 1
 /* btw, add attrs for CONE */
 
 #endif

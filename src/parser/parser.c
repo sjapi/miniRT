@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:01:55 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/08 17:02:59 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/09 20:23:32 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,13 @@ bool	print_err(char *msg)
 {
 	printf("miniRT: parser: %s\n", msg);
 	return (false);
+}
+
+void	free_obj(t_obj *obj)
+{
+	if (obj->attrs)
+		free(obj->attrs);
+	free(obj);
 }
 
 bool	append_obj(t_scene *scene, t_obj *obj)
@@ -48,71 +55,6 @@ bool	append_obj(t_scene *scene, t_obj *obj)
 	return (true);
 }
 
-bool	parse_plane(char *plane_data, t_obj *plane)
-{
-	plane->type = PLANE;
-	skip_info(&plane_data);
-	if (!get_coordinates(plane_data, &plane->center))
-		return (free(plane), print_err("Plane has invalid coordinates"));
-	skip_info(&plane_data);
-	if (!get_orientation(plane_data, &plane->norm_vector))
-		return (free(plane), print_err("Plane has invalid orientation"));
-	skip_info(&plane_data);
-	if (!get_color(plane_data, &plane->color))
-		return (free(plane), print_err("Plane has invalid color"));
-	skip_info(&plane_data);
-	if (*plane_data && *plane_data != '\n')
-		return (free(plane), print_err("Plane has invalid data"));
-	return (true);
-}
-
-bool	parse_sphere(char *sphere_data, t_obj *sphere)
-{
-	sphere->type = SPHERE;
-	sphere->attrs = malloc(sizeof(float));
-	if (!sphere->attrs)
-		return (free(sphere), print_err("Can't allocate memory"));	
-	skip_info(&sphere_data);
-	if (!get_coordinates(sphere_data, &sphere->center))
-		return (free(sphere->attrs),
-			free(sphere), print_err("Sphere has invalid coordinates"));
-	skip_info(&sphere_data);
-	if (!get_diameter(sphere_data, &sphere->attrs[SPHERE_D_I]))
-		return (free(sphere->attrs),
-			free(sphere), print_err("Sphere has invalid diameter"));
-	skip_info(&sphere_data);
-	if (!get_color(sphere_data, &sphere->color))
-		return (free(sphere->attrs),
-			free(sphere), print_err("Sphere has invalid color"));
-	skip_info(&sphere_data);
-	if (*sphere_data && *sphere_data != '\n')
-		return (free(sphere->attrs),
-			free(sphere), print_err("Sphere has invalid data"));
-	return (true);
-}
-
-
-bool	parse_obj(char *obj_data, t_scene *scene)
-{
-	t_obj	*obj;
-
-	obj = malloc(sizeof(t_obj));
-	if (!obj)
-		return (print_err("Can't allocate memory"));
-	if (ft_strncmp(obj_data, "pl ", 3) == 0)
-	{
-		if (!parse_plane(obj_data, obj))
-			return (false);
-	}
-	else if (ft_strncmp(obj_data, "sp ", 3) == 0)
-	{
-		if (!parse_sphere(obj_data, obj))
-			return (false);
-	}
-	else
-		return (true); // TODO: unkown type
-	return (append_obj(scene, obj));
-}
 
 t_scene	*load_scene(char *file_name)
 {

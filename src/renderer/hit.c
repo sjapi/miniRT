@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 10:52:17 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/09 11:42:38 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/09 20:38:58 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ bool	find_hit(t_ray *ray, t_rt *info, t_hit *hit)
 			t = intersect_plane(ray, obj);
 		else if (obj->type == SPHERE)
 			t = intersect_sphere(ray, obj);
+		else if (obj->type == CYLINDER)
+			t = intersect_cylinder(ray, obj);
 		if (t > 0)
 		{
 			find = true;

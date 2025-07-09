@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 10:55:36 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/09 10:58:33 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/09 19:34:05 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "renderer.h"
 #include "utils.h"
 #include <math.h>
-int intersect_sphere(t_ray *ray, t_obj *sphere)
+float intersect_sphere(t_ray *ray, t_obj *sphere)
 {
     float radius = sphere->attrs[0] * 0.5f;
     t_point3 oc = v_sub(ray->origin, sphere->center);

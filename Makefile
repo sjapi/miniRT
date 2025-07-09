@@ -17,7 +17,7 @@ MAIN = \
 
 PARSER = \
 	parser.c parser_utils.c parser_tools.c \
-	parse_elements.c
+	parse_elements.c parse_objects.c
 
 UTILS = \
 	vector.c ambient.c ft_atof.c ft_atoi.c \
@@ -31,7 +31,8 @@ GNL = \
 
 RENDERER = \
 	render.c draw.c ray.c \
-	hit.c plane.c sphere.c
+	hit.c plane.c sphere.c \
+	cylinder.c
 
 SRCS = \
 	$(addprefix $(SRCS_DIR)main/, $(MAIN)) \

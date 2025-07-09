@@ -63,6 +63,7 @@ void print_scene(t_scene *scene)
             case 1: printf("square"); break;
             case 2: printf("sphere"); break;
             case 3: printf("plane"); break;
+            case 4: printf("cylinder"); break;
             default: printf("unknown"); break;
         }
         printf(" center=");
@@ -73,8 +74,10 @@ void print_scene(t_scene *scene)
             printf(" norm=");
             print_point(obj->norm_vector);
         }
-	if (obj->type == 2)
+	if (obj->type == 2 || obj->type == 4)
 		printf(" diameter=%.2f", obj->attrs[SPHERE_D_I]);
+		if (obj->type == 4)
+			printf(" height=%.2f", obj->attrs[CYLINDER_H_I]);
         printf("\n");
     }
 }

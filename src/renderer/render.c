@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 12:45:57 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/09 13:03:31 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/09 19:35:52 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,33 +36,34 @@ static int	compute_lighting(t_hit *primary_hit, t_rt *info)
 	in_shadow = false;
 	if (find_hit(&shadow_ray, info, &shadow_hit))
 	{
-		if (shadow_hit.t < light_dist)
+		if (shadow_hit.t > 1e-3 && shadow_hit.t < light_dist)
 			in_shadow = true;
 	}
-	float diffuse = 0;
+	// Compute diffuse
+	float diffuse = 0.0f;
 	if (!in_shadow)
 	{
 		diffuse = v_dot(primary_hit->normal, shadow_ray.direction);
-		clampf(diffuse, 0, 1);
+		diffuse = clampf(diffuse, 0.0f, 1.0f);
 	}
 	// Ambient * object
-	t_color ambient_col;
-	ambient_col.r = obj_col.r * amb_col.r / 255.0 * info->scene->amb->ratio;
-	ambient_col.g = obj_col.g * amb_col.g / 255.0 * info->scene->amb->ratio;
-	ambient_col.b = obj_col.b * amb_col.b / 255.0 * info->scene->amb->ratio;
-
+	t_color ambient_col = {
+		obj_col.r * amb_col.r / 255.0f * info->scene->amb->ratio,
+		obj_col.g * amb_col.g / 255.0f * info->scene->amb->ratio,
+		obj_col.b * amb_col.b / 255.0f * info->scene->amb->ratio
+	};
 	// Diffuse * object * light
-	t_color diffuse_col;
-	diffuse_col.r = obj_col.r * light_col.r / 255.0 * diffuse * info->scene->lights->ratio;
-	diffuse_col.g = obj_col.g * light_col.g / 255.0 * diffuse * info->scene->lights->ratio;
-	diffuse_col.b = obj_col.b * light_col.b / 255.0 * diffuse * info->scene->lights->ratio;
-
-	// Итог: ambient + diffuse
-	t_color final;
-	final.r = clamp(ambient_col.r + diffuse_col.r, 0, 255);
-	final.g = clamp(ambient_col.g + diffuse_col.g, 0, 255);
-	final.b = clamp(ambient_col.b + diffuse_col.b, 0, 255);
-
+	t_color diffuse_col = {
+		obj_col.r * light_col.r / 255.0f * diffuse * info->scene->lights->ratio,
+		obj_col.g * light_col.g / 255.0f * diffuse * info->scene->lights->ratio,
+		obj_col.b * light_col.b / 255.0f * diffuse * info->scene->lights->ratio
+	};
+	// Final color
+	t_color final = {
+		clamp(ambient_col.r + diffuse_col.r, 0, 255),
+		clamp(ambient_col.g + diffuse_col.g, 0, 255),
+		clamp(ambient_col.b + diffuse_col.b, 0, 255)
+	};
 	return color_to_int(final);
 }
 

@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:05:46 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/08 17:06:23 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/09 20:09:34 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,12 +95,12 @@ bool	get_fov(char *data, unsigned char *fov)
 	return (true);
 }
 
-bool	get_diameter(char *data, float *d)
+bool	get_attribute(char *data, float *attr)
 {
 	if (!is_float(data))
 		return (false);
-	*d = ft_atof(data);
-	if (*d < 0.0)
+	*attr = ft_atof(data);
+	if (*attr < 0.0)
 		return (false);
 	return (true);
 }
