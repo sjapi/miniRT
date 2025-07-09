@@ -143,6 +143,10 @@ static int	handle_key_hooks(int key, void *param)
 		cam->pitch += 0.1;
 	if (key == 107)
 		cam->pitch -= 0.1;
+	if (key == 45)
+		cam->fov = clamp(cam->fov - 1, 1, 179);
+	if (key == 61)
+		cam->fov = clamp(cam->fov + 1, 1, 179);
 	cam->pitch = clampf(cam->pitch, -1.55, 1.55);
 	cam->orient_v = (t_point3){
 		cosf(cam->pitch) * sinf(cam->yaw),

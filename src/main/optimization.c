@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 18:36:01 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/09 19:44:51 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/09 20:03:08 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ bool	init_optimization(t_rt *info)
 	optim = alloc_optim();
 	if (!optim)
 		return (false);
-	tan_fov = tanf(info->scene->cam->fov / 2.0);
+	tan_fov = tanf((info->scene->cam->fov * M_PI / 180.0) / 2.0);
 	x = 0;
 	while (x < WIN_WIDTH)
 	{
