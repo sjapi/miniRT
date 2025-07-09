@@ -21,7 +21,7 @@ PARSER = \
 
 UTILS = \
 	vector.c ambient.c ft_atof.c ft_atoi.c \
-	ft_memcpy.c
+	ft_memcpy.c color.c clamp.c
 
 UTILS_STRING = \
 	ft_strlen.c ft_strcmp.c

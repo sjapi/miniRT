@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 09:45:42 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/08 19:21:10 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/09 12:24:55 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,11 @@ bool	v_normalized(t_point3 p)
 	);
 }
 
+float	v_len(t_point3 v)
+{
+	return (sqrtf(v.x * v.x + v.y * v.y + v.z * v.z));
+}
+
 t_point3	v_add(t_point3 a, t_point3 b)
 {
 	return ((t_point3){a.x + b.x, a.y + b.y, a.z + b.z});
@@ -38,6 +43,7 @@ t_point3	v_scale(t_point3 v, float s)
 	return ((t_point3){v.x * s, v.y * s, v.z * s});
 }
 
+/* cross product */
 t_point3	v_cross(t_point3 a, t_point3 b)
 {
 	return ((t_point3){
@@ -51,15 +57,17 @@ t_point3	v_normalize(t_point3 v)
 {
 	float	len;
 
-	len = sqrtf(v.x * v.x + v.y * v.y + v.z * v.z);
+	len = v_len(v);
 	return ((t_point3){v.x / len, v.y / len, v.z / len});
 }
 
+/* dot product */
 float	v_dot(t_point3 a, t_point3 b)
 {
 	return (a.x * b.x + a.y * b.y + a.z * b.z);
 }
 
+/* substraction */
 t_point3	v_sub(t_point3 a, t_point3 b)
 {
 	return ((t_point3){

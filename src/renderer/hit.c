@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 10:52:17 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/09 10:53:24 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/09 11:42:38 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,10 @@ bool	find_hit(t_ray *ray, t_rt *info, t_hit *hit)
 			find = true;
 			hit->t = t;
 			hit->hit_point = v_add(ray->origin, v_scale(ray->direction, t));
-			hit->normal = obj->norm_vector;
+			if (obj->type == PLANE)
+				hit->normal = obj->norm_vector;
+			else if (obj->type == SPHERE)
+				hit->normal = v_normalize(v_sub(hit->hit_point, obj->center));
 			hit->obj = obj;
 		}
 	}

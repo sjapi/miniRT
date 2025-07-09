@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:23:26 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/08 19:18:35 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/09 12:29:13 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,13 @@
 # include "minirt.h"
 # include <stdbool.h>
 # include <stdio.h>
+
+typedef struct	s_color
+{
+	int	r;
+	int g;
+	int	b;
+}	t_color;
 
 /* libft */
 int			ft_strlen(char *str);
@@ -34,7 +41,16 @@ t_point3	v_add(t_point3 a, t_point3 b);
 t_point3	v_scale(t_point3 v, float s);
 t_point3	v_cross(t_point3 a, t_point3 b);
 t_point3	v_normalize(t_point3 v);
-float		v_dot(t_point3 a, t_point3 b);
 t_point3	v_sub(t_point3 a, t_point3 b);
+float		v_dot(t_point3 a, t_point3 b);
+float		v_len(t_point3 v);
+
+/* colors */
+t_color		int_to_color(int icolor);
+int			color_to_int(t_color color);
+
+/* other */
+int			clamp(int val, int min, int max);
+int			clampf(float val, float min, float max);
 
 #endif

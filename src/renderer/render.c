@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/07 15:38:47 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/09 10:57:38 by 032zolotarev     ###   ########.fr       */
+/*   Created: 2025/07/09 12:45:57 by 032zolotarev      #+#    #+#             */
+/*   Updated: 2025/07/09 13:03:31 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,60 @@
 #include <stdio.h>
 #include <math.h>
 
+static int	compute_lighting(t_hit *primary_hit, t_rt *info)
+{
+	t_ray	shadow_ray;
+	t_hit	shadow_hit;
+	float	light_dist;
+	bool	in_shadow;
+
+	t_color	amb_col = int_to_color(get_amb_color(info->scene->amb));
+	t_color obj_col = int_to_color(primary_hit->obj->color);
+	t_color light_col = int_to_color(info->scene->lights->color);
+
+	shadow_ray.origin = v_add(primary_hit->hit_point, v_scale(primary_hit->normal, 1e-4));
+	shadow_ray.direction = v_sub(info->scene->lights->point, primary_hit->hit_point);
+	shadow_ray.direction = v_normalize(shadow_ray.direction);
+	light_dist = v_len(v_sub(info->scene->lights->point, primary_hit->hit_point));
+	in_shadow = false;
+	if (find_hit(&shadow_ray, info, &shadow_hit))
+	{
+		if (shadow_hit.t < light_dist)
+			in_shadow = true;
+	}
+	float diffuse = 0;
+	if (!in_shadow)
+	{
+		diffuse = v_dot(primary_hit->normal, shadow_ray.direction);
+		clampf(diffuse, 0, 1);
+	}
+	// Ambient * object
+	t_color ambient_col;
+	ambient_col.r = obj_col.r * amb_col.r / 255.0 * info->scene->amb->ratio;
+	ambient_col.g = obj_col.g * amb_col.g / 255.0 * info->scene->amb->ratio;
+	ambient_col.b = obj_col.b * amb_col.b / 255.0 * info->scene->amb->ratio;
+
+	// Diffuse * object * light
+	t_color diffuse_col;
+	diffuse_col.r = obj_col.r * light_col.r / 255.0 * diffuse * info->scene->lights->ratio;
+	diffuse_col.g = obj_col.g * light_col.g / 255.0 * diffuse * info->scene->lights->ratio;
+	diffuse_col.b = obj_col.b * light_col.b / 255.0 * diffuse * info->scene->lights->ratio;
+
+	// Итог: ambient + diffuse
+	t_color final;
+	final.r = clamp(ambient_col.r + diffuse_col.r, 0, 255);
+	final.g = clamp(ambient_col.g + diffuse_col.g, 0, 255);
+	final.b = clamp(ambient_col.b + diffuse_col.b, 0, 255);
+
+	return color_to_int(final);
+}
+
 void	render_scene(t_rt *info)
 {
 	int		y = 0;
 	int		x;
 	int		amb = get_amb_color(info->scene->amb);
-	t_ray	ray;
+	t_ray	primary_ray;
 	t_hit	hit;
 
 	while (y < WIN_HEIGHT)
@@ -31,10 +79,11 @@ void	render_scene(t_rt *info)
 		x = 0;
 		while (x < WIN_WIDTH)
 		{
-			init_ray(&ray, info, x, y);
-			if (find_hit(&ray, info, &hit))
+			init_ray(&primary_ray, info, x, y);
+			if (find_hit(&primary_ray, info, &hit))
 			{
-				int color = get_hit_color(&hit, info->scene);
+				
+				int color = compute_lighting(&hit, info);
 				img_put_pixel_safe(info, x, y, color);
 			}
 			else
