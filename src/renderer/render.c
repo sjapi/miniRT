@@ -6,11 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 12:45:57 by 032zolotarev      #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/07/09 19:35:52 by haaghaja         ###   ########.fr       */
-=======
-/*   Updated: 2025/07/09 19:48:47 by azolotar         ###   ########.fr       */
->>>>>>> d59fd3a94a1e8cd8addd2d3bf13026c31f532797
+/*   Updated: 2025/07/09 21:02:47 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +44,7 @@ static int	compute_lighting(t_hit *primary_hit, t_rt *info)
 	if (!in_shadow)
 	{
 		diffuse = v_dot(primary_hit->normal, shadow_ray.direction);
-<<<<<<< HEAD
-		diffuse = clampf(diffuse, 0.0f, 1.0f);
-=======
 		diffuse = clampf(diffuse, 0, 1);
->>>>>>> d59fd3a94a1e8cd8addd2d3bf13026c31f532797
 	}
 	// Ambient * object
 	t_color ambient_col = {
@@ -83,7 +75,7 @@ void	render_scene(t_rt *info)
 	t_ray	ray;
 	t_hit	hit;
 
-	ray.origin = info->scene->cam->view_point;
+	ray.origin = info->scene->cam->viewpoint;
 	while (y < WIN_HEIGHT)
 	{
 		x = 0;

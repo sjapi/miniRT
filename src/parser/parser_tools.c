@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:05:46 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/09 20:09:34 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/09 20:47:39 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ bool	get_ratio(char *data, float *ratio)
 	return (true);
 }
 
-bool	get_fov(char *data, unsigned char *fov)
+bool	get_fov(char *data, int *fov)
 {
 	if (!is_int(data))
 		return (false);

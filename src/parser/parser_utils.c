@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:03:20 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/08 17:05:31 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/09 20:50:25 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,15 @@ bool	is_float(char *num)
 
 bool	is_int(char *num)
 {
+	int	digits;
+
+	digits = 0;
 	while (*num >= '0' && *num <= '9')
+	{
+		digits++;
 		num++;
-	if (*num && *num != '\n' && !is_whitespace(*num))
+	}
+	if ((*num && *num != '\n' && !is_whitespace(*num)) || digits > 10)
 		return (false);
 	return (true);
 }

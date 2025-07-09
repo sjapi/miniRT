@@ -39,7 +39,7 @@ void print_scene(t_scene *scene)
     if (scene->cam)
     {
         printf("cam: view_point=");
-        print_point(scene->cam->view_point);
+        print_point(scene->cam->viewpoint);
         printf(" orient_v=");
         print_point(scene->cam->orient_v);
         printf(" fov=%u\n", scene->cam->fov);
@@ -74,11 +74,11 @@ void print_scene(t_scene *scene)
             printf(" norm=");
             print_point(obj->norm_vector);
         }
-	if (obj->type == 2 || obj->type == 4)
-		printf(" diameter=%.2f", obj->attrs[SPHERE_D_I]);
+		if (obj->type == 2 || obj->type == 4)
+			printf(" diameter=%.2f", obj->attrs[SPHERE_D_I]);
 		if (obj->type == 4)
-			printf(" height=%.2f", obj->attrs[CYLINDER_H_I]);
-        printf("\n");
+				printf(" height=%.2f", obj->attrs[CYLINDER_H_I]);
+   	    printf("\n");
     }
 }
 
@@ -138,6 +138,26 @@ static int	handle_key_hooks(int key, void *param)
 	printf("Key [%d] pressed.\n", key);
 	if (key == 65307)
 		destroy(param);
+	if (key == 119) // w
+	{
+		t_point3 forward = cam->orient_v;
+		cam->viewpoint = v_add(cam->viewpoint, v_scale(forward, 0.7));
+	}
+	if (key == 115) // s
+	{
+		t_point3 forward = cam->orient_v;
+		cam->viewpoint = v_sub(cam->viewpoint, v_scale(forward, 0.7));
+	}
+	if (key == 97) // a
+	{
+		t_point3 right = v_normalize(v_cross((t_point3){0,1,0}, cam->orient_v));
+		cam->viewpoint = v_sub(cam->viewpoint, v_scale(right, 0.7));
+	}
+	if (key == 100) // d
+	{
+		t_point3 right = v_normalize(v_cross((t_point3){0,1,0}, cam->orient_v));
+		cam->viewpoint = v_add(cam->viewpoint, v_scale(right, 0.7));
+	}
 	if (key == 104)
 		cam->yaw -= 0.1;
 	if (key == 108)

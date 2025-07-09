@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:01:21 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/08 17:49:23 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/09 21:02:25 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ bool	parse_camera(char *camera_data, t_scene *scene)
 	if (!cam)
 		return (print_err("Can't allocate memory"));
 	skip_info(&camera_data);
-	if (!get_coordinates(camera_data, &cam->view_point))
+	if (!get_coordinates(camera_data, &cam->viewpoint))
 		return (free(cam), print_err("Camera has invalid coordinates"));
 	skip_info(&camera_data);
 	if (!get_orientation(camera_data, &cam->orient_v))

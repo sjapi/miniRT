@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:00:29 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/09 20:27:46 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/09 20:49:33 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ bool	get_color(char *obj_data, int *num);
 bool	get_coordinates(char *data, t_point3 *p);
 bool	get_orientation(char *data, t_point3 *o);
 bool	get_ratio(char *data, float *ratio);
-bool	get_fov(char *data, unsigned char *fov);
+bool	get_fov(char *data, int *fov);
 bool	get_attribute(char *data, float *d);
 
 /* parse_elements.c */
