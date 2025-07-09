@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:51:00 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/09 10:56:59 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/09 19:46:51 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,9 @@ bool	find_hit(t_ray *ray, t_rt *info, t_hit *hit);
 int		get_hit_color(t_hit *hit, t_scene *scene);
 
 /* plane.c */
-int		intersect_plane(t_ray *ray, t_obj *plane);
+float	intersect_plane(t_ray *ray, t_obj *plane);
 
 /* sphere.c */
-int 	intersect_sphere(t_ray *ray, t_obj *sphere);
+float	intersect_sphere(t_ray *ray, t_obj *sphere);
 
 #endif

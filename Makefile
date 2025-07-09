@@ -13,7 +13,7 @@ PURPLE = \033[1;35m
 RESET = \033[0m
 
 MAIN = \
-	main.c
+	main.c optimization.c
 
 PARSER = \
 	parser.c parser_utils.c parser_tools.c \
@@ -52,6 +52,8 @@ else
 	LGFLAGS = -Lmlx -lmlx -lXext -lX11 -lm
 	SANITIZE = -fsanitize=address
 endif
+
+CFLAGS = -Wall -Wextra -Werror
 
 all: $(MLX_LIB) $(NAME)
 

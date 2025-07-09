@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 10:54:16 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/09 10:58:19 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/09 19:46:22 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 #include "renderer.h"
 #include "utils.h"
 #include <math.h>
-int	intersect_plane(t_ray *ray, t_obj *plane)
+
+float	intersect_plane(t_ray *ray, t_obj *plane)
 {
 	float	denom;
 	float	t;
