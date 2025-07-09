@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 12:19:53 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/09 12:29:00 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/09 17:06:06 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	clamp(int val, int min, int max)
 	return (val);
 }
 
-int	clampf(float val, float min, float max)
+float	clampf(float val, float min, float max)
 {
 	if (val < min)
 		return (min);

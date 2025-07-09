@@ -16,7 +16,9 @@
 #include "parser.h"
 #include "defines.h"
 #include "renderer.h"
+#include "utils.h"
 #include "mlx.h"
+#include <math.h>
 
 // ========================================================================
 
@@ -79,27 +81,18 @@ void print_scene(t_scene *scene)
 
 // ========================================================================
 
-
-
-
-
-
-
-
-void	mock_init(t_rt *info)
-{
-	info->scene = malloc(sizeof(t_scene));
-	info->scene->objs = NULL;
-	info->scene->objs_count = 0;
-	info->scene->amb = NULL;
-	info->scene->cam = NULL;
-	info->scene->lights = NULL;
-	info->scene->lights_count = 0;
-}
-
 static void	free_scene(t_scene *scene)
 {
 	(void)scene;
+}
+
+static void	init_helpers(t_rt *info)
+{
+	t_cam	*cam;
+
+	cam = info->scene->cam;
+	cam->yaw = atan2f(cam->orient_v.x, cam->orient_v.z);
+	cam->pitch = asinf(cam->orient_v.y);
 }
 
 /* MacOS does not have mlx_destoy_display func */
@@ -118,11 +111,11 @@ static int	destroy(void *param)
 
 static bool	init_info(t_rt *info, char *file_name)
 {
-//	mock_init(info);
 	info->win_aspect_ratio = (float)WIN_WIDTH / (float)WIN_HEIGHT;
 	info->scene = load_scene(file_name);
 	if (!info->scene)
 		return (false);
+	init_helpers(info);
 	info->mlx = mlx_init();
 	info->win = mlx_new_window(info->mlx, WIN_WIDTH, WIN_HEIGHT, "miniRT");
 	info->img = mlx_new_image(info->mlx, WIN_WIDTH, WIN_HEIGHT);
@@ -133,19 +126,27 @@ static bool	init_info(t_rt *info, char *file_name)
 static int	handle_key_hooks(int key, void *param)
 {
 	t_rt	*info;
+	t_cam	*cam;
 	
 	info = (t_rt *)param;
+	cam = info->scene->cam;
 	printf("Key [%d] pressed.\n", key);
 	if (key == 65307)
 		destroy(param);
-	if (key == 119)
-		info->scene->cam->orient_v.y += 0.1;
-	if (key == 115)
-		info->scene->cam->orient_v.y -= 0.1;
-	if (key == 97)
-		info->scene->cam->orient_v.z += 0.1;
-	if (key == 100)
-		info->scene->cam->orient_v.z -= 0.1;
+	if (key == 104)
+		cam->yaw -= 0.1;
+	if (key == 108)
+		cam->yaw += 0.1;
+	if (key == 106)
+		cam->pitch += 0.1;
+	if (key == 107)
+		cam->pitch -= 0.1;
+	cam->pitch = clampf(cam->pitch, -1.55, 1.55);
+	cam->orient_v = (t_point3){
+		cosf(cam->pitch) * sinf(cam->yaw),
+		sinf(cam->pitch),
+		cosf(cam->pitch) * cosf(cam->yaw)
+	};
 	render_scene(info);
 	return (0);
 }

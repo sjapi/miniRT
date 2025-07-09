@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:23:26 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/09 12:29:13 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/09 17:06:16 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,6 @@ int			color_to_int(t_color color);
 
 /* other */
 int			clamp(int val, int min, int max);
-int			clampf(float val, float min, float max);
+float		clampf(float val, float min, float max);
 
 #endif
