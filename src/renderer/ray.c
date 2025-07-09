@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 10:49:48 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/09 10:58:05 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/09 19:43:03 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,8 @@ void	init_ray(t_ray *ray, t_rt *info, int x, int y)
 {
 	float		nx;
 	float		ny;
-	float		tan_fov;
 
-	nx = (float)(x + 0.5) / (float)WIN_WIDTH;
-	ny = (float)(y + 0.5) / (float)WIN_HEIGHT;
-	tan_fov = tanf(info->scene->cam->fov / 2.0);
-	nx = (2.0 * nx - 1.0) * info->win_aspect_ratio * tan_fov;
-	ny = (1.0 - 2.0 * ny) * tan_fov;
-	ray->origin = info->scene->cam->view_point;
+	nx = info->optim->viewport_x[x];
+	ny = info->optim->viewport_y[y];
 	ray->direction = get_ray_dir(nx, ny, info->scene->cam);
 }

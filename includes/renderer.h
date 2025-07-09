@@ -6,7 +6,11 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:51:00 by azolotar          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/07/09 20:36:18 by haaghaja         ###   ########.fr       */
+=======
+/*   Updated: 2025/07/09 19:46:51 by azolotar         ###   ########.fr       */
+>>>>>>> d59fd3a94a1e8cd8addd2d3bf13026c31f532797
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +62,13 @@ int		get_hit_color(t_hit *hit, t_scene *scene);
 float	intersect_plane(t_ray *ray, t_obj *plane);
 
 /* sphere.c */
+<<<<<<< HEAD
 float 	intersect_sphere(t_ray *ray, t_obj *sphere);
 
 /* cylinder.c */
 float intersect_cylinder(t_ray *ray, t_obj *cylinder);
+=======
+float	intersect_sphere(t_ray *ray, t_obj *sphere);
+>>>>>>> d59fd3a94a1e8cd8addd2d3bf13026c31f532797
 
 #endif

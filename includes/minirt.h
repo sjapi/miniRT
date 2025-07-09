@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 16:16:38 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/09 16:52:45 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/09 19:21:53 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,12 @@ typedef struct s_scene
 	int			lights_count;
 }	t_scene;
 
+typedef struct	s_optim
+{
+	float	*viewport_x;
+	float	*viewport_y;
+}	t_optim;
+
 typedef struct s_rt
 {
 	void	*mlx;
@@ -97,6 +103,7 @@ typedef struct s_rt
 	int		endian;
 
 	float	win_aspect_ratio;
+	t_optim	*optim;
 	t_scene	*scene;
 }	t_rt;
 

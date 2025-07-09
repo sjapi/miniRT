@@ -126,6 +126,8 @@ static bool	init_info(t_rt *info, char *file_name)
 	return (true);
 }
 
+bool	init_optimization(t_rt *info);
+
 static int	handle_key_hooks(int key, void *param)
 {
 	t_rt	*info;
@@ -144,12 +146,17 @@ static int	handle_key_hooks(int key, void *param)
 		cam->pitch += 0.1;
 	if (key == 107)
 		cam->pitch -= 0.1;
+	if (key == 45)
+		cam->fov = clamp(cam->fov - 1, 1, 179);
+	if (key == 61)
+		cam->fov = clamp(cam->fov + 1, 1, 179);
 	cam->pitch = clampf(cam->pitch, -1.55, 1.55);
 	cam->orient_v = (t_point3){
 		cosf(cam->pitch) * sinf(cam->yaw),
 		sinf(cam->pitch),
 		cosf(cam->pitch) * cosf(cam->yaw)
 	};
+	init_optimization(info);
 	render_scene(info);
 	return (0);
 }
@@ -162,7 +169,7 @@ int	main(int argc, char **argv)
 		return (printf("miniRT: wrong arguments count\n"), 1);
 	if (!init_info(&info, argv[1]))
 		return (1);
-	print_scene(info.scene);
+	init_optimization(&info);
 	render_scene(&info);
 	mlx_hook(info.win, 2, 1L >> 0, handle_key_hooks, &info);
 	mlx_hook(info.win, 17, 0, destroy, &info);
