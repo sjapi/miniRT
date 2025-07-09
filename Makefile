@@ -30,7 +30,8 @@ GNL = \
 	get_next_line.c get_next_line_utils.c
 
 RENDERER = \
-	render.c draw.c
+	render.c draw.c ray.c \
+	hit.c plane.c sphere.c
 
 SRCS = \
 	$(addprefix $(SRCS_DIR)main/, $(MAIN)) \
