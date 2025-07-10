@@ -33,8 +33,8 @@ static t_optim	*alloc_optim(void)
 	optim->viewport_y = malloc(sizeof(float) * WIN_HEIGHT);
 	if (!optim->viewport_y)
 	{
-		free(optim);
 		free(optim->viewport_x);
+		free(optim);
 		return (NULL);
 	}
 	return (optim);

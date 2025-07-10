@@ -54,7 +54,6 @@ else
 	SANITIZE = -fsanitize=address
 endif
 
-CFLAGS = -Wall -Wextra -Werror
 
 all: $(MLX_LIB) $(NAME)
 

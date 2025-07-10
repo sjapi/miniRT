@@ -83,6 +83,16 @@ typedef struct s_scene
 	t_cam		*cam;
 	t_light		*lights;
 	int			lights_count;
+
+
+	void    *skybox;
+	char    *skybox_data;
+	int     skybox_width;
+	int     skybox_height;
+	int     skybox_bpp;
+	int     skybox_line_length;
+	int     skybox_endian;
+
 }	t_scene;
 
 typedef struct	s_optim

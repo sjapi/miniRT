@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "minirt.h"
 #include "utils.h"
 #include "renderer.h"
@@ -19,6 +20,7 @@ bool	find_hit(t_ray *ray, t_rt *info, t_hit *hit)
 {
 	int		i;
 	float	t;
+	float	closest = 270000;
 	t_obj	*obj;
 	bool	find = false;
 
@@ -33,8 +35,9 @@ bool	find_hit(t_ray *ray, t_rt *info, t_hit *hit)
 			t = intersect_sphere(ray, obj);
 		else if (obj->type == CYLINDER)
 			t = intersect_cylinder(ray, obj);
-		if (t > 0)
+		if (t > 0 && t < closest)
 		{
+			closest = t;
 			find = true;
 			hit->t = t;
 			hit->hit_point = v_add(ray->origin, v_scale(ray->direction, t));
