@@ -106,7 +106,9 @@ static int	destroy(void *param)
 	info = (t_rt *)param;
 	mlx_destroy_image(info->mlx, info->img);
 	mlx_destroy_window(info->mlx, info->win);
-//	mlx_destroy_display(info->mlx);
+#ifdef __linux__
+	mlx_destroy_display(info->mlx);
+#endif
 	free(info->mlx);
 	free_scene(info->scene);
 	exit(0);
@@ -136,39 +138,39 @@ static int	handle_key_hooks(int key, void *param)
 	info = (t_rt *)param;
 	cam = info->scene->cam;
 	printf("Key [%d] pressed.\n", key);
-	if (key == 65307)
+	if (key == KEY_ESC)
 		destroy(param);
-	if (key == 119) // w
+	if (key == KEY_W)
 	{
 		t_point3 forward = cam->orient_v;
 		cam->viewpoint = v_add(cam->viewpoint, v_scale(forward, 0.7));
 	}
-	if (key == 115) // s
+	if (key == KEY_S)
 	{
 		t_point3 forward = cam->orient_v;
 		cam->viewpoint = v_sub(cam->viewpoint, v_scale(forward, 0.7));
 	}
-	if (key == 97) // a
+	if (key == KEY_A)
 	{
 		t_point3 right = v_normalize(v_cross((t_point3){0,1,0}, cam->orient_v));
 		cam->viewpoint = v_sub(cam->viewpoint, v_scale(right, 0.7));
 	}
-	if (key == 100) // d
+	if (key == KEY_D)
 	{
 		t_point3 right = v_normalize(v_cross((t_point3){0,1,0}, cam->orient_v));
 		cam->viewpoint = v_add(cam->viewpoint, v_scale(right, 0.7));
 	}
-	if (key == 104)
+	if (key == KEY_H)
 		cam->yaw -= 0.1;
-	if (key == 108)
+	if (key == KEY_L)
 		cam->yaw += 0.1;
-	if (key == 106)
+	if (key == KEY_J)
 		cam->pitch += 0.1;
-	if (key == 107)
+	if (key == KEY_K)
 		cam->pitch -= 0.1;
-	if (key == 45)
+	if (key == KEY_MINUS)
 		cam->fov = clamp(cam->fov - 1, 1, 179);
-	if (key == 61)
+	if (key == KEY_PLUS)
 		cam->fov = clamp(cam->fov + 1, 1, 179);
 	cam->pitch = clampf(cam->pitch, -1.55, 1.55);
 	cam->orient_v = (t_point3){
