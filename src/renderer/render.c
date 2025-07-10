@@ -41,10 +41,18 @@ static int	compute_lighting(t_hit *primary_hit, t_rt *info)
 	}
 	// Compute diffuse
 	float diffuse = 0.0f;
+	float specular = 0.0f;
 	if (!in_shadow)
 	{
 		diffuse = v_dot(primary_hit->normal, shadow_ray.direction);
 		diffuse = clampf(diffuse, 0, 1);
+		t_point3 R = v_sub(
+			v_scale(primary_hit->normal, 2 * v_dot(primary_hit->normal, shadow_ray.direction)),
+			shadow_ray.direction
+		);
+		R = v_normalize(R);
+		t_point3 V = v_normalize(v_sub(info->scene->cam->viewpoint, primary_hit->hit_point));
+		specular = powf(clampf(v_dot(R, V), 0, 1), 50);
 	}
 	// Ambient * object
 	t_color ambient_col = {
@@ -58,14 +66,54 @@ static int	compute_lighting(t_hit *primary_hit, t_rt *info)
 		obj_col.g * light_col.g / 255.0f * diffuse * info->scene->lights->ratio,
 		obj_col.b * light_col.b / 255.0f * diffuse * info->scene->lights->ratio
 	};
+
+	t_color specular_col = {
+		light_col.r * specular * info->scene->lights->ratio,
+		light_col.g * specular * info->scene->lights->ratio,
+		light_col.b * specular * info->scene->lights->ratio
+	};
+
 	// Final color
 	t_color final = {
-		clamp(ambient_col.r + diffuse_col.r, 0, 255),
-		clamp(ambient_col.g + diffuse_col.g, 0, 255),
-		clamp(ambient_col.b + diffuse_col.b, 0, 255)
+		clamp(ambient_col.r + diffuse_col.r + specular_col.r, 0, 255),
+		clamp(ambient_col.g + diffuse_col.g + specular_col.g, 0, 255),
+		clamp(ambient_col.b + diffuse_col.b + specular_col.b, 0, 255)
 	};
 	return color_to_int(final);
 }
+
+int draw_skybox(t_rt *info, t_ray *ray)
+{
+    t_scene *scene = info->scene;
+
+    // Use your current ray
+    t_point3 dir = ray->direction;
+
+    // compute (u,v) spherical coordinates
+    float u = 0.5f + atan2f(dir.z, dir.x) / (2.0f * M_PI);
+    float v = 0.5f - asinf(dir.y) / M_PI;
+
+    // wrap u if needed
+    if (u < 0) u += 1;
+    if (u > 1) u -= 1;
+
+    int sx = (int)(u * scene->skybox_width);
+    int sy = (int)(v * scene->skybox_height);
+
+    // clamp
+    if (sx < 0) sx = 0;
+    if (sy < 0) sy = 0;
+    if (sx >= scene->skybox_width) sx = scene->skybox_width - 1;
+    if (sy >= scene->skybox_height) sy = scene->skybox_height - 1;
+
+    // get pixel color
+    char *pixel = scene->skybox_data 
+                + sy * scene->skybox_line_length 
+                + sx * (scene->skybox_bpp / 8);
+    unsigned int color = *(unsigned int *)pixel;
+    return (color);
+}
+
 
 void	render_scene(t_rt *info)
 {
@@ -90,7 +138,8 @@ void	render_scene(t_rt *info)
 			}
 			else
 			{
-				img_put_pixel_safe(info, x, y, amb);
+				int color = draw_skybox(info, &ray);
+				img_put_pixel_safe(info, x, y, color);
 			}
 			x++;
 		}

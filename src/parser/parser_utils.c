@@ -70,7 +70,6 @@ bool	is_correct_color(char *str)
 	skip_spaces(&str);
 	while (*str && !is_whitespace(*str))
 	{
-		printf("%s\n", str);
 		if (skip_integer(&str, &digits) == 0 || digits > 3)
 			return (false);
 		if (!*str || *str == '\n')

@@ -6,10 +6,11 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 10:52:17 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/10 20:51:43 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/11 00:22:16 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "minirt.h"
 #include "utils.h"
 #include "renderer.h"
@@ -22,6 +23,7 @@ bool	find_hit(t_ray *ray, t_rt *info, t_hit *hit)
 {
 	int		i;
 	float	t;
+	float	closest = 270000;
 	t_obj	*obj;
 	bool	find = false;
 
@@ -38,8 +40,9 @@ bool	find_hit(t_ray *ray, t_rt *info, t_hit *hit)
 			t = intersect_cylinder(ray, obj);
 		else if (obj->type == CONE)
 			t = intersect_cone(ray, obj);
-		if (t > 0)
+		if (t > 0 && t < closest)
 		{
+			closest = t;
 			find = true;
 			hit->t = t;
 			hit->hit_point = v_add(ray->origin, v_scale(ray->direction, t));
