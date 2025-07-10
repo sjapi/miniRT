@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 20:21:58 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/09 20:28:14 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/10 21:05:34 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,40 @@ bool	parse_cylinder(char *cylinder_data, t_obj *cylinder)
 	return (true);
 }
 
+/*
+ * co     0,0,0   0,1,0   30         5      255,0,0
+ *        center  norm    half_angle height color
+ */
+bool	parse_cone(char *cone_data, t_obj *cone)
+{
+	cone->type = CONE;
+	cone->attrs = malloc(sizeof(float) * 2);
+	if (!cone->attrs)
+		return (free_obj(cone), print_err("Can't allocate memory"));	
+	skip_info(&cone_data);
+	if (!get_coordinates(cone_data, &cone->center))
+		return (free_obj(cone), print_err("Cone has invalid coordinates"));
+	skip_info(&cone_data);
+	if (!get_orientation(cone_data, &cone->norm_vector))
+		return (free_obj(cone), print_err("Cone has invalid orientation"));
+	skip_info(&cone_data);
+	if (!get_attribute(cone_data, &cone->attrs[CONE_A_I]))
+		return (free_obj(cone), print_err("Cone has invalid angle"));
+	skip_info(&cone_data);
+	if (!get_attribute(cone_data, &cone->attrs[CONE_H_I]))
+		return (free_obj(cone), print_err("Cone has invalid height"));
+	skip_info(&cone_data);
+	if (!get_color(cone_data, &cone->color))
+		return (free_obj(cone), print_err("Cone has invalid color"));
+	skip_info(&cone_data);
+	if (*cone_data && *cone_data != '\n')
+		return (free_obj(cone), print_err("Cone has invalid data"));
+	return (true);
+}
+
+/*
+ * Here you can just do 'return (parse_plane(...))'
+ */
 bool	parse_obj(char *obj_data, t_scene *scene)
 {
 	t_obj	*obj;
@@ -102,6 +136,11 @@ bool	parse_obj(char *obj_data, t_scene *scene)
 	else if (ft_strncmp(obj_data, "cy ", 3) == 0)
 	{
 		if (!parse_cylinder(obj_data, obj))
+			return (false);
+	}
+	else if (ft_strncmp(obj_data, "co ", 3) == 0)
+	{
+		if (!parse_cone(obj_data, obj))
 			return (false);
 	}
 	else

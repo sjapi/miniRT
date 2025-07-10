@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 10:52:17 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/09 20:38:58 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/10 20:51:43 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 #include "renderer.h"
 #include "defines.h"
 
+/*
+ * need to add normal for cylinder
+ */
 bool	find_hit(t_ray *ray, t_rt *info, t_hit *hit)
 {
 	int		i;
@@ -33,6 +36,8 @@ bool	find_hit(t_ray *ray, t_rt *info, t_hit *hit)
 			t = intersect_sphere(ray, obj);
 		else if (obj->type == CYLINDER)
 			t = intersect_cylinder(ray, obj);
+		else if (obj->type == CONE)
+			t = intersect_cone(ray, obj);
 		if (t > 0)
 		{
 			find = true;
@@ -42,21 +47,12 @@ bool	find_hit(t_ray *ray, t_rt *info, t_hit *hit)
 				hit->normal = obj->norm_vector;
 			else if (obj->type == SPHERE)
 				hit->normal = v_normalize(v_sub(hit->hit_point, obj->center));
+			else if (obj->type == CONE)
+			{
+				hit->normal = get_cone_normal(obj, hit->hit_point);
+			}
 			hit->obj = obj;
 		}
 	}
 	return (find);
-}
-
-int	get_hit_color(t_hit *hit, t_scene *scene)
-{
-    int obj = hit->obj->color;
-    int amb = scene->amb->color;
-    float ratio = scene->amb->ratio;
-
-    int r = ((obj >> 16) & 0xFF) * ((amb >> 16) & 0xFF) / 255 * ratio;
-    int g = ((obj >> 8) & 0xFF) * ((amb >> 8) & 0xFF) / 255 * ratio;
-    int b = (obj & 0xFF) * (amb & 0xFF) / 255 * ratio;
-
-    return ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | (b & 0xFF);
 }

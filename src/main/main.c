@@ -64,6 +64,7 @@ void print_scene(t_scene *scene)
             case 2: printf("sphere"); break;
             case 3: printf("plane"); break;
             case 4: printf("cylinder"); break;
+            case 5: printf("cone"); break;
             default: printf("unknown"); break;
         }
         printf(" center=");
@@ -193,6 +194,7 @@ int	main(int argc, char **argv)
 		return (1);
 	init_optimization(&info);
 	render_scene(&info);
+	print_scene(info.scene);
 	mlx_hook(info.win, 2, 1L >> 0, handle_key_hooks, &info);
 	mlx_hook(info.win, 17, 0, destroy, &info);
 	mlx_loop(info.mlx);
