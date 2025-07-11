@@ -19,11 +19,11 @@
 /*
  * can calculate axis earlier
  */
-t_point3	get_cylinder_normal(t_obj *obj, t_point3 hit_point)
+t_vec3	get_cylinder_normal(t_obj *obj, t_vec3 hit_point)
 {
-	t_point3	v;
+	t_vec3	v;
 	float		h;
-	t_point3	n;
+	t_vec3	n;
 
 	v = v_sub(hit_point, obj->center);
 	h = v_dot(v, obj->norm_vector);
@@ -39,16 +39,16 @@ float	intersect_cylinder(t_ray *ray, t_obj *obj)
 {
 	float		radius;
 	float		height;
-	t_point3	axis;
-	t_point3	oc;
+	t_vec3	axis;
+	t_vec3	oc;
 	float		dv, cov;
-	t_point3	d_perp, oc_perp;
+	t_vec3	d_perp, oc_perp;
 	float		a, b, c;
 	float		discrim;
 	float		t_side, t1, t2;
 	float		t_cap, t_bot, t_top;
 	float		t;
-	t_point3	p, top_center, v, v_perp;
+	t_vec3	p, top_center, v, v_perp;
 
 	// side
 	radius = 0.5f * obj->attrs[CYLINDER_D_I];

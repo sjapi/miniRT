@@ -18,7 +18,7 @@
 float	intersect_sphere(t_ray *ray, t_obj *sphere)
 {
     float radius = sphere->attrs[0] * 0.5f;
-    t_point3 oc = v_sub(ray->origin, sphere->center);
+    t_vec3 oc = v_sub(ray->origin, sphere->center);
 
     float a = v_dot(ray->direction, ray->direction);
     float b = 2.0f * v_dot(oc, ray->direction);

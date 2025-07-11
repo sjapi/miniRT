@@ -16,19 +16,19 @@
 #include "defines.h"
 #include <math.h>
 
-static t_point3	get_ray_dir(float nx, float ny, t_cam *cam)
+static t_vec3	get_ray_dir(float nx, float ny, t_cam *cam)
 {
-	t_point3	forward;
-	t_point3	world_up;
-	t_point3	right;
-	t_point3	up;
-	t_point3	dir;
+	t_vec3	forward;
+	t_vec3	world_up;
+	t_vec3	right;
+	t_vec3	up;
+	t_vec3	dir;
 
 	forward = cam->orient_v;
 	if (fabsf(forward.x) < 1e-6 && fabsf(forward.z) < 1e-6)
-		world_up = (t_point3){0, 0, 1};
+		world_up = (t_vec3){0, 0, 1};
 	else
-		world_up = (t_point3){0, 1, 0};
+		world_up = (t_vec3){0, 1, 0};
 	right = v_normalize(v_cross(world_up, forward));
 	up = v_cross(forward, right);
 	dir = v_add(

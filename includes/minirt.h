@@ -18,7 +18,7 @@ typedef struct s_point3
 	float	x;
 	float	y;
 	float	z;
-}	t_point3;
+}	t_vec3;
 
 /*
  * type 1 = square
@@ -30,9 +30,9 @@ typedef struct s_point3
 typedef struct s_obj
 {
 	char		type;
-	t_point3	center;
+	t_vec3	center;
 	int			color;
-	t_point3	norm_vector; // for plane??
+	t_vec3	norm_vector; // for plane??
 	float		*attrs;
 }	t_obj;
 
@@ -41,8 +41,8 @@ typedef struct s_obj
  */
 typedef struct s_cam
 {
-	t_point3	viewpoint;
-	t_point3	orient_v;
+	t_vec3	viewpoint;
+	t_vec3	orient_v;
 	int			fov;
 
 	float		yaw;
@@ -65,7 +65,7 @@ typedef struct s_amb_light
 
 typedef struct t_light
 {
-	t_point3	point;
+	t_vec3	point;
 	float		ratio;
 	int			color;
 }	t_light;

@@ -27,13 +27,13 @@
  * vec_x = hit_point - apex_point 
  * m = cone_normal_axis_vec * vec_x
  */
-t_point3 get_cone_normal(t_obj *obj, t_point3 hit_point)
+t_vec3 get_cone_normal(t_obj *obj, t_vec3 hit_point)
 {
-	t_point3	apex;
-	t_point3	x;
+	t_vec3	apex;
+	t_vec3	x;
 	float		m;
 	float		angle_rad;
-	t_point3	result;
+	t_vec3	result;
 
 	apex = v_add(obj->center, v_scale(obj->norm_vector, obj->attrs[CONE_H_I]));
 	x = v_sub(hit_point, apex);
@@ -49,12 +49,12 @@ float intersect_cone(t_ray *ray, t_obj *obj)
 	float		cov;
 	float		angle_rad;
 	float		cos2a;
-	t_point3	apex;
-	t_point3	co;
+	t_vec3	apex;
+	t_vec3	co;
 	float		a, b, c;
 	float		discrim;
 	float		t, t1, t2;
-	t_point3	p;
+	t_vec3	p;
 	float		h;
 
 	apex = v_add(obj->center, v_scale(obj->norm_vector, obj->attrs[CONE_H_I]));

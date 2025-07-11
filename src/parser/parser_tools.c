@@ -39,7 +39,7 @@ bool	get_color(char *obj_data, int *color_code)
 	return (true);
 }
 
-bool	get_coordinates(char *data, t_point3 *p)
+bool	get_coordinates(char *data, t_vec3 *p)
 {
 	if (!is_correct_coordinate(data))
 		return (false);
@@ -55,7 +55,7 @@ bool	get_coordinates(char *data, t_point3 *p)
 	return (true);
 }
 
-bool	get_orientation(char *data, t_point3 *o)
+bool	get_orientation(char *data, t_vec3 *o)
 {
 	if (!is_correct_coordinate(data))
 		return (false);

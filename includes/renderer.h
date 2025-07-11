@@ -21,8 +21,8 @@
  */
 typedef struct	s_ray
 {
-	t_point3	origin;
-	t_point3	direction;
+	t_vec3	origin;
+	t_vec3	direction;
 }	t_ray;
 
 /*
@@ -35,8 +35,8 @@ typedef struct	s_ray
 typedef struct	s_hit
 {
 	float		t;
-	t_point3	hit_point;
-	t_point3	normal;
+	t_vec3	hit_point;
+	t_vec3	normal;
 	t_obj		*obj;
 }	t_hit;
 
@@ -63,11 +63,11 @@ float 	intersect_sphere(t_ray *ray, t_obj *sphere);
 /* cylinder.c */
 float	intersect_cylinder(t_ray *ray, t_obj *cylinder);
 
-t_point3	get_cylinder_normal(t_obj *obj, t_point3 hit_point);
+t_vec3	get_cylinder_normal(t_obj *obj, t_vec3 hit_point);
 
 /* cone.c */
 float	intersect_cone(t_ray *ray, t_obj *cone);
 
-t_point3	get_cone_normal(t_obj *obj, t_point3 hit_point);
+t_vec3	get_cone_normal(t_obj *obj, t_vec3 hit_point);
 
 #endif

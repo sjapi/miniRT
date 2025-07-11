@@ -38,8 +38,8 @@ bool	parse_float(char **str, int *digits);
 
 /* parser_tools.c */
 bool	get_color(char *obj_data, int *num);
-bool	get_coordinates(char *data, t_point3 *p);
-bool	get_orientation(char *data, t_point3 *o);
+bool	get_coordinates(char *data, t_vec3 *p);
+bool	get_orientation(char *data, t_vec3 *o);
 bool	get_ratio(char *data, float *ratio);
 bool	get_fov(char *data, int *fov);
 bool	get_attribute(char *data, float *d);

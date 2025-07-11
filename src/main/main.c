@@ -22,7 +22,7 @@
 
 // ========================================================================
 
-void print_point(t_point3 p)
+void print_point(t_vec3 p)
 {
     printf("(%.2f, %.2f, %.2f)", p.x, p.y, p.z);
 }
@@ -161,22 +161,22 @@ static int	handle_key_hooks(int key, void *param)
 		destroy(param);
 	if (key == KEY_W)
 	{
-		t_point3 forward = cam->orient_v;
+		t_vec3 forward = cam->orient_v;
 		cam->viewpoint = v_add(cam->viewpoint, v_scale(forward, 0.7));
 	}
 	if (key == KEY_S)
 	{
-		t_point3 forward = cam->orient_v;
+		t_vec3 forward = cam->orient_v;
 		cam->viewpoint = v_sub(cam->viewpoint, v_scale(forward, 0.7));
 	}
 	if (key == KEY_A)
 	{
-		t_point3 right = v_normalize(v_cross((t_point3){0,1,0}, cam->orient_v));
+		t_vec3 right = v_normalize(v_cross((t_vec3){0,1,0}, cam->orient_v));
 		cam->viewpoint = v_sub(cam->viewpoint, v_scale(right, 0.7));
 	}
 	if (key == KEY_D)
 	{
-		t_point3 right = v_normalize(v_cross((t_point3){0,1,0}, cam->orient_v));
+		t_vec3 right = v_normalize(v_cross((t_vec3){0,1,0}, cam->orient_v));
 		cam->viewpoint = v_add(cam->viewpoint, v_scale(right, 0.7));
 	}
 	if (key == KEY_H)
@@ -192,7 +192,7 @@ static int	handle_key_hooks(int key, void *param)
 	if (key == KEY_PLUS)
 		cam->fov = clamp(cam->fov + 1, 1, 179);
 	cam->pitch = clampf(cam->pitch, -1.55, 1.55);
-	cam->orient_v = (t_point3){
+	cam->orient_v = (t_vec3){
 		cosf(cam->pitch) * sinf(cam->yaw),
 		sinf(cam->pitch),
 		cosf(cam->pitch) * cosf(cam->yaw)

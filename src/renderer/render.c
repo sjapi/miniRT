@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 12:45:57 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/11 14:26:13 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/11 15:46:21 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,12 @@ static int	compute_lighting(t_hit *primary_hit, t_rt *info)
 	{
 		diffuse = v_dot(primary_hit->normal, shadow_ray.direction);
 		diffuse = clampf(diffuse, 0, 1);
-		t_point3 R = v_sub(
+		t_vec3 R = v_sub(
 			v_scale(primary_hit->normal, 2 * v_dot(primary_hit->normal, shadow_ray.direction)),
 			shadow_ray.direction
 		);
 		R = v_normalize(R);
-		t_point3 V = v_normalize(v_sub(info->scene->cam->viewpoint, primary_hit->hit_point));
+		t_vec3 V = v_normalize(v_sub(info->scene->cam->viewpoint, primary_hit->hit_point));
 		specular = powf(clampf(v_dot(R, V), 0, 1), 50);
 	}
 	// Ambient * object
@@ -87,7 +87,7 @@ int draw_skybox(t_rt *info, t_ray *ray)
     t_scene *scene = info->scene;
 
     // Use your current ray
-    t_point3 dir = ray->direction;
+    t_vec3 dir = ray->direction;
 
     // compute (u,v) spherical coordinates
     float u = 0.5f + atan2f(dir.z, dir.x) / (2.0f * M_PI);
@@ -114,12 +114,10 @@ int draw_skybox(t_rt *info, t_ray *ray)
     return (color);
 }
 
-
 void	render_scene(t_rt *info)
 {
 	int		y = 0;
 	int		x;
-//	int		amb = get_amb_color(info->scene->amb);
 	t_ray	ray;
 	t_hit	hit;
 

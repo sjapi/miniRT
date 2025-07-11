@@ -36,14 +36,14 @@ void		*ft_memcpy(void *dest, const void *src, size_t n);
 int			get_amb_color(t_amb_light *amb);
 
 /* vectors */
-bool		v_normalized(t_point3 p);
-t_point3	v_add(t_point3 a, t_point3 b);
-t_point3	v_scale(t_point3 v, float s);
-t_point3	v_cross(t_point3 a, t_point3 b);
-t_point3	v_normalize(t_point3 v);
-t_point3	v_sub(t_point3 a, t_point3 b);
-float		v_dot(t_point3 a, t_point3 b);
-float		v_len(t_point3 v);
+bool		v_normalized(t_vec3 p);
+t_vec3	v_add(t_vec3 a, t_vec3 b);
+t_vec3	v_scale(t_vec3 v, float s);
+t_vec3	v_cross(t_vec3 a, t_vec3 b);
+t_vec3	v_normalize(t_vec3 v);
+t_vec3	v_sub(t_vec3 a, t_vec3 b);
+float		v_dot(t_vec3 a, t_vec3 b);
+float		v_len(t_vec3 v);
 
 /* colors */
 t_color		int_to_color(int icolor);
