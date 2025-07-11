@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:01:55 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/11 16:34:16 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/11 22:17:32 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ t_scene	*load_scene(char *file_name)
 	fd = open(file_name, O_RDONLY);
 	if (fd == -1)
 		return (NULL);
-	scene = malloc(sizeof(t_scene));
+	scene = ft_calloc(sizeof(t_scene), 1);
 	if (!scene)
 		return (NULL);
 	line = get_next_line(fd);
@@ -90,6 +90,11 @@ t_scene	*load_scene(char *file_name)
 			else if (ft_strncmp(line, "L ", 2) == 0)
 			{
 				if (!parse_light(line, scene))
+					return (NULL);
+			}
+			else if (ft_strncmp(line, "S ", 2) == 0)
+			{
+				if (!parse_skybox(line, scene))
 					return (NULL);
 			}
 			else

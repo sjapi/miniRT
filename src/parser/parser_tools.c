@@ -6,14 +6,42 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:05:46 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/09 20:47:39 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/11 22:24:40 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include <stdbool.h>
 #include "minirt.h"
 #include "parser.h"
 #include "utils.h"
+
+
+bool	get_file_name(char *obj_data, char **name)
+{
+	int	size;
+	char	*tmp;
+
+	size = 0;
+	while (obj_data[size] && !is_whitespace(obj_data[size]) && obj_data[size] != '\n')
+		size++;
+	if (size == 0)
+		return (false);
+	tmp = malloc(sizeof(char) * size);
+	if (!tmp)
+		return (print_err("Can't allocate memory"));
+	tmp[size] = '\0';
+	*name = tmp;
+	while (size > 0)
+	{
+		*tmp = *obj_data;
+		tmp++;
+		obj_data++;
+		size--;
+	}
+	return (true);
+}
+
 
 bool	get_color(char *obj_data, int *color_code)
 {

@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 16:16:38 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/11 16:21:36 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/11 21:51:13 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,13 @@ typedef struct s_cam
 {
 	t_vec3	viewpoint;
 	t_vec3	orient_v;
-	int			fov;
+	int		fov;
 
-	float		yaw;
-	float		pitch;
+	float	yaw;
+	float	pitch;
+
+	t_vec3	right;
+	t_vec3	up;
 }	t_cam;
 
 /*
@@ -63,13 +66,24 @@ typedef struct s_amb_light
 	int		color;
 }	t_amb_light;
 
-typedef struct t_light
+typedef struct s_light
 {
 	t_vec3	point;
 	float		ratio;
 	int			color;
 }	t_light;
 
+typedef struct s_skybox
+{
+	char	*file_name;
+	void	*mlx;
+	char	*data;
+	int		width;
+	int		height;
+	int		bpp;
+	int		line_length;
+	int		endian;
+}	t_skybox;
 /*
  * need to figure out can be more than one light?
  * yep, can be, in bonus part (which we will do)
@@ -82,17 +96,8 @@ typedef struct s_scene
 	t_amb_light	*amb;
 	t_cam		*cam;
 	t_light		*lights;
+	t_skybox	*skybox;
 	int			lights_count;
-
-
-	void    *skybox;
-	char    *skybox_data;
-	int     skybox_width;
-	int     skybox_height;
-	int     skybox_bpp;
-	int     skybox_line_length;
-	int     skybox_endian;
-
 }	t_scene;
 
 typedef struct	s_optim

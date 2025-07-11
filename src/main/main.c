@@ -127,23 +127,24 @@ static bool	init_info(t_rt *info, char *file_name)
 	info->img = mlx_new_image(info->mlx, WIN_WIDTH, WIN_HEIGHT);
 	info->addr = mlx_get_data_addr(info->img, &info->bpp, &info->line_len, &info->endian);
 
-	info->scene->skybox = mlx_xpm_file_to_image(
-		info->mlx, "skybox.xpm",
-		&info->scene->skybox_width,
-		&info->scene->skybox_height
-	);
 	if (!info->scene->skybox)
+		return (true);
+	info->scene->skybox->mlx = mlx_xpm_file_to_image(
+		info->mlx, info->scene->skybox->file_name,
+		&info->scene->skybox->width,
+		&info->scene->skybox->height
+	);
+	if (!info->scene->skybox->mlx)
 	{
 		printf("Failed to load skybox\n");
 		exit(1);
 	}
-	info->scene->skybox_data = mlx_get_data_addr(
-		info->scene->skybox,
-		&info->scene->skybox_bpp,
-		&info->scene->skybox_line_length,
-		&info->scene->skybox_endian
+	info->scene->skybox->data = mlx_get_data_addr(
+		info->scene->skybox->mlx,
+		&info->scene->skybox->bpp,
+		&info->scene->skybox->line_length,
+		&info->scene->skybox->endian
 	);
-
 	return (true);
 }
 

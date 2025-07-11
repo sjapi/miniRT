@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 12:45:57 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/11 17:41:50 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/11 22:21:34 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,13 +114,15 @@ void	render_scene(t_rt *info)
 			init_ray(&ray, info, x, y);
 			if (find_hit(&ray, info, &hit, false))
 			{
-				
 				color = compute_lighting(&hit, info);
 				img_put_pixel_safe(info, x, y, color);
 			}
 			else
 			{
-				color = draw_skybox(info, &ray);
+				if (info->scene->skybox)
+					color = draw_skybox(info, &ray);
+				else
+					color = info->scene->amb->color * info->scene->amb->ratio;
 				img_put_pixel_safe(info, x, y, color);
 			}
 			x++;

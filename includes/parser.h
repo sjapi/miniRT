@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:00:29 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/09 20:49:33 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/11 22:02:28 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,13 @@ bool	get_orientation(char *data, t_vec3 *o);
 bool	get_ratio(char *data, float *ratio);
 bool	get_fov(char *data, int *fov);
 bool	get_attribute(char *data, float *d);
+bool	get_file_name(char *obj_data, char **name);
 
 /* parse_elements.c */
 bool	parse_ambient(char *light_data, t_scene *scene);
 bool	parse_light(char *light_data, t_scene *scene);
 bool	parse_camera(char *camera_data, t_scene *scene);
+bool	parse_skybox(char *skybox_data, t_scene *scene);
 
 /* parse_objects.c */
 bool	parse_obj(char *obj_data, t_scene *scene);
