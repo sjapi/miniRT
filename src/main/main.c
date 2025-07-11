@@ -127,8 +127,6 @@ static bool	init_info(t_rt *info, char *file_name)
 	info->img = mlx_new_image(info->mlx, WIN_WIDTH, WIN_HEIGHT);
 	info->addr = mlx_get_data_addr(info->img, &info->bpp, &info->line_len, &info->endian);
 
-	int a = 820;
-	int b = 281;
 	info->scene->skybox = mlx_xpm_file_to_image(
 		info->mlx, "skybox.xpm",
 		&info->scene->skybox_width,

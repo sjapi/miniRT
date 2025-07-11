@@ -45,6 +45,7 @@ SRCS = \
 OBJS = $(patsubst $(SRCS_DIR)%.c, $(OBJS_DIR)%.o, $(SRCS))
 
 CC      = cc
+CFLAGS=-Wall -Wextra -Werror
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S), Darwin)
 	LGFLAGS = -Lmlx -lmlx -framework OpenGL -framework AppKit -lm 

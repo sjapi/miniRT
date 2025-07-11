@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:51:00 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/10 20:35:01 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/11 15:05:11 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ float 	intersect_sphere(t_ray *ray, t_obj *sphere);
 
 /* cylinder.c */
 float	intersect_cylinder(t_ray *ray, t_obj *cylinder);
+
+t_point3	get_cylinder_normal(t_obj *obj, t_point3 hit_point);
 
 /* cone.c */
 float	intersect_cone(t_ray *ray, t_obj *cone);

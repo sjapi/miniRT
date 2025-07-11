@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 10:52:17 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/11 00:22:16 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/11 14:52:08 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,10 @@ bool	find_hit(t_ray *ray, t_rt *info, t_hit *hit)
 				hit->normal = obj->norm_vector;
 			else if (obj->type == SPHERE)
 				hit->normal = v_normalize(v_sub(hit->hit_point, obj->center));
+			else if (obj->type == CYLINDER)
+				hit->normal = get_cylinder_normal(obj, hit->hit_point);
 			else if (obj->type == CONE)
-			{
 				hit->normal = get_cone_normal(obj, hit->hit_point);
-			}
 			hit->obj = obj;
 		}
 	}

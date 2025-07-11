@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 12:45:57 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/09 21:02:47 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/11 14:26:13 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ void	render_scene(t_rt *info)
 {
 	int		y = 0;
 	int		x;
-	int		amb = get_amb_color(info->scene->amb);
+//	int		amb = get_amb_color(info->scene->amb);
 	t_ray	ray;
 	t_hit	hit;
 
