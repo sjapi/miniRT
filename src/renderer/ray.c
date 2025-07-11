@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 10:49:48 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/11 17:52:04 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/11 17:54:43 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 static t_vec3	get_ray_dir(float nx, float ny, t_cam *cam)
 {
 	t_vec3	dir;
-	
+
 	dir = v_add(
 		v_add(cam->orient_v, v_scale(cam->right, nx)),
 		v_scale(cam->up, ny)
