@@ -16,6 +16,8 @@
 #include "renderer.h"
 #include "defines.h"
 
+
+
 /*
  * need to add normal for cylinder - done
  * need to add optimization for cylinder & cone
@@ -33,6 +35,8 @@ bool	find_hit(t_ray *ray, t_rt *info, t_hit *hit, bool shadow)
 	{
 		t = -1;
 		obj = &info->scene->objs[i];
+		//if (!is_hitable(ray, obj))
+		//	continue ;
 		if (obj->type == PLANE)
 			t = intersect_plane(ray, obj);
 		else if (obj->type == SPHERE)
