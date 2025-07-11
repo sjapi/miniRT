@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 20:21:58 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/10 21:05:34 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/11 17:10:18 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ bool	parse_sphere(char *sphere_data, t_obj *sphere)
 bool	parse_cylinder(char *cylinder_data, t_obj *cylinder)
 {
 	cylinder->type = CYLINDER;
-	cylinder->attrs = malloc(sizeof(float) * 2);
+	cylinder->attrs = malloc(sizeof(float) * CYLINDER_ATTR_COUNT);
 	if (!cylinder->attrs)
 		return (free_obj(cylinder), print_err("Can't allocate memory"));	
 	skip_info(&cylinder_data);
@@ -89,7 +89,7 @@ bool	parse_cylinder(char *cylinder_data, t_obj *cylinder)
 bool	parse_cone(char *cone_data, t_obj *cone)
 {
 	cone->type = CONE;
-	cone->attrs = malloc(sizeof(float) * 2);
+	cone->attrs = malloc(sizeof(float) * CONE_ATTR_COUNT);
 	if (!cone->attrs)
 		return (free_obj(cone), print_err("Can't allocate memory"));	
 	skip_info(&cone_data);
@@ -113,37 +113,22 @@ bool	parse_cone(char *cone_data, t_obj *cone)
 	return (true);
 }
 
-/*
- * Here you can just do 'return (parse_plane(...))'
- */
 bool	parse_obj(char *obj_data, t_scene *scene)
 {
 	t_obj	*obj;
 
+	(void)scene;
 	obj = malloc(sizeof(t_obj));
 	if (!obj)
 		return (print_err("Can't allocate memory"));
 	if (ft_strncmp(obj_data, "pl ", 3) == 0)
-	{
-		if (!parse_plane(obj_data, obj))
-			return (false);
-	}
+		return (parse_plane(obj_data, obj));
 	else if (ft_strncmp(obj_data, "sp ", 3) == 0)
-	{
-		if (!parse_sphere(obj_data, obj))
-			return (false);
-	}
+		return (parse_sphere(obj_data, obj));
 	else if (ft_strncmp(obj_data, "cy ", 3) == 0)
-	{
-		if (!parse_cylinder(obj_data, obj))
-			return (false);
-	}
+		return (parse_cylinder(obj_data, obj));
 	else if (ft_strncmp(obj_data, "co ", 3) == 0)
-	{
-		if (!parse_cone(obj_data, obj))
-			return (false);
-	}
+		return (parse_cone(obj_data, obj));
 	else
-		return (true); // TODO: unkown type
-	return (append_obj(scene, obj));
+		return (true);
 }

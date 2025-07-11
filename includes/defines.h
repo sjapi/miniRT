@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 16:54:19 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/11 15:13:52 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/11 17:06:51 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,25 +44,24 @@
 #  define KEY_PLUS 24
 # endif
 
-/*
- * do we have square?
- */
-# define SQUARE 1
 # define SPHERE 2
 # define PLANE  3
 # define CYLINDER 4
 # define CONE 5
 
-/* SPHERE DIAMETER ATTRIBUTE INDEX */
-# define SPHERE_D_I 0
-/* CYLINDER DIAMETER ATTRIBUTE INDEX */
-# define CYLINDER_D_I 0
-/* CYLINDER HEIGHT ATTRIBUTE INDEX */
-# define CYLINDER_H_I 1
+# define SPHERE_D_I 0 /* SPHERE DIAMETER ATTRIBUTE INDEX */
 
-/* CONE ANGLE ATTRIBUTE INDEX */
-# define CONE_A_I 0
-/* CONE HEIGHT ATTRIBUTE INDEX */
-# define CONE_H_I 1
+# define CYLINDER_ATTR_COUNT 2
+# define CYLINDER_D_I 0 /* CYLINDER DIAMETER ATTRIBUTE INDEX */
+# define CYLINDER_H_I 1 /* CYLINDER HEIGHT ATTRIBUTE INDEX */
+
+# define CONE_ATTR_COUNT 6
+# define CONE_A_I 0 /* CONE ANGLE ATTRIBUTE INDEX */
+# define CONE_H_I 1 /* CONE HEIGHT ATTRIBUTE INDEX */
+# define CONE_AP_X_I 2 /* CONE APEX X INDEX */
+# define CONE_AP_Y_I 3 /* CONE APEX Y INDEX */
+# define CONE_AP_Z_I 4 /* CONE APEX Z INDEX */
+# define CONE_AP_Z_I 4 /* CONE APEX Z INDEX */
+# define CONE_AR_I 5 /* CONE ANGLE RADIANS INDEX */
 
 #endif

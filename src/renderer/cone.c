@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 20:13:12 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/11 00:17:41 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/11 16:36:48 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,14 @@ t_vec3 get_cone_normal(t_obj *obj, t_vec3 hit_point)
 	float		angle_rad;
 	t_vec3	result;
 
-	apex = v_add(obj->center, v_scale(obj->norm_vector, obj->attrs[CONE_H_I]));
+	apex = (t_vec3){
+		obj->attrs[CONE_AP_X_I],
+		obj->attrs[CONE_AP_Y_I],
+		obj->attrs[CONE_AP_Z_I]
+	};
 	x = v_sub(hit_point, apex);
 	m = v_dot(obj->norm_vector ,x);
-	angle_rad = obj->attrs[CONE_A_I] * M_PI / 180.0;
+	angle_rad = obj->attrs[CONE_AR_I];
 	result = v_sub(x, v_scale(obj->norm_vector, (1 + tanf(angle_rad) * tanf(angle_rad)) * m));
 	return v_normalize(result);
 }
