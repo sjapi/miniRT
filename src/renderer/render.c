@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 12:45:57 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/11 15:51:52 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/11 16:28:00 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,18 @@
 #include "mlx.h"
 #include <stdio.h>
 #include <math.h>
+#include <sys/time.h>
+
+// ============== TESTING =============
+long	current_time(void)
+{
+	struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * 1000L) + (tv.tv_usec / 1000));
+}
+// ====================================
+
 
 static int	compute_lighting(t_hit *primary_hit, t_rt *info)
 {
@@ -89,7 +101,9 @@ void	render_scene(t_rt *info)
 	t_ray	ray;
 	t_hit	hit;
 	int		color;
+	long stop, start;
 
+	start = current_time();
 	ray.origin = info->scene->cam->viewpoint;
 	y = 0;
 	while (y < WIN_HEIGHT)
@@ -114,4 +128,6 @@ void	render_scene(t_rt *info)
 		y++;
 	}
 	mlx_put_image_to_window(info->mlx, info->win, info->img, 0, 0);
+	stop = current_time();
+	printf("Time %ld\n", stop - start);
 }

@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:01:55 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/09 20:23:32 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/11 16:34:16 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 
 bool	print_err(char *msg)
 {
+	printf("Error\n");
 	printf("miniRT: parser: %s\n", msg);
 	return (false);
 }

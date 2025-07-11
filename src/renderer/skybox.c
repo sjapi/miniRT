@@ -6,12 +6,13 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 15:47:52 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/11 15:59:39 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/11 16:13:03 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 #include "renderer.h"
+#include "utils.h"
 #include <math.h>
 
 int draw_skybox(t_rt *info, t_ray *ray)
@@ -35,8 +36,8 @@ int draw_skybox(t_rt *info, t_ray *ray)
 		u -= 1;
 	sx = (int)(u * scene->skybox_width);
 	sy = (int)(v * scene->skybox_height);
-	sx = clamp(sx, 0 scene->skybox_width - 1);
-	sy = clamp(sy, 0 scene->skybox_height - 1);
+	sx = clamp(sx, 0, scene->skybox_width - 1);
+	sy = clamp(sy, 0, scene->skybox_height - 1);
 	pixel = scene->skybox_data + sy * scene->skybox_line_length + sx * (scene->skybox_bpp / 8);
 	color = *(int *)pixel;
 	return (color);

@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 10:49:48 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/11 15:53:53 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/11 17:36:38 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ static t_vec3	get_ray_dir(float nx, float ny, t_cam *cam)
 		world_up = (t_vec3){0, 0, 1};
 	else
 		world_up = (t_vec3){0, 1, 0};
+	//t_vec3 test = v_cross(world_up, cam->orient_v);
+	//printf("%f %f %f\n", test.x, test.y, test.z);
 	right = v_normalize(v_cross(world_up, cam->orient_v));
 	up = v_cross(cam->orient_v, right);
 	dir = v_add(
