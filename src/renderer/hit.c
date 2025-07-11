@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 10:52:17 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/11 14:52:08 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/11 16:03:51 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 #include "defines.h"
 
 /*
- * need to add normal for cylinder
+ * need to add normal for cylinder - done
+ * need to add optimization for cylinder & cone
  */
 bool	find_hit(t_ray *ray, t_rt *info, t_hit *hit)
 {

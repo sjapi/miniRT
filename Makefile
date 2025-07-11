@@ -32,7 +32,7 @@ GNL = \
 RENDERER = \
 	render.c draw.c ray.c \
 	hit.c plane.c sphere.c \
-	cylinder.c cone.c
+	cylinder.c cone.c skybox.c
 
 SRCS = \
 	$(addprefix $(SRCS_DIR)main/, $(MAIN)) \

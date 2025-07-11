@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:51:00 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/11 15:05:11 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/11 15:49:38 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,9 @@ void	render_scene(t_rt *info);
 
 /* draw.c */
 void	img_put_pixel_safe(t_rt *info, int x, int y, int color);
+
+/* skybox.c */
+int		draw_skybox(t_rt *info, t_ray *ray);
 
 /* ray.c */
 void	init_ray(t_ray *ray, t_rt *info, int x, int y);

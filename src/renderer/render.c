@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 12:45:57 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/11 15:46:21 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/11 15:51:52 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,46 +82,16 @@ static int	compute_lighting(t_hit *primary_hit, t_rt *info)
 	return color_to_int(final);
 }
 
-int draw_skybox(t_rt *info, t_ray *ray)
-{
-    t_scene *scene = info->scene;
-
-    // Use your current ray
-    t_vec3 dir = ray->direction;
-
-    // compute (u,v) spherical coordinates
-    float u = 0.5f + atan2f(dir.z, dir.x) / (2.0f * M_PI);
-    float v = 0.5f - asinf(dir.y) / M_PI;
-
-    // wrap u if needed
-    if (u < 0) u += 1;
-    if (u > 1) u -= 1;
-
-    int sx = (int)(u * scene->skybox_width);
-    int sy = (int)(v * scene->skybox_height);
-
-    // clamp
-    if (sx < 0) sx = 0;
-    if (sy < 0) sy = 0;
-    if (sx >= scene->skybox_width) sx = scene->skybox_width - 1;
-    if (sy >= scene->skybox_height) sy = scene->skybox_height - 1;
-
-    // get pixel color
-    char *pixel = scene->skybox_data 
-                + sy * scene->skybox_line_length 
-                + sx * (scene->skybox_bpp / 8);
-    unsigned int color = *(unsigned int *)pixel;
-    return (color);
-}
-
 void	render_scene(t_rt *info)
 {
-	int		y = 0;
+	int		y;
 	int		x;
 	t_ray	ray;
 	t_hit	hit;
+	int		color;
 
 	ray.origin = info->scene->cam->viewpoint;
+	y = 0;
 	while (y < WIN_HEIGHT)
 	{
 		x = 0;
@@ -131,12 +101,12 @@ void	render_scene(t_rt *info)
 			if (find_hit(&ray, info, &hit))
 			{
 				
-				int color = compute_lighting(&hit, info);
+				color = compute_lighting(&hit, info);
 				img_put_pixel_safe(info, x, y, color);
 			}
 			else
 			{
-				int color = draw_skybox(info, &ray);
+				color = draw_skybox(info, &ray);
 				img_put_pixel_safe(info, x, y, color);
 			}
 			x++;
