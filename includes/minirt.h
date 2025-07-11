@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 16:16:38 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/11 16:21:36 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/11 17:52:13 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,13 @@ typedef struct s_cam
 {
 	t_vec3	viewpoint;
 	t_vec3	orient_v;
-	int			fov;
+	int		fov;
 
-	float		yaw;
-	float		pitch;
+	float	yaw;
+	float	pitch;
+
+	t_vec3	right;
+	t_vec3	up;
 }	t_cam;
 
 /*

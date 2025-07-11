@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 18:36:01 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/11 16:43:47 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/11 17:53:47 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,18 @@ static void	optimize_objs(t_rt *info)
 	}
 }
 
+static void	optimize_cam_basis(t_cam *cam)
+{
+	t_vec3  world_up;
+
+	if (fabsf(cam->orient_v.x) < 1e-6 && fabsf(cam->orient_v.z) < 1e-6)
+		world_up = (t_vec3){0, 0, 1};
+	else
+		world_up = (t_vec3){0, 1, 0};
+	cam->right = v_normalize(v_cross(world_up, cam->orient_v));
+	cam->up = v_cross(cam->orient_v, cam->right);
+}
+
 bool	init_optimization(t_rt *info)
 {
 	t_optim *optim;
@@ -120,6 +132,7 @@ bool	init_optimization(t_rt *info)
 		return (false);
 	optimize_viewport(info, optim);
 	optimize_objs(info);
+	optimize_cam_basis(info->scene->cam);
 	info->optim = optim;
 	return (true);
 }
