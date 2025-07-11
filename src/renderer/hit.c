@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 10:52:17 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/11 16:03:51 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/11 17:37:13 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
  * need to add normal for cylinder - done
  * need to add optimization for cylinder & cone
  */
-bool	find_hit(t_ray *ray, t_rt *info, t_hit *hit)
+bool	find_hit(t_ray *ray, t_rt *info, t_hit *hit, bool shadow)
 {
 	int		i;
 	float	t;
@@ -43,9 +43,11 @@ bool	find_hit(t_ray *ray, t_rt *info, t_hit *hit)
 			t = intersect_cone(ray, obj);
 		if (t > 0 && t < closest)
 		{
-			closest = t;
 			find = true;
 			hit->t = t;
+			if (shadow) // t should be setted
+				break ;
+			closest = t;
 			hit->hit_point = v_add(ray->origin, v_scale(ray->direction, t));
 			if (obj->type == PLANE)
 				hit->normal = obj->norm_vector;

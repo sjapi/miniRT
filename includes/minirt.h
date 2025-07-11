@@ -6,14 +6,14 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 16:16:38 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/09 20:59:48 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/11 16:21:36 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINIRT_H
 # define MINIRT_H
 
-typedef struct s_point3
+typedef struct s_vec3
 {
 	float	x;
 	float	y;
