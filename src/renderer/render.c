@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 12:45:57 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/11 15:51:52 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/11 17:37:53 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	compute_lighting(t_hit *primary_hit, t_rt *info)
 	shadow_ray.direction = v_normalize(shadow_ray.direction);
 	light_dist = v_len(v_sub(info->scene->lights->point, primary_hit->hit_point));
 	in_shadow = false;
-	if (find_hit(&shadow_ray, info, &shadow_hit))
+	if (find_hit(&shadow_ray, info, &shadow_hit, true))
 	{
 		if (shadow_hit.t > 1e-3 && shadow_hit.t < light_dist)
 			in_shadow = true;
@@ -98,7 +98,7 @@ void	render_scene(t_rt *info)
 		while (x < WIN_WIDTH)
 		{
 			init_ray(&ray, info, x, y);
-			if (find_hit(&ray, info, &hit))
+			if (find_hit(&ray, info, &hit, false))
 			{
 				
 				color = compute_lighting(&hit, info);

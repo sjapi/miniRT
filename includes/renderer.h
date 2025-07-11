@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:51:00 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/11 15:49:38 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/11 17:37:31 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,7 @@ int		draw_skybox(t_rt *info, t_ray *ray);
 void	init_ray(t_ray *ray, t_rt *info, int x, int y);
 
 /* hit.c */
-bool	find_hit(t_ray *ray, t_rt *info, t_hit *hit);
-
-int		get_hit_color(t_hit *hit, t_scene *scene);
+bool	find_hit(t_ray *ray, t_rt *info, t_hit *hit, bool shadow);
 
 /* plane.c */
 float	intersect_plane(t_ray *ray, t_obj *plane);
