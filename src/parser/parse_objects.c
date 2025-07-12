@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 20:21:58 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/11 17:35:49 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/12 11:40:23 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ bool	parse_plane(char *plane_data, t_obj *plane)
 bool	parse_sphere(char *sphere_data, t_obj *sphere)
 {
 	sphere->type = SPHERE;
-	sphere->attrs = malloc(sizeof(float));
+	sphere->attrs = malloc(sizeof(float) * SPHERE_ATTR_COUNT);
 	if (!sphere->attrs)
 		return (free_obj(sphere), print_err("Can't allocate memory"));	
 	skip_info(&sphere_data);

@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 18:36:01 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/11 17:53:47 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/12 11:53:18 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +83,16 @@ static void	optimize_viewport(t_rt *info, t_optim *optim)
 static void	optimize_cone(t_obj *cone)
 {
 	t_vec3	apex;
+	float	angle_rad;
 
 	apex = v_add(cone->center, v_scale(cone->norm_vector, cone->attrs[CONE_H_I]));
 	cone->attrs[CONE_AP_X_I] = apex.x;
 	cone->attrs[CONE_AP_Y_I] = apex.y;
 	cone->attrs[CONE_AP_Z_I] = apex.z;
-	cone->attrs[CONE_AR_I] = cone->attrs[CONE_A_I] * M_PI / 180.0;
+	angle_rad = cone->attrs[CONE_A_I] * M_PI / 180.0;
+	cone->attrs[CONE_AR_I] = angle_rad;
+	cone->attrs[CONE_TAN2] = tanf(angle_rad) * tanf(angle_rad);
+	cone->attrs[CONE_COS2] = cosf(angle_rad) * cosf(angle_rad);
 }
 
 static void	optimize_cylinder(t_obj *cylinder)
@@ -98,15 +102,19 @@ static void	optimize_cylinder(t_obj *cylinder)
 
 static void	optimize_objs(t_rt *info)
 {
-	int	i;
+	int		i;
+	t_obj	*obj;
 
 	i = 0;
 	while (i < info->scene->objs_count)
 	{
-		if (info->scene->objs[i].type == CONE)
-			optimize_cone(&info->scene->objs[i]);
-		else if (info->scene->objs[i].type == CYLINDER)
-			optimize_cylinder(&info->scene->objs[i]);
+		obj = &info->scene->objs[i];
+		if (obj->type == CONE)
+			optimize_cone(obj);
+		else if (obj->type == CYLINDER)
+			optimize_cylinder(obj);
+		else if (obj->type == SPHERE)
+			obj->attrs[SPHERE_R_I] = obj->attrs[SPHERE_D_I] * 0.5;
 		i++;
 	}
 }

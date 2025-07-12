@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 20:13:12 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/11 16:36:48 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/12 11:56:35 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ t_vec3 get_cone_normal(t_obj *obj, t_vec3 hit_point)
 	x = v_sub(hit_point, apex);
 	m = v_dot(obj->norm_vector ,x);
 	angle_rad = obj->attrs[CONE_AR_I];
-	result = v_sub(x, v_scale(obj->norm_vector, (1 + tanf(angle_rad) * tanf(angle_rad)) * m));
+	result = v_sub(x, v_scale(obj->norm_vector, (1 + obj->attrs[CONE_TAN2]) * m));
 	return v_normalize(result);
 }
 
@@ -61,12 +61,16 @@ float intersect_cone(t_ray *ray, t_obj *obj)
 	t_vec3	p;
 	float		h;
 
-	apex = v_add(obj->center, v_scale(obj->norm_vector, obj->attrs[CONE_H_I]));
+	apex = (t_vec3){
+		obj->attrs[CONE_AP_X_I],
+		obj->attrs[CONE_AP_Y_I],
+		obj->attrs[CONE_AP_Z_I]
+	};
 	co = v_sub(ray->origin, apex);
 	dv = v_dot(ray->direction, obj->norm_vector);
 	cov = v_dot(co, obj->norm_vector);
-	angle_rad = obj->attrs[CONE_A_I] * M_PI / 180.0;
-	cos2a = cosf(angle_rad) * cosf(angle_rad);
+	angle_rad = obj->attrs[CONE_AR_I];
+	cos2a = obj->attrs[CONE_COS2];
 	a = v_dot(ray->direction, ray->direction) - (dv * dv) / cos2a;
 	b = 2 * (v_dot(ray->direction, co) - (dv * cov) / cos2a);
 	c = v_dot(co, co) - (cov * cov) / cos2a;
