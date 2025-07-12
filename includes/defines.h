@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 16:54:19 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/12 11:51:24 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/12 13:37:00 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,10 @@
 # define PLANE  3
 # define CYLINDER 4
 # define CONE 5
+
+# define HIT_SURFACE 2
+# define HIT_BOTTOM 0
+# define HIT_TOP 1
 
 # define SPHERE_ATTR_COUNT 2
 # define SPHERE_D_I 0 /* SPHERE DIAMETER ATTRIBUTE INDEX */

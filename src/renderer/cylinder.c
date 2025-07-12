@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/09 20:35:13 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/11 15:12:52 by azolotar         ###   ########.fr       */
+/*   Created: 2025/07/12 13:56:16 by 032zolotarev      #+#    #+#             */
+/*   Updated: 2025/07/12 13:57:15 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,105 +16,125 @@
 #include "defines.h"
 #include <math.h>
 
-/*
- * can calculate axis earlier
- */
-t_vec3	get_cylinder_normal(t_obj *obj, t_vec3 hit_point)
+t_vec3 get_cylinder_normal(t_obj *obj, t_vec3 hit_point, t_vec3 ray_dir, char side)
 {
 	t_vec3	v;
-	float		h;
+	float	h;
 	t_vec3	n;
+	t_vec3	normal;
 
-	v = v_sub(hit_point, obj->center);
-	h = v_dot(v, obj->norm_vector);
-	if (h <= 1e-4f)
-		return (v_scale(obj->norm_vector, -1.0));
-	if (h >= obj->attrs[CYLINDER_H_I] - 1e-4f)
-		return (obj->norm_vector);
-	n = v_sub(v, v_scale(obj->norm_vector, h));
-	return (v_normalize(n));
+	if (side == HIT_TOP)
+		normal = obj->norm_vector;
+	else if (side == HIT_BOTTOM)
+		normal = v_scale(obj->norm_vector, -1);
+	else
+	{
+		v = v_sub(hit_point, obj->center);
+		h = v_dot(v, obj->norm_vector);
+		n = v_sub(v, v_scale(obj->norm_vector, h));
+		normal = v_normalize(n);
+	}
+	if (v_dot(normal, ray_dir) > 0)
+		normal = v_scale(normal, -1);
+	return normal;
 }
 
-float	intersect_cylinder(t_ray *ray, t_obj *obj)
+static float intersect_surface(t_ray *ray, t_obj *cyl)
 {
-	float		radius;
-	float		height;
-	t_vec3	axis;
-	t_vec3	oc;
-	float		dv, cov;
-	t_vec3	d_perp, oc_perp;
-	float		a, b, c;
-	float		discrim;
-	float		t_side, t1, t2;
-	float		t_cap, t_bot, t_top;
-	float		t;
-	t_vec3	p, top_center, v, v_perp;
+	t_vec3 oc = v_sub(ray->origin, cyl->center);
+	t_vec3 v = cyl->norm_vector;
 
-	// side
-	radius = 0.5f * obj->attrs[CYLINDER_D_I];
-	height = obj->attrs[CYLINDER_H_I];
-	axis   = obj->norm_vector;
-	oc     = v_sub(ray->origin, obj->center);
-	dv     = v_dot(ray->direction, axis);
-	cov    = v_dot(oc, axis);
-	d_perp = v_sub(ray->direction, v_scale(axis, dv));
-	oc_perp = v_sub(oc, v_scale(axis, cov));
-	a = v_dot(d_perp, d_perp);
-	b = 2.0f * v_dot(d_perp, oc_perp);
-	c = v_dot(oc_perp, oc_perp) - radius * radius;
-	discrim = b * b - 4.0f * a * c;
-	t_side = -1.0f;
-	if (discrim >= 0.0f && fabsf(a) > 1e-6f)
+	float radius = cyl->attrs[CYLINDER_D_I] / 2.0f;
+	float height = cyl->attrs[CYLINDER_H_I];
+
+	float dv = v_dot(ray->direction, v);
+	float ocv = v_dot(oc, v);
+
+	float A = v_dot(ray->direction, ray->direction) - dv * dv;
+	float B = 2.0f * (v_dot(ray->direction, oc) - dv * ocv);
+	float C = v_dot(oc, oc) - ocv * ocv - radius * radius;
+
+	float disc = B * B - 4 * A * C;
+	if (disc < 0)
+		return -1.0f;
+
+	float sqrt_disc = sqrtf(disc);
+	float t1 = (-B - sqrt_disc) / (2 * A);
+	float t2 = (-B + sqrt_disc) / (2 * A);
+
+	float t = -1.0f;
+
+	if (t1 > 0)
 	{
-		float	sq = sqrtf(discrim);
+		float m = ocv + t1 * dv;
+		if (m >= 0 && m <= height)
+			t = t1;
+	}
 
-		t1 = (-b - sq) / (2.0f * a);
-		t2 = (-b + sq) / (2.0f * a);
-		t_side = fminf(t1, t2);
-		if (t_side < 1e-6f)
-			t_side = fmaxf(t1, t2);
-		if (t_side >= 1e-6f)
+	if (t2 > 0)
+	{
+		float m = ocv + t2 * dv;
+		if (m >= 0 && m <= height)
 		{
-			p = v_add(ray->origin, v_scale(ray->direction, t_side));
-			if (v_dot(v_sub(p, obj->center), axis) < 0.0f ||
-				v_dot(v_sub(p, obj->center), axis) > height)
-				t_side = -1.0f;
+			if (t < 0 || t2 < t)
+				t = t2;
 		}
 	}
 
-	// top & bottom
-	t_cap = -1.0f;
-	if (fabsf(dv) > 1e-6f)
+	return t;
+}
+
+static float intersect_base(t_ray *ray, t_obj *cyl, int base)
+{
+	t_vec3 v = cyl->norm_vector;
+	t_vec3 base_center = cyl->center;
+	if (base == HIT_TOP)
+		base_center = v_add(cyl->center, v_scale(v, cyl->attrs[CYLINDER_H_I]));
+
+	float denom = v_dot(ray->direction, v);
+	if (fabsf(denom) < 1e-6)
+		return -1.0f; // Параллельно плоскости
+
+	float t = v_dot(v_sub(base_center, ray->origin), v) / denom;
+	if (t < 0)
+		return -1.0f;
+
+	t_vec3 p = v_add(ray->origin, v_scale(ray->direction, t));
+	t_vec3 diff = v_sub(p, base_center);
+	float dist_sq = v_dot(diff, diff);
+	float radius = cyl->attrs[CYLINDER_D_I] / 2.0f;
+
+	if (dist_sq <= radius * radius)
+		return t;
+
+	return -1.0f;
+}
+
+float	intersect_cylinder(t_ray *ray, t_obj *obj, char *side)
+{
+	float	surface;
+	float	top;
+	float	bottom;
+	float	t;
+
+	surface = intersect_surface(ray, obj);
+	top = intersect_base(ray, obj, HIT_TOP);
+	bottom = intersect_base(ray, obj, HIT_BOTTOM);
+	t = -1.0;
+	if (surface > 0)
 	{
-		/* bottom */
-		t_bot = (-cov) / dv;
-		if (t_bot >= 1e-6f)
-		{
-			p = v_add(ray->origin, v_scale(ray->direction, t_bot));
-			v = v_sub(p, obj->center);
-			v_perp = v_sub(v, v_scale(axis, v_dot(v, axis)));
-			if (v_dot(v_perp, v_perp) <= radius * radius)
-				t_cap = t_bot;
-		}
-		// top
-		top_center = v_add(obj->center, v_scale(axis, height));
-		t_top = (height - cov) / dv;
-		if (t_top >= 1e-6f)
-		{
-			p = v_add(ray->origin, v_scale(ray->direction, t_top));
-			v = v_sub(p, top_center);
-			v_perp = v_sub(v, v_scale(axis, v_dot(v, axis)));
-			if (v_dot(v_perp, v_perp) <= radius * radius &&
-				(t_cap < 0.0f || t_top < t_cap))
-				t_cap = t_top;
-		}
+		t = surface;
+		*side = HIT_SURFACE;
 	}
-	// nearest intersection
-	if (t_side >= 0.0f && t_cap >= 0.0f)
-		t = fminf(t_side, t_cap);
-	else if (t_side >= 0.0f)
-		t = t_side;
-	else
-		t = t_cap;
-	return (t >= 0.0f ? t : -1.0f);
+	if (bottom > 0 && (t < 0 || bottom < t))
+	{
+		t = bottom;
+		*side = HIT_BOTTOM;
+	}
+	if (top > 0 && (t < 0 || top < t))
+	{
+		t = top;
+		*side = HIT_TOP;
+	}
+	return (t);
 }

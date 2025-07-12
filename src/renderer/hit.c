@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 10:52:17 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/11 21:18:09 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/12 13:46:25 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ bool	find_hit(t_ray *ray, t_rt *info, t_hit *hit, bool shadow)
 	float	closest = 270000;
 	t_obj	*obj;
 	bool	find = false;
+	char	side;
 
 	i = -1;
 	while (++i < info->scene->objs_count)
@@ -42,7 +43,7 @@ bool	find_hit(t_ray *ray, t_rt *info, t_hit *hit, bool shadow)
 		else if (obj->type == SPHERE)
 			t = intersect_sphere(ray, obj);
 		else if (obj->type == CYLINDER)
-			t = intersect_cylinder(ray, obj);
+			t = intersect_cylinder(ray, obj, &side);
 		else if (obj->type == CONE)
 			t = intersect_cone(ray, obj);
 		if (t > 0 && t < closest)
@@ -58,7 +59,7 @@ bool	find_hit(t_ray *ray, t_rt *info, t_hit *hit, bool shadow)
 			else if (obj->type == SPHERE)
 				hit->normal = v_normalize(v_sub(hit->hit_point, obj->center));
 			else if (obj->type == CYLINDER)
-				hit->normal = get_cylinder_normal(obj, hit->hit_point);
+				hit->normal = get_cylinder_normal(obj, hit->hit_point, ray->direction, side);
 			else if (obj->type == CONE)
 				hit->normal = get_cone_normal(obj, hit->hit_point);
 			hit->obj = obj;
