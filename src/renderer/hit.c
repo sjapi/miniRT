@@ -15,8 +15,7 @@
 #include "utils.h"
 #include "renderer.h"
 #include "defines.h"
-
-
+#include <math.h>
 
 /*
  * need to add normal for cylinder - done

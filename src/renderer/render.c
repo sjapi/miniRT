@@ -27,7 +27,6 @@ long	current_time(void)
 	gettimeofday(&tv, NULL);
 	return ((tv.tv_sec * 1000L) + (tv.tv_usec / 1000));
 }
-// ====================================
 
 static bool	in_range(float val, float min, float max)
 {
@@ -106,11 +105,38 @@ bool	_test_hit(t_ray *ray, t_rt *info, t_hit *hit)
 	}
 	return (find);
 }
+// ====================================
+
+static	void	compute_specular(t_color *final, t_hit *primary_hit, t_ray *shadow_ray, t_light	*light, t_cam *cam) 
+{
+	float	specular;
+	t_color light_col;
+
+	light_col = int_to_color(light->color);
+	specular = 0.0f;
+	t_vec3 R = v_sub(
+		v_scale(primary_hit->normal, 2 * v_dot(primary_hit->normal, shadow_ray->direction)),
+		shadow_ray->direction
+	);
+	R = v_normalize(R);
+	t_vec3 V = v_normalize(v_sub(cam->viewpoint, primary_hit->hit_point));
+	specular = powf(clampf(v_dot(R, V), 0, 1), 50);
+	t_color specular_col = {
+		light_col.r * specular * light->ratio,
+		light_col.g * specular * light->ratio,
+		light_col.b * specular * light->ratio
+	};
+	final->r += specular_col.r;
+	final->g += specular_col.g;
+	final->b += specular_col.b;
+}
+	
 
 static int	compute_lighting(t_hit *primary_hit, t_rt *info)
 {
 	t_ray	shadow_ray;
 	t_hit	shadow_hit;
+	t_color	final = {0, 0, 0};
 	float	light_dist;
 	bool	in_shadow;
 
@@ -130,18 +156,12 @@ static int	compute_lighting(t_hit *primary_hit, t_rt *info)
 	}
 	// Compute diffuse
 	float diffuse = 0.0f;
-	float specular = 0.0f;
 	if (!in_shadow)
 	{
 		diffuse = v_dot(primary_hit->normal, shadow_ray.direction);
 		diffuse = clampf(diffuse, 0, 1);
-		t_vec3 R = v_sub(
-			v_scale(primary_hit->normal, 2 * v_dot(primary_hit->normal, shadow_ray.direction)),
-			shadow_ray.direction
-		);
-		R = v_normalize(R);
-		t_vec3 V = v_normalize(v_sub(info->scene->cam->viewpoint, primary_hit->hit_point));
-		specular = powf(clampf(v_dot(R, V), 0, 1), 50);
+		// Specular
+		compute_specular(&final, primary_hit, &shadow_ray, &info->scene->lights[0], info->scene->cam);
 	}
 	// Ambient * object
 	t_color ambient_col = {
@@ -156,18 +176,10 @@ static int	compute_lighting(t_hit *primary_hit, t_rt *info)
 		obj_col.b * light_col.b / 255.0f * diffuse * info->scene->lights->ratio
 	};
 
-	t_color specular_col = {
-		light_col.r * specular * info->scene->lights->ratio,
-		light_col.g * specular * info->scene->lights->ratio,
-		light_col.b * specular * info->scene->lights->ratio
-	};
-
 	// Final color
-	t_color final = {
-		clamp(ambient_col.r + diffuse_col.r + specular_col.r, 0, 255),
-		clamp(ambient_col.g + diffuse_col.g + specular_col.g, 0, 255),
-		clamp(ambient_col.b + diffuse_col.b + specular_col.b, 0, 255)
-	};
+	final.r = clamp(final.r + ambient_col.r + diffuse_col.r, 0, 255);
+	final.g = clamp(final.g + ambient_col.g + diffuse_col.g, 0, 255);
+	final.b = clamp(final.b + ambient_col.b + diffuse_col.b, 0, 255);
 	return color_to_int(final);
 }
 
