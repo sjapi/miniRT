@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 12:45:57 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/13 12:13:29 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/13 20:19:30 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ long	current_time(void)
 }
 // ====================================
 
-static bool	in_range(float val, float min, float max)
+/* static bool	in_range(float val, float min, float max)
 {
 	return (val >= min && val <= max);
 }
@@ -105,7 +105,7 @@ bool	_test_hit(t_ray *ray, t_rt *info, t_hit *hit)
 		}
 	}
 	return (find);
-}
+} */
 
 static int	compute_lighting(t_hit *primary_hit, t_rt *info)
 {
@@ -114,6 +114,8 @@ static int	compute_lighting(t_hit *primary_hit, t_rt *info)
 	float	light_dist;
 	bool	in_shadow;
 
+	if (primary_hit->contour)
+			return 0xff0000;
 	t_color	amb_col = int_to_color(get_amb_color(info->scene->amb));
 	t_color obj_col = int_to_color(primary_hit->obj->color);
 	t_color light_col = int_to_color(info->scene->lights->color);
