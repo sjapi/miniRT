@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 12:45:57 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/11 22:21:34 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/13 12:13:29 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,9 +93,9 @@ bool	_test_hit(t_ray *ray, t_rt *info, t_hit *hit)
 		else if (obj->type == SPHERE)
 			t = intersect_sphere(ray, obj);
 		else if (obj->type == CYLINDER)
-			t = intersect_cylinder(ray, obj);
+			t = intersect_cylinder(ray, obj, NULL);
 		else if (obj->type == CONE)
-			t = intersect_cone(ray, obj);
+			t = intersect_cone(ray, obj, NULL);
 		if (t > 0 && t < closest)
 		{
 			find = true;
