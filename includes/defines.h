@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 16:54:19 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/12 13:37:00 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/13 21:15:25 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,9 @@
 # define PLANE  3
 # define CYLINDER 4
 # define CONE 5
+
+# define CHECKER_X_COUNT 8
+# define CHECKER_Y_COUNT 8
 
 # define HIT_SURFACE 2
 # define HIT_BOTTOM 0

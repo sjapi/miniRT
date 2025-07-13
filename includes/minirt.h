@@ -6,12 +6,14 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 16:16:38 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/11 21:51:13 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/13 20:35:07 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINIRT_H
 # define MINIRT_H
+
+#include <stdbool.h>
 
 typedef struct s_vec3
 {
@@ -26,6 +28,7 @@ typedef struct s_vec3
  * type 3 = plane
  *
  * p.s only sphere does not have norm vector (pl, cy, co have)
+ * added bool and visible, need to implement in future
  */
 typedef struct s_obj
 {
@@ -34,6 +37,8 @@ typedef struct s_obj
 	int			color;
 	t_vec3	norm_vector; // for plane??
 	float		*attrs;
+	bool		selected;
+	bool		visible;
 }	t_obj;
 
 /*
