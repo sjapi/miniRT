@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 12:45:57 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/13 20:19:30 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/13 22:05:12 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,8 +116,14 @@ static int	compute_lighting(t_hit *primary_hit, t_rt *info)
 
 	if (primary_hit->contour)
 			return 0xff0000;
-	t_color	amb_col = int_to_color(get_amb_color(info->scene->amb));
 	t_color obj_col = int_to_color(primary_hit->obj->color);
+	if (primary_hit->reverse)
+	{
+		obj_col.r = 255.0 - obj_col.r;
+		obj_col.g = 255.0 - obj_col.g;
+		obj_col.b = 255.0 - obj_col.b;
+	}
+	t_color	amb_col = int_to_color(get_amb_color(info->scene->amb));
 	t_color light_col = int_to_color(info->scene->lights->color);
 
 	shadow_ray.origin = v_add(primary_hit->hit_point, v_scale(primary_hit->normal, 1e-4));
@@ -178,7 +184,6 @@ void	render_scene(t_rt *info)
 	int		y;
 	int		x;
 	t_ray	ray;
-	t_hit	hit;
 	int		color;
 	long stop, start;
 
@@ -191,6 +196,9 @@ void	render_scene(t_rt *info)
 		while (x < WIN_WIDTH)
 		{
 			init_ray(&ray, info, x, y);
+			t_hit	hit;
+			hit.contour = false;
+			hit.reverse = false;
 			if (find_hit(&ray, info, &hit, false))
 			{
 				color = compute_lighting(&hit, info);

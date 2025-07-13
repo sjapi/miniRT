@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:56:16 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/12 13:57:15 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/13 21:48:13 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ static float intersect_base(t_ray *ray, t_obj *cyl, int base)
 	return -1.0f;
 }
 
-float	intersect_cylinder(t_ray *ray, t_obj *obj, char *side)
+float	intersect_cylinder(t_ray *ray, t_obj *obj, char *side, bool *reverse)
 {
 	float	surface;
 	float	top;
@@ -135,6 +135,15 @@ float	intersect_cylinder(t_ray *ray, t_obj *obj, char *side)
 	{
 		t = top;
 		*side = HIT_TOP;
+	}
+	*reverse = false;
+	if (t > 0)
+	{
+		t_vec3 hit_point = v_add(ray->origin, v_scale(ray->direction, t));
+		if (*side == HIT_SURFACE)
+			*reverse = cylinder_checkerboard(hit_point, obj, false);
+		else if (*side == HIT_TOP || *side == HIT_BOTTOM)
+			*reverse = cylinder_checkerboard(hit_point, obj, true);
 	}
 	return (t);
 }

@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:51:00 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/13 20:32:19 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/13 21:38:23 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct	s_ray
  * normal - ???
  * hit_object - hit object id
  * hit - hit or not
+ * reverse - for checkerboard
  */
 typedef struct	s_hit
 {
@@ -40,6 +41,7 @@ typedef struct	s_hit
 	t_obj		*obj;
 	char		side;
 	bool		contour;
+	bool		reverse;
 }	t_hit;
 
 /* render.c */
@@ -58,11 +60,14 @@ void	init_ray(t_ray *ray, t_rt *info, int x, int y);
 bool	find_hit(t_ray *ray, t_rt *info, t_hit *hit, bool shadow);
 
 float	intersect_plane(t_ray *ray, t_obj *plane);
-float 	intersect_sphere(t_ray *ray, t_obj *sphere);
-float	intersect_cylinder(t_ray *ray, t_obj *cylinder, char *side);
+float 	intersect_sphere(t_ray *ray, t_obj *sphere, bool *reverse);
+float	intersect_cylinder(t_ray *ray, t_obj *cylinder, char *side, bool *reverse);
 float	intersect_cone(t_ray *ray, t_obj *cone, char *side);
 
 t_vec3	get_cylinder_normal(t_obj *obj, t_vec3 hit_point, t_vec3 ray_dir, char side);
 t_vec3	get_cone_normal(t_obj *obj, t_vec3 hit_point, t_vec3 ray_dir, char side);
+
+bool	sphere_checkerboard(t_vec3 hit_point, t_obj *sphere);
+bool	cylinder_checkerboard(t_vec3 hit_point, t_obj *cyl, bool base);
 
 #endif
