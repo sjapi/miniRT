@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 10:52:17 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/13 22:15:14 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/14 16:17:11 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,14 @@ bool	find_hit(t_ray *ray, t_rt *info, t_hit *hit, bool shadow_hit)
     {
         t = -1.0f;
         obj = &info->scene->objs[i];
-
         if (obj->type == PLANE)
-            t = intersect_plane(ray, obj);
+            t = intersect_plane(ray, obj, &tmp_reverse);
         else if (obj->type == SPHERE)
             t = intersect_sphere(ray, obj, &tmp_reverse);
         else if (obj->type == CYLINDER)
             t = intersect_cylinder(ray, obj, &hit->side, &tmp_reverse);
         else if (obj->type == CONE)
-            t = intersect_cone(ray, obj, &hit->side);
+            t = intersect_cone(ray, obj, &hit->side, &tmp_reverse);
 
         if (t > 0 && t < closest)
         {

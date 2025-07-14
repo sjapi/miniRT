@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:51:00 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/13 21:38:23 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/14 16:09:04 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,15 +59,20 @@ void	init_ray(t_ray *ray, t_rt *info, int x, int y);
 /* hit.c */
 bool	find_hit(t_ray *ray, t_rt *info, t_hit *hit, bool shadow);
 
-float	intersect_plane(t_ray *ray, t_obj *plane);
+/* intersection */
+float	intersect_plane(t_ray *ray, t_obj *plane, bool *reverse);
 float 	intersect_sphere(t_ray *ray, t_obj *sphere, bool *reverse);
 float	intersect_cylinder(t_ray *ray, t_obj *cylinder, char *side, bool *reverse);
-float	intersect_cone(t_ray *ray, t_obj *cone, char *side);
+float	intersect_cone(t_ray *ray, t_obj *cone, char *side, bool *reverse);
 
+/* normal */
 t_vec3	get_cylinder_normal(t_obj *obj, t_vec3 hit_point, t_vec3 ray_dir, char side);
 t_vec3	get_cone_normal(t_obj *obj, t_vec3 hit_point, t_vec3 ray_dir, char side);
 
+/* checkerboard */
 bool	sphere_checkerboard(t_vec3 hit_point, t_obj *sphere);
 bool	cylinder_checkerboard(t_vec3 hit_point, t_obj *cyl, bool base);
+bool	plane_checkerboard(t_vec3 hit_point, t_obj *plane);
+bool	cone_checkerboard(t_vec3 hit_point, t_obj *cone, bool base);
 
 #endif

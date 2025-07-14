@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 10:54:16 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/09 20:54:13 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/14 15:55:04 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,11 @@
 #include "utils.h"
 #include <math.h>
 
-float	intersect_plane(t_ray *ray, t_obj *plane)
+float	intersect_plane(t_ray *ray, t_obj *plane, bool *reverse)
 {
 	float	denom;
 	float	t;
+	t_vec3	hit_point;
 
 	denom = v_dot(ray->direction, plane->norm_vector);
 	if (fabsf(denom) < 1e-6)
@@ -26,5 +27,7 @@ float	intersect_plane(t_ray *ray, t_obj *plane)
 	t = v_dot(v_sub(plane->center, ray->origin), plane->norm_vector) / denom;
 	if (t < 0)
 		return (-1);
+	hit_point = v_add(ray->origin, v_scale(ray->direction, t));
+	*reverse = plane_checkerboard(hit_point, plane);
 	return (t);
 }

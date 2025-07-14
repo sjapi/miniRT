@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 21:29:34 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/13 22:25:47 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/14 16:16:27 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,87 @@ bool cylinder_checkerboard(t_vec3 hit_point, t_obj *cyl, bool base)
 			height = 1;
 		cell_x_i = (int)(theta * CHECKER_X_COUNT);
 		cell_y_i = (int)(height * CHECKER_Y_COUNT);
+		return ((cell_x_i + cell_y_i) % 2 == 0);
+	}
+}
+
+bool	plane_checkerboard(t_vec3 hit_point, t_obj *plane)
+{
+	t_vec3	local;
+	t_vec3	ortog_x;
+	t_vec3	ortog_y;
+	float	u, v;
+	int		x, y;
+
+	local = v_sub(hit_point, plane->center);
+
+	ortog_x = v_cross((t_vec3){0.0f, 1.0f, 0.0f}, plane->norm_vector);
+	if (v_len(ortog_x) < 1e-3f)
+		ortog_x = v_cross((t_vec3){0.0f, 0.0f, 1.0f}, plane->norm_vector);
+	ortog_x = v_normalize(ortog_x);
+	ortog_y = v_normalize(v_cross(plane->norm_vector, ortog_x));
+
+	u = v_dot(local, ortog_x);
+	v = v_dot(local, ortog_y);
+	x = (int)floorf(u / CHECKER_CELL_SIZE);
+	y = (int)floorf(v / CHECKER_CELL_SIZE);
+	return ((x + y) % 2 == 0);
+}
+
+bool	cone_checkerboard(t_vec3 hit_point, t_obj *cone, bool base)
+{
+	t_vec3	axis;
+	t_vec3	diff;
+	t_vec3	tangent;
+	t_vec3	bitangent;
+	t_vec3	radial;
+	float	angle_rad;
+	float	radius_base;
+	float	u;
+	float	v;
+	float	h;
+	float	theta;
+	float	v_tex;
+	int		cell_x_i;
+	int		cell_y_i;
+
+	axis = cone->norm_vector;
+	angle_rad = cone->attrs[CONE_AR_I];
+	radius_base = tanf(angle_rad) * cone->attrs[CONE_H_I];
+	if (fabsf(axis.x) > 0.1f)
+		tangent = v_normalize(v_cross((t_vec3){0, 1, 0}, axis));
+	else
+		tangent = v_normalize(v_cross((t_vec3){1, 0, 0}, axis));
+	bitangent = v_cross(axis, tangent);
+	if (base)
+	{
+		diff = v_sub(hit_point, cone->center);
+		u = v_dot(diff, tangent);
+		v = v_dot(diff, bitangent);
+		theta = 0.5f + atan2f(v, u) / (2 * M_PI);
+		radial = (t_vec3){u, v, 0};
+		v_tex = v_len(radial) / radius_base;
+		if (v_tex > 1)
+			v_tex = 1;
+		cell_x_i = (int)(theta * CHECKER_X_COUNT);
+		cell_y_i = (int)(v_tex * 1);
+		return ((cell_x_i + cell_y_i) % 2 == 1);
+	}
+	else
+	{
+		diff = v_sub(hit_point, cone->center);
+		h = v_dot(diff, axis);
+		radial = v_sub(diff, v_scale(axis, h));
+		u = v_dot(radial, tangent);
+		v = v_dot(radial, bitangent);
+		theta = 0.5f + atan2f(v, u) / (2 * M_PI);
+		v_tex = (cone->attrs[CONE_H_I] - h) / cone->attrs[CONE_H_I];
+		if (v_tex < 0)
+			v_tex = 0;
+		if (v_tex > 1)
+			v_tex = 1;
+		cell_x_i = (int)(theta * CHECKER_X_COUNT);
+		cell_y_i = (int)(v_tex * CHECKER_Y_COUNT);
 		return ((cell_x_i + cell_y_i) % 2 == 0);
 	}
 }

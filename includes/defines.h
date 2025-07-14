@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 16:54:19 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/13 21:15:25 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/14 15:58:20 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@
 # define CYLINDER 4
 # define CONE 5
 
+# define CHECKER_CELL_SIZE 1.0
 # define CHECKER_X_COUNT 8
 # define CHECKER_Y_COUNT 8
 
