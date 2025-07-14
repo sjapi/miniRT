@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 18:36:01 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/12 11:53:18 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/14 18:41:00 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static t_optim	*alloc_optim(void)
 	return (optim);
 }
 
-static float	get_nx(int x, float aspect_ratio, float tan_fov)
+float	get_nx(int x, float aspect_ratio, float tan_fov)
 {
 	float	nx;
 
@@ -50,7 +50,7 @@ static float	get_nx(int x, float aspect_ratio, float tan_fov)
 	return (nx);
 }
 
-static float	get_ny(int y, float tan_fov)
+float	get_ny(int y, float tan_fov)
 {
 	float	ny;
 

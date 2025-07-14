@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:23:26 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/11 22:16:34 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/14 18:41:21 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,5 +54,8 @@ int			color_to_int(t_color color);
 /* other */
 int			clamp(int val, int min, int max);
 float		clampf(float val, float min, float max);
+
+float	get_nx(int x, float aspect_ratio, float tan_fov);
+float	get_ny(int y, float aspect_ratio);
 
 #endif
