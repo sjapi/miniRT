@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 12:45:57 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/13 22:05:12 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/14 15:22:37 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,6 @@ static	void	compute_specular(t_color *final, t_hit *primary_hit, t_ray *shadow_r
 	t_color light_col;
 
 	light_col = int_to_color(light->color);
-	specular = 0.0f;
 	t_vec3 R = v_sub(
 		v_scale(primary_hit->normal, 2 * v_dot(primary_hit->normal, shadow_ray->direction)),
 		shadow_ray->direction
@@ -132,6 +131,26 @@ static	void	compute_specular(t_color *final, t_hit *primary_hit, t_ray *shadow_r
 	final->b += specular_col.b;
 }
 
+static	void	compute_diffuse(t_color *final, t_hit *primary_hit, t_ray *shadow_ray, t_light	*light, t_color *obj_col) 
+{
+	t_color light_col;
+	float	diffuse;
+
+	light_col = int_to_color(light->color);
+	diffuse = v_dot(primary_hit->normal, shadow_ray->direction);
+	diffuse = clampf(diffuse, 0, 1);
+	// Diffuse * object * light
+	t_color diffuse_col = {
+		obj_col->r * light_col.r / 255.0f * diffuse * light->ratio,
+		obj_col->g * light_col.g / 255.0f * diffuse * light->ratio,
+		obj_col->b * light_col.b / 255.0f * diffuse * light->ratio
+	};
+	final->r += diffuse_col.r;
+	final->g += diffuse_col.g;
+	final->b += diffuse_col.b;
+}
+
+
 static int	compute_lighting(t_hit *primary_hit, t_rt *info)
 {
 	t_ray	shadow_ray;
@@ -140,8 +159,6 @@ static int	compute_lighting(t_hit *primary_hit, t_rt *info)
 	float	light_dist;
 	bool	in_shadow;
 
-	if (primary_hit->contour)
-			return 0xff0000;
 	t_color obj_col = int_to_color(primary_hit->obj->color);
 	if (primary_hit->reverse)
 	{
@@ -151,7 +168,6 @@ static int	compute_lighting(t_hit *primary_hit, t_rt *info)
 	}
 	t_color	amb_col = int_to_color(get_amb_color(info->scene->amb));
 	t_color light_col = int_to_color(info->scene->lights->color);
-
 	shadow_ray.origin = v_add(primary_hit->hit_point, v_scale(primary_hit->normal, 1e-4));
 	shadow_ray.direction = v_sub(info->scene->lights->point, primary_hit->hit_point);
 	shadow_ray.direction = v_normalize(shadow_ray.direction);
@@ -163,12 +179,9 @@ static int	compute_lighting(t_hit *primary_hit, t_rt *info)
 			in_shadow = true;
 	}
 	// Compute diffuse
-	float diffuse = 0.0f;
 	if (!in_shadow)
 	{
-		diffuse = v_dot(primary_hit->normal, shadow_ray.direction);
-		diffuse = clampf(diffuse, 0, 1);
-		// Specular
+		compute_diffuse(&final, primary_hit, &shadow_ray, &info->scene->lights[0], &obj_col);
 		compute_specular(&final, primary_hit, &shadow_ray, &info->scene->lights[0], info->scene->cam);
 	}
 	// Ambient * object
@@ -177,17 +190,11 @@ static int	compute_lighting(t_hit *primary_hit, t_rt *info)
 		obj_col.g * amb_col.g / 255.0f * info->scene->amb->ratio,
 		obj_col.b * amb_col.b / 255.0f * info->scene->amb->ratio
 	};
-	// Diffuse * object * light
-	t_color diffuse_col = {
-		obj_col.r * light_col.r / 255.0f * diffuse * info->scene->lights->ratio,
-		obj_col.g * light_col.g / 255.0f * diffuse * info->scene->lights->ratio,
-		obj_col.b * light_col.b / 255.0f * diffuse * info->scene->lights->ratio
-	};
 
 	// Final color
-	final.r = clamp(final.r + ambient_col.r + diffuse_col.r, 0, 255);
-	final.g = clamp(final.g + ambient_col.g + diffuse_col.g, 0, 255);
-	final.b = clamp(final.b + ambient_col.b + diffuse_col.b, 0, 255);
+	final.r = clamp(final.r + ambient_col.r, 0, 255);
+	final.g = clamp(final.g + ambient_col.g, 0, 255);
+	final.b = clamp(final.b + ambient_col.b, 0, 255);
 	return color_to_int(final);
 }
 

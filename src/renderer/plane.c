@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 10:54:16 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/14 15:55:04 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/14 16:30:39 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ float	intersect_plane(t_ray *ray, t_obj *plane, bool *reverse)
 	if (t < 0)
 		return (-1);
 	hit_point = v_add(ray->origin, v_scale(ray->direction, t));
-	*reverse = plane_checkerboard(hit_point, plane);
+	if (plane->checkerboard)
+		*reverse = plane_checkerboard(hit_point, plane);
 	return (t);
 }

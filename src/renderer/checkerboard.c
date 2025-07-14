@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 21:29:34 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/14 16:16:27 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/14 16:28:14 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ bool	sphere_checkerboard(t_vec3 hit_point, t_obj *sphere)
 	int		cell_x_i;
 	int		cell_y_i;
 
+	if (!sphere->checkerboard)
+		return (false);
 	normal = v_normalize(v_sub(hit_point, sphere->center));
 	longitude  = 0.5f + (atan2f(normal.z, normal.x) / (2 * M_PI));
 	latitude = 0.5f - (asinf(normal.y) / M_PI);
@@ -48,6 +50,7 @@ bool cylinder_checkerboard(t_vec3 hit_point, t_obj *cyl, bool base)
 	float	y_local;
 	int		cell_x_i;
 	int		cell_y_i;
+
 
 	axis = cyl->norm_vector;
 	diff = v_sub(hit_point, cyl->center);

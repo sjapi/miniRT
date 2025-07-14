@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:03:20 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/09 20:50:25 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/14 16:14:59 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,15 +68,15 @@ bool	is_correct_color(char *str)
 
 	commas = 0;
 	skip_spaces(&str);
-	while (*str && !is_whitespace(*str))
+	while (*str)
 	{
 		if (skip_integer(&str, &digits) == 0 || digits > 3)
 			return (false);
-		if (!*str || *str == '\n')
+		if (!*str || *str == '\n' || is_whitespace(*str))
 			break ;
 		if (*str == ',')
 			commas++;
-		else if (*str < 0 && *str > 9 && !is_whitespace(*str))
+		else if (!is_whitespace(*str))
 			return (false);
 		str++;
 	}
@@ -106,6 +106,16 @@ bool	is_correct_coordinate(char *str)
 	}
 	return (commas == 2);
 }
+
+bool	is_checkerboard(char *str)
+{
+	if (ft_strncmp("checkerboard", str, 12) != 0)
+		return (false);
+	if (str[12] && str[12] != '\n' && !is_whitespace(str[12]))
+		return (false);
+	return (true);	
+}
+
 // ================================================
 
 void	skip_spaces(char **str)
@@ -125,7 +135,7 @@ bool	skip_integer(char **str, int *digits)
 	return (*digits > 0);
 }
 
-void	skip_info(char **str)
+void	next_info(char **str)
 {
 	while (**str && !is_whitespace(**str))
 		(*str)++;
