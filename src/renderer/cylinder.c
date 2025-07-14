@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:56:16 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/13 21:48:13 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/14 16:24:47 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ static float intersect_surface(t_ray *ray, t_obj *cyl)
 				t = t2;
 		}
 	}
-
 	return t;
 }
 
@@ -137,7 +136,7 @@ float	intersect_cylinder(t_ray *ray, t_obj *obj, char *side, bool *reverse)
 		*side = HIT_TOP;
 	}
 	*reverse = false;
-	if (t > 0)
+	if (t > 0 && obj->checkerboard)
 	{
 		t_vec3 hit_point = v_add(ray->origin, v_scale(ray->direction, t));
 		if (*side == HIT_SURFACE)

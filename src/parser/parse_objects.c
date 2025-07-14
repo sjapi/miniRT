@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 20:21:58 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/12 11:40:23 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/14 16:19:57 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,31 @@
 #include "defines.h"
 #include "utils.h"
 
+
+void	parse_texture(char **obj_data, t_obj *obj)
+{
+	if (is_checkerboard(*obj_data))
+	{
+		next_info(obj_data);
+		obj->checkerboard = true;
+	}
+}
+
+
 bool	parse_plane(char *plane_data, t_obj *plane)
 {
 	plane->type = PLANE;
-	skip_info(&plane_data);
+	next_info(&plane_data);
 	if (!get_coordinates(plane_data, &plane->center))
 		return (free_obj(plane), print_err("Plane has invalid coordinates"));
-	skip_info(&plane_data);
+	next_info(&plane_data);
 	if (!get_orientation(plane_data, &plane->norm_vector))
 		return (free_obj(plane), print_err("Plane has invalid orientation"));
-	skip_info(&plane_data);
+	next_info(&plane_data);
 	if (!get_color(plane_data, &plane->color))
 		return (free_obj(plane), print_err("Plane has invalid color"));
-	skip_info(&plane_data);
+	next_info(&plane_data);
+	parse_texture(&plane_data, plane);
 	if (*plane_data && *plane_data != '\n')
 		return (free_obj(plane), print_err("Plane has invalid data"));
 	return (true);
@@ -40,16 +52,17 @@ bool	parse_sphere(char *sphere_data, t_obj *sphere)
 	sphere->attrs = malloc(sizeof(float) * SPHERE_ATTR_COUNT);
 	if (!sphere->attrs)
 		return (free_obj(sphere), print_err("Can't allocate memory"));	
-	skip_info(&sphere_data);
+	next_info(&sphere_data);
 	if (!get_coordinates(sphere_data, &sphere->center))
 		return (free_obj(sphere), print_err("Sphere has invalid coordinates"));
-	skip_info(&sphere_data);
+	next_info(&sphere_data);
 	if (!get_attribute(sphere_data, &sphere->attrs[SPHERE_D_I]))
 		return (free_obj(sphere), print_err("Sphere has invalid diameter"));
-	skip_info(&sphere_data);
+	next_info(&sphere_data);
 	if (!get_color(sphere_data, &sphere->color))
 		return (free_obj(sphere), print_err("Sphere has invalid color"));
-	skip_info(&sphere_data);
+	next_info(&sphere_data);
+	parse_texture(&sphere_data, sphere);
 	if (*sphere_data && *sphere_data != '\n')
 		return (free_obj(sphere), print_err("Sphere has invalid data"));
 	return (true);
@@ -61,22 +74,23 @@ bool	parse_cylinder(char *cylinder_data, t_obj *cylinder)
 	cylinder->attrs = malloc(sizeof(float) * CYLINDER_ATTR_COUNT);
 	if (!cylinder->attrs)
 		return (free_obj(cylinder), print_err("Can't allocate memory"));	
-	skip_info(&cylinder_data);
+	next_info(&cylinder_data);
 	if (!get_coordinates(cylinder_data, &cylinder->center))
 		return (free_obj(cylinder), print_err("Cylinder has invalid coordinates"));
-	skip_info(&cylinder_data);
+	next_info(&cylinder_data);
 	if (!get_orientation(cylinder_data, &cylinder->norm_vector))
 		return (free_obj(cylinder), print_err("Cylinder has invalid orientation"));
-	skip_info(&cylinder_data);
+	next_info(&cylinder_data);
 	if (!get_attribute(cylinder_data, &cylinder->attrs[CYLINDER_D_I]))
 		return (free_obj(cylinder), print_err("Cylinder has invalid diameter"));
-	skip_info(&cylinder_data);
+	next_info(&cylinder_data);
 	if (!get_attribute(cylinder_data, &cylinder->attrs[CYLINDER_H_I]))
 		return (free_obj(cylinder), print_err("Cylinder has invalid height"));
-	skip_info(&cylinder_data);
+	next_info(&cylinder_data);
 	if (!get_color(cylinder_data, &cylinder->color))
 		return (free_obj(cylinder), print_err("Cylinder has invalid color"));
-	skip_info(&cylinder_data);
+	next_info(&cylinder_data);
+	parse_texture(&cylinder_data, cylinder);
 	if (*cylinder_data && *cylinder_data != '\n')
 		return (free_obj(cylinder), print_err("Cylinder has invalid data"));
 	return (true);
@@ -92,22 +106,23 @@ bool	parse_cone(char *cone_data, t_obj *cone)
 	cone->attrs = malloc(sizeof(float) * CONE_ATTR_COUNT);
 	if (!cone->attrs)
 		return (free_obj(cone), print_err("Can't allocate memory"));	
-	skip_info(&cone_data);
+	next_info(&cone_data);
 	if (!get_coordinates(cone_data, &cone->center))
 		return (free_obj(cone), print_err("Cone has invalid coordinates"));
-	skip_info(&cone_data);
+	next_info(&cone_data);
 	if (!get_orientation(cone_data, &cone->norm_vector))
 		return (free_obj(cone), print_err("Cone has invalid orientation"));
-	skip_info(&cone_data);
+	next_info(&cone_data);
 	if (!get_attribute(cone_data, &cone->attrs[CONE_A_I]))
 		return (free_obj(cone), print_err("Cone has invalid angle"));
-	skip_info(&cone_data);
+	next_info(&cone_data);
 	if (!get_attribute(cone_data, &cone->attrs[CONE_H_I]))
 		return (free_obj(cone), print_err("Cone has invalid height"));
-	skip_info(&cone_data);
+	next_info(&cone_data);
 	if (!get_color(cone_data, &cone->color))
 		return (free_obj(cone), print_err("Cone has invalid color"));
-	skip_info(&cone_data);
+	next_info(&cone_data);
+	parse_texture(&cone_data, cone);
 	if (*cone_data && *cone_data != '\n')
 		return (free_obj(cone), print_err("Cone has invalid data"));
 	return (true);
@@ -121,6 +136,7 @@ bool	parse_obj(char *obj_data, t_scene *scene)
 	t_obj	*obj;
 
 	obj = malloc(sizeof(t_obj));
+	obj->checkerboard = false;
 	if (!obj)
 		return (print_err("Can't allocate memory"));
 	if (ft_strncmp(obj_data, "pl ", 3) == 0)

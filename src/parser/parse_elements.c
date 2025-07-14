@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:01:21 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/11 22:07:44 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/14 15:35:35 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@ bool	parse_ambient(char *light_data, t_scene *scene)
 	amb = malloc(sizeof(t_amb_light));
 	if (!amb)
 		return (print_err("Can't allocate memory"));
-	skip_info(&light_data);
+	next_info(&light_data);
 	if (!get_ratio(light_data, &amb->ratio))
 		return (free(amb), print_err("Ambient has invalid ratio"));
-	skip_info(&light_data);
+	next_info(&light_data);
 	if (!get_color(light_data, &amb->color))
 		return (free(amb), print_err("Ambient has invalid color"));
-	skip_info(&light_data);
+	next_info(&light_data);
 	if (*light_data && *light_data != '\n')
 		return (free(amb), print_err("Ambient has invalid data"));
 	scene->amb = amb;
@@ -43,16 +43,16 @@ bool	parse_light(char *light_data, t_scene *scene)
 	light = malloc(sizeof(t_light));
 	if (!light)
 		return (print_err("Can't allocate memory"));
-	skip_info(&light_data);
+	next_info(&light_data);
 	if (!get_coordinates(light_data, &light->point))
 		return (free(light), print_err("Light has invalid coordinates"));
-	skip_info(&light_data);
+	next_info(&light_data);
 	if (!get_ratio(light_data, &light->ratio))
 		return (free(light), print_err("Light has invalid ratio"));
-	skip_info(&light_data);
+	next_info(&light_data);
 	if (!get_color(light_data, &light->color))
 		return (free(light), print_err("Light has invalid color"));
-	skip_info(&light_data);
+	next_info(&light_data);
 	if (*light_data && *light_data != '\n')
 		return (free(light), print_err("Light has invalid data"));
 	scene->lights = light;
@@ -68,7 +68,7 @@ bool	parse_skybox(char *skybox_data, t_scene *scene)
 	skybox = malloc(sizeof(t_skybox));
 	if (!skybox)
 		return (print_err("Can't allocate memory"));
-	skip_info(&skybox_data);
+	next_info(&skybox_data);
 	if (!get_file_name(skybox_data, &skybox->file_name))
 		return (print_err("Skybox has invalid name"));
 	fd = open(skybox->file_name, O_RDONLY);
@@ -77,7 +77,7 @@ bool	parse_skybox(char *skybox_data, t_scene *scene)
 	fd = open(skybox->file_name, O_RDONLY);
 	if (fd == -1)
 		return (free(skybox->file_name), print_err("Skybox has invalid name"));
-	skip_info(&skybox_data);
+	next_info(&skybox_data);
 	printf("NAME: |%s|\n", skybox_data);
 	if (*skybox_data && *skybox_data != '\n')
 		return (free(skybox->file_name), print_err("Skybox has invalid data"));
@@ -92,16 +92,16 @@ bool	parse_camera(char *camera_data, t_scene *scene)
 	cam = malloc(sizeof(t_cam));
 	if (!cam)
 		return (print_err("Can't allocate memory"));
-	skip_info(&camera_data);
+	next_info(&camera_data);
 	if (!get_coordinates(camera_data, &cam->viewpoint))
 		return (free(cam), print_err("Camera has invalid coordinates"));
-	skip_info(&camera_data);
+	next_info(&camera_data);
 	if (!get_orientation(camera_data, &cam->orient_v))
 		return (free(cam), print_err("Camera has invalid orientation"));
-	skip_info(&camera_data);
+	next_info(&camera_data);
 	if (!get_fov(camera_data, &cam->fov))
 		return (free(cam), print_err("Camera has invalid fov"));
-	skip_info(&camera_data);
+	next_info(&camera_data);
 	if (*camera_data && *camera_data != '\n')
 		return (free(cam), print_err("Camera has invalid data"));
 	scene->cam = cam;
