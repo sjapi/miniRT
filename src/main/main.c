@@ -203,6 +203,29 @@ static int	handle_key_hooks(int key, void *param)
 	return (0);
 }
 
+int	handle_mouse_hook(int button, int x, int y, t_rt *info)
+{
+	t_ray	ray;
+	t_hit	hit;
+	float	tan_fov;
+	float	nx;
+	float	ny;
+
+	tan_fov = tanf(info->scene->cam->fov * 0.5f * M_PI / 180.0f);
+	nx = get_nx(x, info->win_aspect_ratio, tan_fov);
+	ny = get_ny(y, tan_fov);
+
+	ray.origin = info->scene->cam->viewpoint;
+	ray.direction = get_ray_dir(nx, ny, info->scene->cam);
+
+	if (find_hit(&ray, info, &hit, false))
+	{
+		info->scene->selected = hit.obj;
+		printf("obj found!\n");
+	}
+	return (0);
+}
+
 int	main(int argc, char **argv)
 {
 	t_rt	info;
@@ -215,6 +238,7 @@ int	main(int argc, char **argv)
 	render_scene(&info);
 	print_scene(info.scene);
 	mlx_hook(info.win, 2, 1L >> 0, handle_key_hooks, &info);
+	mlx_mouse_hook(info.win, handle_mouse_hook, &info);
 	mlx_hook(info.win, 17, 0, destroy, &info);
 	mlx_loop(info.mlx);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 16:16:38 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/14 15:32:28 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/14 17:54:22 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ typedef struct s_scene
 	t_light		*lights;
 	t_skybox	*skybox;
 	int			lights_count;
+	t_obj		*selected;
 }	t_scene;
 
 typedef struct	s_optim

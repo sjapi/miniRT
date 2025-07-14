@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 10:55:36 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/14 16:24:59 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/14 17:58:00 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ float	intersect_sphere(t_ray *ray, t_obj *sphere, bool *reverse)
 	else
 		return -1;
 	t_vec3 hit_point = v_add(ray->origin, v_scale(ray->direction, t));
-	if (sphere->checkerboard)
+	if (sphere->checkerboard || sphere->selected)
 		*reverse = sphere_checkerboard(hit_point, sphere);
 	return (t);
 }

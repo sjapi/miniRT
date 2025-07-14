@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 10:49:48 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/11 18:09:49 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/14 18:38:21 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "renderer.h"
 #include <math.h>
 
-static t_vec3	get_ray_dir(float nx, float ny, t_cam *cam)
+t_vec3	get_ray_dir(float nx, float ny, t_cam *cam)
 {
 	t_vec3	dir;
 

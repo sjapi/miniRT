@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:51:00 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/14 16:09:04 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/14 18:38:32 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ int		draw_skybox(t_rt *info, t_ray *ray);
 
 /* ray.c */
 void	init_ray(t_ray *ray, t_rt *info, int x, int y);
+
+t_vec3	get_ray_dir(float nx, float ny, t_cam *cam);
 
 /* hit.c */
 bool	find_hit(t_ray *ray, t_rt *info, t_hit *hit, bool shadow);
