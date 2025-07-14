@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 12:45:57 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/14 15:22:37 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/14 20:10:09 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,29 @@ static	void	compute_diffuse(t_color *final, t_hit *primary_hit, t_ray *shadow_ra
 }
 
 
+static	t_color	compute_object_color(t_hit *hit)
+{
+	float u, v;
+	int sx, sy;
+	char *pixel;
+	t_color col;
+
+	if (!hit->obj->texture)
+		return (int_to_color(hit->obj->color));
+	t_vec3 p = v_sub(hit->hit_point, hit->obj->center);
+	float radius = hit->obj->attrs[SPHERE_D_I];
+
+	u = 0.5 + atan2(p.z, p.x) / (2 * M_PI);
+	v = 0.5 - asin(p.y / radius) / M_PI;
+
+	sx = clamp((int)(u * hit->obj->texture->width), 0, hit->obj->texture->width - 1);
+	sy = clamp((int)(v * hit->obj->texture->height), 0, hit->obj->texture->height - 1);
+
+	pixel = hit->obj->texture->data + sy * hit->obj->texture->line_length + sx * (hit->obj->texture->bpp / 8);
+	int color_int = *(int *)pixel;
+	return int_to_color(color_int);
+}
+
 static int	compute_lighting(t_hit *primary_hit, t_rt *info)
 {
 	t_ray	shadow_ray;
@@ -159,7 +182,8 @@ static int	compute_lighting(t_hit *primary_hit, t_rt *info)
 	float	light_dist;
 	bool	in_shadow;
 
-	t_color obj_col = int_to_color(primary_hit->obj->color);
+	//t_color obj_col = int_to_color(primary_hit->obj->color);
+	t_color	obj_col = compute_object_color(primary_hit);
 	if (primary_hit->reverse)
 	{
 		obj_col.r = 255.0 - obj_col.r;

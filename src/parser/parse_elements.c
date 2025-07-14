@@ -6,11 +6,12 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:01:21 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/14 15:35:35 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/14 20:20:25 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <fcntl.h>
+#include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
@@ -62,10 +63,10 @@ bool	parse_light(char *light_data, t_scene *scene)
 
 bool	parse_skybox(char *skybox_data, t_scene *scene)
 {
-	t_skybox	*skybox;
+	t_texture	*skybox;
 	int	fd;
 
-	skybox = malloc(sizeof(t_skybox));
+	skybox = malloc(sizeof(t_texture));
 	if (!skybox)
 		return (print_err("Can't allocate memory"));
 	next_info(&skybox_data);
@@ -77,8 +78,8 @@ bool	parse_skybox(char *skybox_data, t_scene *scene)
 	fd = open(skybox->file_name, O_RDONLY);
 	if (fd == -1)
 		return (free(skybox->file_name), print_err("Skybox has invalid name"));
+	close(fd);
 	next_info(&skybox_data);
-	printf("NAME: |%s|\n", skybox_data);
 	if (*skybox_data && *skybox_data != '\n')
 		return (free(skybox->file_name), print_err("Skybox has invalid data"));
 	scene->skybox = skybox;

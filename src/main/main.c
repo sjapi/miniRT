@@ -145,6 +145,29 @@ static bool	init_info(t_rt *info, char *file_name)
 		&info->scene->skybox->line_length,
 		&info->scene->skybox->endian
 	);
+
+	// ===================  OBJ ========================
+	t_obj *obj = &info->scene->objs[3];
+	if (obj->type != SPHERE)
+		return (true);
+	obj->texture = malloc(sizeof(t_texture));
+	obj->texture->mlx = mlx_xpm_file_to_image(
+		info->mlx, "wood.xpm",
+		&obj->texture->width,
+		&obj->texture->height
+	);
+	if (!obj->texture->mlx)
+	{
+		printf("Failed to load texture\n");
+		exit(1);
+	}
+	obj->texture->data = mlx_get_data_addr(
+		obj->texture->mlx,
+		&obj->texture->bpp,
+		&obj->texture->line_length,
+		&obj->texture->endian
+	);
+	// =================================================
 	return (true);
 }
 

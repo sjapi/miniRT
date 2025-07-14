@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 16:16:38 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/14 17:54:22 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/14 20:06:35 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,18 @@ typedef struct s_vec3
 	float	y;
 	float	z;
 }	t_vec3;
+
+typedef struct s_texture
+{
+	char	*file_name;
+	void	*mlx;
+	char	*data;
+	int		width;
+	int		height;
+	int		bpp;
+	int		line_length;
+	int		endian;
+}	t_texture;
 
 /*
  * type 1 = square
@@ -40,6 +52,7 @@ typedef struct s_obj
 	bool		selected;
 	bool		checkerboard;
 	bool		visible;
+	t_texture	*texture;
 }	t_obj;
 
 /*
@@ -79,17 +92,6 @@ typedef struct s_light
 	int			color;
 }	t_light;
 
-typedef struct s_skybox
-{
-	char	*file_name;
-	void	*mlx;
-	char	*data;
-	int		width;
-	int		height;
-	int		bpp;
-	int		line_length;
-	int		endian;
-}	t_skybox;
 /*
  * need to figure out can be more than one light?
  * yep, can be, in bonus part (which we will do)
@@ -102,7 +104,7 @@ typedef struct s_scene
 	t_amb_light	*amb;
 	t_cam		*cam;
 	t_light		*lights;
-	t_skybox	*skybox;
+	t_texture	*skybox;
 	int			lights_count;
 	t_obj		*selected;
 }	t_scene;
