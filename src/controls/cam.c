@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 18:02:45 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/15 19:12:56 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/15 20:10:30 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,25 +16,31 @@
 #include <math.h>
 #include <stdbool.h>
 
-bool	translate_cam(t_cam *cam, int key)
+bool translate_cam(t_cam *cam, int key)
 {
+	t_vec3	forward;
+	t_vec3	right;
+	t_vec3	up;
 	float	val;
 
-	val = 0.4;
-	if (key == KEY_Q)
-		cam->viewpoint.x += val;
-	else if (key == KEY_A)
-		cam->viewpoint.x -= val;
-	else if (key == KEY_W)
-		cam->viewpoint.y += val;
+	val = 0.4f;
+	forward = v_normalize(cam->orient_v);
+	right = v_normalize(v_cross((t_vec3){0, 1, 0}, forward));
+	up = (t_vec3){0, 1, 0};
+	if (key == KEY_W)
+    cam->viewpoint = v_add(cam->viewpoint, v_scale(forward, val));
 	else if (key == KEY_S)
-		cam->viewpoint.y -= val;
-	else if (key == KEY_E)
-		cam->viewpoint.z += val;
+		cam->viewpoint = v_sub(cam->viewpoint, v_scale(forward, val));
+	else if (key == KEY_A)
+    	cam->viewpoint = v_sub(cam->viewpoint, v_scale(right, val));
 	else if (key == KEY_D)
-		cam->viewpoint.z -= val;
+    	cam->viewpoint = v_add(cam->viewpoint, v_scale(right, val));
+	else if (key == KEY_Q)
+    	cam->viewpoint = v_sub(cam->viewpoint, v_scale(up, val));
+	else if (key == KEY_E)
+    	cam->viewpoint = v_add(cam->viewpoint, v_scale(up, val));
 	else
-		return (false);
+    	return (false);
 	return (true);
 }
 

@@ -26,9 +26,8 @@
 ## Controls
 
 - `C` — Enter CAMERA MODE. If already in CAMERA MODE, switch back to RENDER MODE.
-  - `W` / `S` — Move forward / backward
-  - `A` / `D` — Move left / right
-  - `Q` / `E` — Move up / down
+  - `W` / `A` / `S` / `D` — You know :)
+  - `Q` / `E` — Move top / bottom
   - `H` / `L` — Yaw left / right
   - `J` / `K` — Pitch up / down
   - `+` / `-` — FOV increase / decrease
