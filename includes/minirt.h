@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 16:16:38 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/14 20:06:35 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/15 13:10:49 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct s_texture
  */
 typedef struct s_obj
 {
+	int			id;
 	char		type;
 	t_vec3	center;
 	int			color;

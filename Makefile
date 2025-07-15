@@ -13,7 +13,8 @@ PURPLE = \033[1;35m
 RESET = \033[0m
 
 MAIN = \
-	main.c optimization.c
+	main.c optimization.c \
+	selection.c
 
 PARSER = \
 	parser.c parser_utils.c parser_tools.c \

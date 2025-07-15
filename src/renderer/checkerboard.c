@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 21:29:34 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/14 16:28:14 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/15 13:40:25 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,19 @@ bool	sphere_checkerboard(t_vec3 hit_point, t_obj *sphere)
 	int		cell_x_i;
 	int		cell_y_i;
 
-	if (!sphere->checkerboard)
-		return (false);
 	normal = v_normalize(v_sub(hit_point, sphere->center));
 	longitude  = 0.5f + (atan2f(normal.z, normal.x) / (2 * M_PI));
 	latitude = 0.5f - (asinf(normal.y) / M_PI);
-	cell_x_i = (int)(longitude * CHECKER_X_COUNT);
-	cell_y_i = (int)(latitude * CHECKER_Y_COUNT);
+	if (sphere->selected)
+	{
+		cell_x_i = (int)(longitude * CHECKER_X_COUNT * 2);
+		cell_y_i = (int)(latitude * CHECKER_Y_COUNT * 2);
+	}
+	else
+	{
+		cell_x_i = (int)(longitude * CHECKER_X_COUNT);
+		cell_y_i = (int)(latitude * CHECKER_Y_COUNT);
+	}
 	return ((cell_x_i + cell_y_i) % 2 == 0);
 }
 
@@ -74,8 +80,16 @@ bool cylinder_checkerboard(t_vec3 hit_point, t_obj *cyl, bool base)
 		if (norm_rad > 1)
 			norm_rad = 1;
 		theta = 0.5f + (atan2f(y_local, x_local) / (2 * M_PI));
-		cell_x_i = (int)(theta * CHECKER_X_COUNT);
-		cell_y_i = (int)(norm_rad * 1);
+		if (cyl->selected)
+		{
+			cell_x_i = (int)(theta * CHECKER_X_COUNT * 2);
+			cell_y_i = (int)(norm_rad * 1);
+		}
+		else
+		{
+			cell_x_i = (int)(theta * CHECKER_X_COUNT);
+			cell_y_i = (int)(norm_rad * 1);
+		}
 		return ((cell_x_i + cell_y_i) % 2 == 1);
 	}
 	else
@@ -95,8 +109,16 @@ bool cylinder_checkerboard(t_vec3 hit_point, t_obj *cyl, bool base)
 			height = 0;
 		if (height > 1)
 			height = 1;
-		cell_x_i = (int)(theta * CHECKER_X_COUNT);
-		cell_y_i = (int)(height * CHECKER_Y_COUNT);
+		if (cyl->selected)
+		{
+			cell_x_i = (int)(theta * CHECKER_X_COUNT * 2);
+			cell_y_i = (int)(height * CHECKER_Y_COUNT * 2);
+		}
+		else
+		{
+			cell_x_i = (int)(theta * CHECKER_X_COUNT);
+			cell_y_i = (int)(height * CHECKER_Y_COUNT);
+		}
 		return ((cell_x_i + cell_y_i) % 2 == 0);
 	}
 }
@@ -119,8 +141,16 @@ bool	plane_checkerboard(t_vec3 hit_point, t_obj *plane)
 
 	u = v_dot(local, ortog_x);
 	v = v_dot(local, ortog_y);
-	x = (int)floorf(u / CHECKER_CELL_SIZE);
-	y = (int)floorf(v / CHECKER_CELL_SIZE);
+	if (plane->selected)
+	{
+		x = (int)floorf(u / (CHECKER_CELL_SIZE * 2));
+		y = (int)floorf(v / (CHECKER_CELL_SIZE * 2));
+	}
+	else
+	{
+		x = (int)floorf(u / CHECKER_CELL_SIZE);
+		y = (int)floorf(v / CHECKER_CELL_SIZE);
+	}
 	return ((x + y) % 2 == 0);
 }
 
@@ -159,8 +189,16 @@ bool	cone_checkerboard(t_vec3 hit_point, t_obj *cone, bool base)
 		v_tex = v_len(radial) / radius_base;
 		if (v_tex > 1)
 			v_tex = 1;
-		cell_x_i = (int)(theta * CHECKER_X_COUNT);
-		cell_y_i = (int)(v_tex * 1);
+		if (cone->selected)
+		{
+			cell_x_i = (int)(theta * CHECKER_X_COUNT * 2);
+			cell_y_i = (int)(v_tex * 1);
+		}
+		else
+		{
+			cell_x_i = (int)(theta * CHECKER_X_COUNT);
+			cell_y_i = (int)(v_tex * 1);
+		}
 		return ((cell_x_i + cell_y_i) % 2 == 1);
 	}
 	else
@@ -176,8 +214,16 @@ bool	cone_checkerboard(t_vec3 hit_point, t_obj *cone, bool base)
 			v_tex = 0;
 		if (v_tex > 1)
 			v_tex = 1;
-		cell_x_i = (int)(theta * CHECKER_X_COUNT);
-		cell_y_i = (int)(v_tex * CHECKER_Y_COUNT);
+		if (cone->selected)
+		{
+			cell_x_i = (int)(theta * CHECKER_X_COUNT * 2);
+			cell_y_i = (int)(v_tex * CHECKER_Y_COUNT * 2);
+		}
+		else
+		{
+			cell_x_i = (int)(theta * CHECKER_X_COUNT);
+			cell_y_i = (int)(v_tex * CHECKER_Y_COUNT);
+		}
 		return ((cell_x_i + cell_y_i) % 2 == 0);
 	}
 }

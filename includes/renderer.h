@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:51:00 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/14 18:38:32 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/15 13:17:11 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,9 @@ typedef struct	s_hit
 	bool		contour;
 	bool		reverse;
 }	t_hit;
+
+/* optimization */
+bool	init_optimization(t_rt *info);
 
 /* render.c */
 void	render_scene(t_rt *info);

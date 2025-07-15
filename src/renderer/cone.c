@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 14:34:24 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/14 16:30:26 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/15 13:32:05 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ float intersect_cone(t_ray *ray, t_obj *obj, char *side, bool *reverse)
 		t = base;
 		*side = HIT_BOTTOM;
 	}
-	if (t > 0 && obj->checkerboard)
+	if (t > 0 && (obj->checkerboard || obj->selected))
 	{
 		hit_point = v_add(ray->origin, v_scale(ray->direction, t));
 		*reverse = cone_checkerboard(hit_point, obj, *side == HIT_BOTTOM);

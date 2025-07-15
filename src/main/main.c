@@ -171,7 +171,6 @@ static bool	init_info(t_rt *info, char *file_name)
 	return (true);
 }
 
-bool	init_optimization(t_rt *info);
 
 static int	handle_key_hooks(int key, void *param)
 {
@@ -221,30 +220,41 @@ static int	handle_key_hooks(int key, void *param)
 		sinf(cam->pitch),
 		cosf(cam->pitch) * cosf(cam->yaw)
 	};
-	init_optimization(info);
 	render_scene(info);
 	return (0);
 }
 
+t_obj	*mouse_click_obj(int button, int x, int y, t_rt *info);
+
 int	handle_mouse_hook(int button, int x, int y, t_rt *info)
 {
-	t_ray	ray;
-	t_hit	hit;
-	float	tan_fov;
-	float	nx;
-	float	ny;
+	t_obj	*obj;
 
-	tan_fov = tanf(info->scene->cam->fov * 0.5f * M_PI / 180.0f);
-	nx = get_nx(x, info->win_aspect_ratio, tan_fov);
-	ny = get_ny(y, tan_fov);
-
-	ray.origin = info->scene->cam->viewpoint;
-	ray.direction = get_ray_dir(nx, ny, info->scene->cam);
-
-	if (find_hit(&ray, info, &hit, false))
+	obj = mouse_click_obj(button, x, y, info);
+	if (obj != NULL)
 	{
-		info->scene->selected = hit.obj;
-		printf("obj found!\n");
+		if (info->scene->selected != NULL)
+		{
+			if (info->scene->selected->id == obj->id)
+				return (0);
+			info->scene->selected->selected = false;
+			info->scene->selected = NULL;
+			printf("object deselected\n");
+		}
+		obj->selected = true;
+		info->scene->selected = obj;
+		printf("obj selected\n");
+		render_scene(info);
+	}
+	else
+	{
+		if (info->scene->selected != NULL)
+		{
+			info->scene->selected->selected = false;
+			info->scene->selected = NULL;
+			printf("object deselected\n");
+			render_scene(info);
+		}
 	}
 	return (0);
 }

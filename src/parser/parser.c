@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:01:55 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/11 22:17:32 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/15 13:12:35 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ bool	append_obj(t_scene *scene, t_obj *obj)
 	t_obj	*objs;
 	int	i;
 
+	obj->id = scene->objs_count;
 	objs = malloc(sizeof(t_obj) * (scene->objs_count + 1));
 	if (!objs)
 		return (false);

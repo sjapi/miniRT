@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 12:45:57 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/14 20:10:09 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/15 13:16:13 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,6 +230,7 @@ void	render_scene(t_rt *info)
 	int		color;
 	long stop, start;
 
+	init_optimization(info);
 	start = current_time();
 	ray.origin = info->scene->cam->viewpoint;
 	y = 0;
