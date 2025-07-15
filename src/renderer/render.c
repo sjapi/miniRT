@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 12:45:57 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/15 19:08:25 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/15 19:24:03 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -274,6 +274,7 @@ void	render_scene(t_rt *info)
 		}
 		y++;
 	}
+	draw_xyz_axis(info);
 	mlx_put_image_to_window(info->mlx, info->win, info->img, 0, 0);
 	stop = current_time();
 	printf("Time %ld\n", stop - start);

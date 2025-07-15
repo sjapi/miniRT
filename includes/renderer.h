@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:51:00 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/15 17:33:59 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/15 19:24:28 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ void	render_scene(t_rt *info);
 
 /* draw.c */
 void	img_put_pixel_safe(t_rt *info, int x, int y, int color);
+void	img_draw_line(t_rt *info, t_vec3 a, t_vec3 b, int color);
+void	draw_xyz_axis(t_rt *info);
 
 /* skybox.c */
 int		draw_skybox(t_rt *info, t_ray *ray);

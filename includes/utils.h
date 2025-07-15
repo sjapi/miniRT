@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:23:26 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/14 18:41:21 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/15 19:21:24 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ float	ft_atof(char *str);
 void	*ft_memcpy(void *dest, const void *src, size_t n);
 void	*ft_bzero(void *s, size_t n);
 void	*ft_calloc(size_t count, size_t size);
+int		ft_abs(int n);
 
 /* miniRT related */
 int			get_amb_color(t_amb_light *amb);

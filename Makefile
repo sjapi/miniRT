@@ -22,7 +22,7 @@ PARSER = \
 UTILS = \
 	vector.c ambient.c ft_atof.c ft_atoi.c \
 	ft_memcpy.c color.c clamp.c ft_calloc.c \
-	ft_bzero.c
+	ft_bzero.c ft_abs.c
 
 UTILS_STRING = \
 	ft_strlen.c ft_strcmp.c
@@ -31,7 +31,7 @@ GNL = \
 	get_next_line.c get_next_line_utils.c
 
 RENDERER = \
-	render.c draw.c ray.c \
+	render.c img.c ray.c \
 	hit.c plane.c sphere.c \
 	cylinder.c cone.c skybox.c \
 	checkerboard.c info.c
