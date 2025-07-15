@@ -25,10 +25,26 @@
 
 ## Controls
 
-- **hjkl** — move camera left/down/up/right
-- **wasd** — move camera forward/backward/left/right
-- **- / +** — decrease/increase field of view
-- **esc** — exit program
+- `C` — Enter CAMERA MODE. If already in CAMERA MODE, switch back to RENDER MODE.
+  - `W` / `S` — Move forward / backward
+  - `A` / `D` — Move left / right
+  - `Q` / `E` — Move up / down
+  - `H` / `L` — Yaw left / right
+  - `J` / `K` — Pitch up / down
+  - `+` / `-` — FOV increase / decrease
+
+- `R` — Enter RENDER MODE. If in OBJECT MODE, deselects the selected object.
+
+- To enter OBJECT MODE click on object with mouse
+  - `W` — Move along +Y
+  - `S` — Move along -Y
+  - `A` — Move along +X
+  - `Q` — Move along -X
+  - `E` — Move along +Z
+  - `D` — Move along -Z
+  - `X` — Rotate around X axis
+  - `Y` — Rotate around Y axis
+  - `Z` — Rotate around Z axis
 
 ---
 
