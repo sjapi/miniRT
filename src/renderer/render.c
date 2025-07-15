@@ -3,9 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/09 12:45:57 by 032zolotarev      #+#    #+#             */
+/*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */ /*                                                +#+#+#+#+#+   +#+           */ /*   Created: 2025/07/09 12:45:57 by 032zolotarev      #+#    #+#             */
 /*   Updated: 2025/07/15 19:24:03 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -177,31 +175,19 @@ void	render_scene(t_rt *info)
 	t_ray	ray;
 	t_hit	hit;
 	int		color;
+	int		step;
 	long stop, start;
 
 	init_optimization(info);
 	start = current_time();
 	ray.origin = info->scene->cam->viewpoint;
+	step = (info->mode != RENDER_MODE) + 1;
 	y = 0;
 	while (y < WIN_HEIGHT)
 	{
 		x = 0;
-		/*
-		if (y % 2 == 0)
-		{
-			y++;
-			continue ;
-		}
-		*/
 		while (x < WIN_WIDTH)
 		{
-			/*
-			if (x % 2 == 0)
-			{
-				x++;
-				continue ;
-			}
-			*/
 			init_ray(&ray, info, x, y);
 			hit.contour = false;
 			hit.reverse = false;
@@ -216,11 +202,17 @@ void	render_scene(t_rt *info)
 					color = draw_skybox(info, &ray);
 				else
 					color = info->scene->amb->color * info->scene->amb->ratio;
-				img_put_pixel_safe(info, x, y, color);
 			}
-			x++;
+			img_put_pixel_safe(info, x, y, color);
+			if (step != 1)
+			{
+				img_put_pixel_safe(info, x + 1, y, color);
+				img_put_pixel_safe(info, x, y + 1, color);
+				img_put_pixel_safe(info, x + 1, y + 1, color);
+			}
+			x += step;
 		}
-		y++;
+		y += step;
 	}
 	draw_xyz_axis(info);
 	mlx_put_image_to_window(info->mlx, info->win, info->img, 0, 0);

@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:00:29 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/14 15:45:11 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/15 21:43:17 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ bool	is_correct_color(char *str);
 bool	is_int(char *num);
 bool	is_float(char *num);
 bool	is_checkerboard(char *str);
+bool	is_mirror(char *str);
 
 void	next_info(char **data);
 void	skip_spaces(char **str);

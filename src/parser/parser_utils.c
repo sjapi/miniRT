@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:03:20 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/14 16:14:59 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/15 21:43:00 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ bool	is_checkerboard(char *str)
 		return (false);
 	return (true);	
 }
+
 bool	is_mirror(char *str)
 {
 	if (ft_strncmp("mirror", str, 6) != 0)
