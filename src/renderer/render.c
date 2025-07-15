@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 12:45:57 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/15 19:24:03 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/15 20:35:31 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,86 +27,6 @@ long	current_time(void)
 	gettimeofday(&tv, NULL);
 	return ((tv.tv_sec * 1000L) + (tv.tv_usec / 1000));
 }
-
-/* static bool	in_range(float val, float min, float max)
-{
-	return (val >= min && val <= max);
-}
-
-bool	is_hitable(t_vec3 tmp, t_vec3 obj, t_vec3 light)
-{
-	float	p1[3];
-	float	p2[3];
-	float	p3[3];
-	int	a = 0;
-
-	p1[0] = tmp.x;	
-	p1[1] = tmp.y;	
-	p1[2] = tmp.z;	
-
-	p2[0] = light.x;	
-	p2[1] = light.y;	
-	p2[2] = light.z;	
-	
-	p3[0] = obj.x;	
-	p3[1] = obj.y;	
-	p3[2] = obj.z;
-	
-	//printf("%f %f %f\n%f %f %f\n%f %f %f\n", p1[0], p1[1], p1[2], p3[0], p3[1], p3[2], p2[0], p2[1], p2[2]); 
-	// For X
-	if (p1[0] > p2[0] && in_range(p3[0], p2[0], p1[0]))
-			a++;
-	else if (p1[0] < p2[0] && in_range(p3[0], p1[0], p2[0]))
-			a++;
-	// For y
-	if (p1[1] > p2[1] && in_range(p3[1], p2[1], p1[1]))
-			a++;
-	else if (p1[1] < p2[1] && in_range(p3[1], p1[1], p2[1]))
-			a++;
-	// For z
-	if (p1[2] > p2[2] && in_range(p3[2], p2[2], p1[2]))
-			a++;
-	else if (p1[2] < p2[2] && in_range(p3[2], p1[2], p2[2]))
-			a++;
-	//printf("%d\n", a);
-	return (a == 3);
-}
-
-bool	_test_hit(t_ray *ray, t_rt *info, t_hit *hit)
-{
-	int		i;
-	float	t;
-	float	closest = 270000;
-	t_obj	*obj;
-	bool	find = false;
-
-	i = -1;
-	while (++i < info->scene->objs_count)
-	{
-		t = -1;
-		obj = &info->scene->objs[i];
-		if (!is_hitable(ray->origin, info->scene->lights->point, obj->center))
-			continue ;
-		if (obj->type == PLANE)
-			t = intersect_plane(ray, obj);
-		else if (obj->type == SPHERE)
-			t = intersect_sphere(ray, obj);
-		else if (obj->type == CYLINDER)
-			t = intersect_cylinder(ray, obj, NULL);
-		else if (obj->type == CONE)
-			t = intersect_cone(ray, obj, NULL);
-		if (t > 0 && t < closest)
-		{
-			find = true;
-			hit->t = t;
-			closest = t;
-			hit->hit_point = v_add(ray->origin, v_scale(ray->direction, t));
-		}
-	}
-	return (find);
-}
-// ====================================
-*/
 
 static	void	compute_specular(t_color *final, t_hit *primary_hit, t_ray *shadow_ray, t_light	*light, t_cam *cam) 
 {
@@ -229,31 +149,19 @@ void	render_scene(t_rt *info)
 	t_ray	ray;
 	t_hit	hit;
 	int		color;
+	int		step;
 	long stop, start;
 
 	init_optimization(info);
 	start = current_time();
 	ray.origin = info->scene->cam->viewpoint;
 	y = 0;
+	step = (info->mode != RENDER_MODE) + 1;
 	while (y < WIN_HEIGHT)
 	{
 		x = 0;
-		/*
-		if (y % 2 == 0)
-		{
-			y++;
-			continue ;
-		}
-		*/
 		while (x < WIN_WIDTH)
 		{
-			/*
-			if (x % 2 == 0)
-			{
-				x++;
-				continue ;
-			}
-			*/
 			init_ray(&ray, info, x, y);
 			hit.contour = false;
 			hit.reverse = false;
@@ -268,11 +176,19 @@ void	render_scene(t_rt *info)
 					color = draw_skybox(info, &ray);
 				else
 					color = info->scene->amb->color * info->scene->amb->ratio;
-				img_put_pixel_safe(info, x, y, color);
 			}
-			x++;
+			if (step != 1)
+			{
+				img_put_pixel_safe(info, x, y, color);
+				img_put_pixel_safe(info, x + 1, y, color);
+				img_put_pixel_safe(info, x, y + 1, color);
+				img_put_pixel_safe(info, x + 1, y + 1, color);
+			}
+			else
+				img_put_pixel_safe(info, x, y, color);
+			x += step;
 		}
-		y++;
+		y += step;
 	}
 	draw_xyz_axis(info);
 	mlx_put_image_to_window(info->mlx, info->win, info->img, 0, 0);
