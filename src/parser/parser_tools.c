@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:05:46 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/11 22:24:40 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/15 16:55:33 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ bool	get_file_name(char *obj_data, char **name)
 		obj_data++;
 		size--;
 	}
+	// TODO: check for .xpm
 	return (true);
 }
 

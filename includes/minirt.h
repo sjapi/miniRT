@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 16:16:38 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/14 20:06:35 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/15 16:05:15 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct s_obj
 	int			color;
 	t_vec3	norm_vector; // for plane??
 	float		*attrs;
+	float		bounding_r;
 	bool		selected;
 	bool		checkerboard;
 	bool		visible;

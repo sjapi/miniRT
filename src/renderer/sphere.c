@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 10:55:36 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/14 17:58:00 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/15 14:31:17 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ float	intersect_sphere(t_ray *ray, t_obj *sphere, bool *reverse)
 	float radius = sphere->attrs[SPHERE_R_I];
 	t_vec3 oc = v_sub(ray->origin, sphere->center);
 
-	float a = v_dot(ray->direction, ray->direction);
+	float a = 1.0f; //v_dot(ray->direction, ray->direction);
 	float b = 2.0f * v_dot(oc, ray->direction);
 	float c = v_dot(oc, oc) - radius * radius;
 
