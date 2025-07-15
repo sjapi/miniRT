@@ -6,24 +6,43 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 20:21:58 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/14 20:20:06 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/15 16:47:03 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include <unistd.h>
 #include <stdio.h>
+#include <math.h>
+#include <fcntl.h>
 #include "parser.h"
 #include "defines.h"
 #include "utils.h"
 
 
-void	parse_texture(char **obj_data, t_obj *obj)
-{
+bool	parse_texture(char **obj_data, t_obj *obj)
+{	
+	char	*file_name;
+	int		fd;
+
+	if (!**obj_data || **obj_data == '\n')
+		return (true);	
 	if (is_checkerboard(*obj_data))
 	{
 		next_info(obj_data);
 		obj->checkerboard = true;
+		return (true);
 	}
+	if (!get_file_name(*obj_data, &file_name))
+		return (print_err("Invalid file name"));
+	fd = open(file_name, O_RDONLY);
+	if (fd == -1)
+		return (print_err("File not exists or premission error"));
+	close(fd);
+	next_info(obj_data);
+	obj->texture = malloc(sizeof(t_texture));
+	obj->texture->file_name = file_name;
+	return (true);
 }
 
 
@@ -135,8 +154,7 @@ bool	parse_obj(char *obj_data, t_scene *scene)
 {
 	t_obj	*obj;
 
-	obj = malloc(sizeof(t_obj));
-	obj->checkerboard = false;
+	obj = ft_calloc(sizeof(t_obj), 1);
 	if (!obj)
 		return (print_err("Can't allocate memory"));
 	if (ft_strncmp(obj_data, "pl ", 3) == 0)
@@ -153,6 +171,7 @@ bool	parse_obj(char *obj_data, t_scene *scene)
 	{
 		if (!parse_cylinder(obj_data, obj))
 			return (false);
+		obj->bounding_r = sqrt(pow(obj->attrs[CYLINDER_H_I], 2) + pow(obj->attrs[CYLINDER_D_I], 2));
 	}
 	else if (ft_strncmp(obj_data, "co ", 3) == 0)
 	{

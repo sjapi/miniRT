@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 12:45:57 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/15 17:34:23 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/15 19:08:25 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,6 +227,7 @@ void	render_scene(t_rt *info)
 	int		y;
 	int		x;
 	t_ray	ray;
+	t_hit	hit;
 	int		color;
 	long stop, start;
 
@@ -237,10 +238,23 @@ void	render_scene(t_rt *info)
 	while (y < WIN_HEIGHT)
 	{
 		x = 0;
+		/*
+		if (y % 2 == 0)
+		{
+			y++;
+			continue ;
+		}
+		*/
 		while (x < WIN_WIDTH)
 		{
+			/*
+			if (x % 2 == 0)
+			{
+				x++;
+				continue ;
+			}
+			*/
 			init_ray(&ray, info, x, y);
-			t_hit	hit;
 			hit.contour = false;
 			hit.reverse = false;
 			if (find_hit(&ray, info, &hit, false))
