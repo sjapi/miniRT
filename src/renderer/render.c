@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 12:45:57 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/15 13:16:13 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/15 17:34:23 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -263,4 +263,5 @@ void	render_scene(t_rt *info)
 	mlx_put_image_to_window(info->mlx, info->win, info->img, 0, 0);
 	stop = current_time();
 	printf("Time %ld\n", stop - start);
+	draw_info(info);
 }

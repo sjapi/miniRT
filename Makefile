@@ -14,7 +14,6 @@ RESET = \033[0m
 
 MAIN = \
 	main.c optimization.c \
-	selection.c
 
 PARSER = \
 	parser.c parser_utils.c parser_tools.c \
@@ -35,7 +34,11 @@ RENDERER = \
 	render.c draw.c ray.c \
 	hit.c plane.c sphere.c \
 	cylinder.c cone.c skybox.c \
-	checkerboard.c
+	checkerboard.c info.c
+
+CONTROLS = \
+	mouse.c keys.c obj.c \
+	cam.c
 
 SRCS = \
 	$(addprefix $(SRCS_DIR)main/, $(MAIN)) \
@@ -43,7 +46,8 @@ SRCS = \
 	$(addprefix $(SRCS_DIR)parser/, $(PARSER)) \
 	$(addprefix $(SRCS_DIR)utils/string/, $(UTILS_STRING)) \
 	$(addprefix $(SRCS_DIR)renderer/, $(RENDERER)) \
-	$(addprefix $(SRCS_DIR)utils/, $(UTILS))
+	$(addprefix $(SRCS_DIR)utils/, $(UTILS)) \
+	$(addprefix $(SRCS_DIR)controls/, $(CONTROLS))
 
 OBJS = $(patsubst $(SRCS_DIR)%.c, $(OBJS_DIR)%.o, $(SRCS))
 

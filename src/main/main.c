@@ -12,14 +12,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <math.h>
+#include "mlx.h"
 #include "minirt.h"
 #include "parser.h"
 #include "defines.h"
 #include "renderer.h"
 #include "utils.h"
-#include "mlx.h"
-#include <math.h>
-
+#include "controls.h"
 // ========================================================================
 
 void print_point(t_vec3 p)
@@ -100,11 +100,8 @@ static void	init_helpers(t_rt *info)
 }
 
 /* MacOS does not have mlx_destoy_display func */
-static int	destroy(void *param)
+static int	destroy(t_rt *info)
 {
-	t_rt	*info;
-	
-	info = (t_rt *)param;
 	mlx_destroy_image(info->mlx, info->img);
 	mlx_destroy_window(info->mlx, info->win);
 #ifdef __linux__
@@ -122,6 +119,7 @@ static bool	init_info(t_rt *info, char *file_name)
 	if (!info->scene)
 		return (false);
 	init_helpers(info);
+	info->mode = RENDER_MODE;
 	info->mlx = mlx_init();
 	info->win = mlx_new_window(info->mlx, WIN_WIDTH, WIN_HEIGHT, "miniRT");
 	info->img = mlx_new_image(info->mlx, WIN_WIDTH, WIN_HEIGHT);
@@ -171,56 +169,26 @@ static bool	init_info(t_rt *info, char *file_name)
 	return (true);
 }
 
-
-static int	handle_key_hooks(int key, void *param)
+static int	handle_key_hooks(int key, t_rt *info)
 {
-	t_rt	*info;
 	t_cam	*cam;
+	bool	render;
 	
-	info = (t_rt *)param;
 	cam = info->scene->cam;
-	printf("Key [%d] pressed.\n", key);
 	if (key == KEY_ESC)
-		destroy(param);
-	if (key == KEY_W)
-	{
-		t_vec3 forward = cam->orient_v;
-		cam->viewpoint = v_add(cam->viewpoint, v_scale(forward, 0.7));
-	}
-	if (key == KEY_S)
-	{
-		t_vec3 forward = cam->orient_v;
-		cam->viewpoint = v_sub(cam->viewpoint, v_scale(forward, 0.7));
-	}
-	if (key == KEY_A)
-	{
-		t_vec3 right = v_normalize(v_cross((t_vec3){0,1,0}, cam->orient_v));
-		cam->viewpoint = v_sub(cam->viewpoint, v_scale(right, 0.7));
-	}
-	if (key == KEY_D)
-	{
-		t_vec3 right = v_normalize(v_cross((t_vec3){0,1,0}, cam->orient_v));
-		cam->viewpoint = v_add(cam->viewpoint, v_scale(right, 0.7));
-	}
-	if (key == KEY_H)
-		cam->yaw -= 0.1;
-	if (key == KEY_L)
-		cam->yaw += 0.1;
-	if (key == KEY_J)
-		cam->pitch += 0.1;
-	if (key == KEY_K)
-		cam->pitch -= 0.1;
-	if (key == KEY_MINUS)
-		cam->fov = clamp(cam->fov - 1, 1, 179);
-	if (key == KEY_PLUS)
-		cam->fov = clamp(cam->fov + 1, 1, 179);
-	cam->pitch = clampf(cam->pitch, -1.55, 1.55);
-	cam->orient_v = (t_vec3){
-		cosf(cam->pitch) * sinf(cam->yaw),
-		sinf(cam->pitch),
-		cosf(cam->pitch) * cosf(cam->yaw)
-	};
-	render_scene(info);
+		return (destroy(info), 0);
+	else if (key == KEY_Q || key == KEY_W || key == KEY_E || key == KEY_S || key == KEY_A || key == KEY_D)
+		render = handle_qweasd(key, info);
+	else if (key == KEY_H || key == KEY_J || key == KEY_K || key == KEY_L)
+		render = handle_hjkl(key, info);
+	else if (key == KEY_MINUS || key == KEY_PLUS)
+		render = handle_plus_minus(key, info);
+	else if (key == KEY_X || key == KEY_Y || key == KEY_Z)
+		render = handle_xyz(key, info);
+	else
+		render = handle_other_keys(key, info);
+	if (render)
+		render_scene(info);
 	return (0);
 }
 
@@ -244,7 +212,8 @@ int	handle_mouse_hook(int button, int x, int y, t_rt *info)
 		obj->selected = true;
 		info->scene->selected = obj;
 		printf("obj selected\n");
-		render_scene(info);
+		if (info->mode != OBJECT_MODE)
+			info->mode = OBJECT_MODE;
 	}
 	else
 	{
@@ -253,9 +222,10 @@ int	handle_mouse_hook(int button, int x, int y, t_rt *info)
 			info->scene->selected->selected = false;
 			info->scene->selected = NULL;
 			printf("object deselected\n");
-			render_scene(info);
+			info->mode = RENDER_MODE;
 		}
 	}
+	render_scene(info);
 	return (0);
 }
 

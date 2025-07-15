@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:51:00 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/15 13:17:11 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/15 17:33:59 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,5 +79,8 @@ bool	sphere_checkerboard(t_vec3 hit_point, t_obj *sphere);
 bool	cylinder_checkerboard(t_vec3 hit_point, t_obj *cyl, bool base);
 bool	plane_checkerboard(t_vec3 hit_point, t_obj *plane);
 bool	cone_checkerboard(t_vec3 hit_point, t_obj *cone, bool base);
+
+/* info */
+void	draw_info(t_rt *info);
 
 #endif
