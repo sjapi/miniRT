@@ -19,7 +19,6 @@
 #include "defines.h"
 #include "utils.h"
 
-
 bool	parse_texture(char **obj_data, t_obj *obj)
 {	
 	char	*file_name;
@@ -179,6 +178,13 @@ bool	parse_obj(char *obj_data, t_scene *scene)
 		if (!parse_cone(obj_data, obj))
 			return (false);
 	}
+	/*
+	else if (ft_strncmp(obj_data, "model ", 6) == 0)
+	{
+		if (!parse_model(obj_data, obj))
+			return (false);
+	}
+	*/
 	else
 		return (true); // TODO: unkown type	
 	return (append_obj(scene, obj));

@@ -22,6 +22,7 @@ typedef struct s_vec3
 	float	z;
 }	t_vec3;
 
+
 typedef struct s_texture
 {
 	char	*file_name;
@@ -33,6 +34,15 @@ typedef struct s_texture
 	int		line_length;
 	int		endian;
 }	t_texture;
+
+typedef struct	s_mesh
+{
+	char	*file_name;
+	int	size;
+	int	*triangles;
+	float	*points;
+}	t_mesh;
+
 
 /*
  * type 1 = square
@@ -56,6 +66,7 @@ typedef struct s_obj
 	bool		mirror;
 	bool		visible;
 	t_texture	*texture;
+	t_mesh		*mesh;
 }	t_obj;
 
 /*

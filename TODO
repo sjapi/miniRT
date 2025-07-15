@@ -1,5 +1,8 @@
 H
 1) Error message for not existing file
+2) change file_name -> source
+3) Write free functions for scene
+4) Check does there is objects in scene
 
 
 =================================================
