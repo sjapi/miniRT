@@ -27,6 +27,9 @@ long	current_time(void)
 }
 // ====================================
 
+static int      compute_lighting(t_hit *primary_hit, t_rt *infoi);
+
+
 static	void	compute_specular(t_color *final, t_hit *primary_hit, t_ray *shadow_ray, t_light	*light, t_cam *cam) 
 {
 	float	specular;
@@ -114,7 +117,8 @@ static	int	compute_mirror(t_hit *primary_hit, t_rt *info)
 	mirror_ray.origin = v_add(primary_hit->hit_point, v_scale(primary_hit->normal, 1e-4));
 	mirror_ray.direction = primary_hit->normal;
 	if (find_hit(&mirror_ray, info, &mirror_hit, false))
-		return (mirror_hit.obj->color);
+		return (compute_lighting(&mirror_hit, info));
+		//return (mirror_hit.obj->color);
 	return (draw_skybox(info, &mirror_ray));
 
 }
