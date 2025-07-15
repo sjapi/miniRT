@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 12:45:57 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/15 20:35:31 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/15 19:24:03 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ long	current_time(void)
 	gettimeofday(&tv, NULL);
 	return ((tv.tv_sec * 1000L) + (tv.tv_usec / 1000));
 }
+// ====================================
 
 static	void	compute_specular(t_color *final, t_hit *primary_hit, t_ray *shadow_ray, t_light	*light, t_cam *cam) 
 {
@@ -94,6 +95,33 @@ static	t_color	compute_object_color(t_hit *hit)
 	return int_to_color(color_int);
 }
 
+int decrease_color(int color, int amount)
+{
+    int r = (color >> 16) & 0xFF;
+    int g = (color >> 8) & 0xFF;
+    int b = color & 0xFF;
+
+    r = (r > amount) ? r - amount : 0;
+    g = (g > amount) ? g - amount : 0;
+    b = (b > amount) ? b - amount : 0;
+
+    return (r << 16) | (g << 8) | b;
+}
+
+static	int	compute_mirror(t_hit *primary_hit, t_rt *info)
+{
+	t_ray	mirror_ray;
+	t_hit	mirror_hit;
+
+	mirror_ray.origin = v_add(primary_hit->hit_point, v_scale(primary_hit->normal, 1e-4));
+	mirror_ray.direction = primary_hit->normal;
+	if (find_hit(&mirror_ray, info, &mirror_hit, false))
+		return (mirror_hit.obj->color);
+	return (draw_skybox(info, &mirror_ray));
+
+}
+
+
 static int	compute_lighting(t_hit *primary_hit, t_rt *info)
 {
 	t_ray	shadow_ray;
@@ -102,7 +130,8 @@ static int	compute_lighting(t_hit *primary_hit, t_rt *info)
 	float	light_dist;
 	bool	in_shadow;
 
-	//t_color obj_col = int_to_color(primary_hit->obj->color);
+	if (primary_hit->obj->mirror)
+		return (decrease_color(compute_mirror(primary_hit, info), 30));
 	t_color	obj_col = compute_object_color(primary_hit);
 	if (primary_hit->reverse)
 	{
@@ -134,7 +163,6 @@ static int	compute_lighting(t_hit *primary_hit, t_rt *info)
 		obj_col.g * amb_col.g / 255.0f * info->scene->amb->ratio,
 		obj_col.b * amb_col.b / 255.0f * info->scene->amb->ratio
 	};
-
 	// Final color
 	final.r = clamp(final.r + ambient_col.r, 0, 255);
 	final.g = clamp(final.g + ambient_col.g, 0, 255);
@@ -149,19 +177,31 @@ void	render_scene(t_rt *info)
 	t_ray	ray;
 	t_hit	hit;
 	int		color;
-	int		step;
 	long stop, start;
 
 	init_optimization(info);
 	start = current_time();
 	ray.origin = info->scene->cam->viewpoint;
 	y = 0;
-	step = (info->mode != RENDER_MODE) + 1;
 	while (y < WIN_HEIGHT)
 	{
 		x = 0;
+		/*
+		if (y % 2 == 0)
+		{
+			y++;
+			continue ;
+		}
+		*/
 		while (x < WIN_WIDTH)
 		{
+			/*
+			if (x % 2 == 0)
+			{
+				x++;
+				continue ;
+			}
+			*/
 			init_ray(&ray, info, x, y);
 			hit.contour = false;
 			hit.reverse = false;
@@ -176,19 +216,11 @@ void	render_scene(t_rt *info)
 					color = draw_skybox(info, &ray);
 				else
 					color = info->scene->amb->color * info->scene->amb->ratio;
-			}
-			if (step != 1)
-			{
 				img_put_pixel_safe(info, x, y, color);
-				img_put_pixel_safe(info, x + 1, y, color);
-				img_put_pixel_safe(info, x, y + 1, color);
-				img_put_pixel_safe(info, x + 1, y + 1, color);
 			}
-			else
-				img_put_pixel_safe(info, x, y, color);
-			x += step;
+			x++;
 		}
-		y += step;
+		y++;
 	}
 	draw_xyz_axis(info);
 	mlx_put_image_to_window(info->mlx, info->win, info->img, 0, 0);

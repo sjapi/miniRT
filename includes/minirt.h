@@ -53,6 +53,7 @@ typedef struct s_obj
 	float		bounding_r;
 	bool		selected;
 	bool		checkerboard;
+	bool		mirror;
 	bool		visible;
 	t_texture	*texture;
 }	t_obj;

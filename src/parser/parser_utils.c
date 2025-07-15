@@ -115,6 +115,14 @@ bool	is_checkerboard(char *str)
 		return (false);
 	return (true);	
 }
+bool	is_mirror(char *str)
+{
+	if (ft_strncmp("mirror", str, 6) != 0)
+		return (false);
+	if (str[6] && str[6] != '\n' && !is_whitespace(str[6]))
+		return (false);
+	return (true);	
+}
 
 // ================================================
 

@@ -28,20 +28,21 @@ bool	parse_texture(char **obj_data, t_obj *obj)
 	if (!**obj_data || **obj_data == '\n')
 		return (true);	
 	if (is_checkerboard(*obj_data))
-	{
-		next_info(obj_data);
 		obj->checkerboard = true;
-		return (true);
+	else if (is_mirror(*obj_data))
+		obj->mirror = true;
+	else if (get_file_name(*obj_data, &file_name))
+	{
+		fd = open(file_name, O_RDONLY);
+		if (fd == -1)
+			return (print_err("File not exists or premission error"));
+		close(fd);
+		obj->texture = malloc(sizeof(t_texture));
+		obj->texture->file_name = file_name;
 	}
-	if (!get_file_name(*obj_data, &file_name))
+	else
 		return (print_err("Invalid file name"));
-	fd = open(file_name, O_RDONLY);
-	if (fd == -1)
-		return (print_err("File not exists or premission error"));
-	close(fd);
 	next_info(obj_data);
-	obj->texture = malloc(sizeof(t_texture));
-	obj->texture->file_name = file_name;
 	return (true);
 }
 
