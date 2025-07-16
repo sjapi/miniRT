@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 10:52:17 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/15 16:16:16 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/16 20:56:23 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ bool is_hitable(t_ray *ray, t_obj *obj)
 bool	find_hit(t_ray *ray, t_rt *info, t_hit *hit, bool shadow_hit)
 {
     int i;
+	int	tri_i = -1;
     float t;
     float closest = 270000.0f;
     t_obj *obj;
@@ -53,6 +54,8 @@ bool	find_hit(t_ray *ray, t_rt *info, t_hit *hit, bool shadow_hit)
             t = intersect_cylinder(ray, obj, &hit->side, &tmp_reverse);
         else if (obj->type == CONE)
             t = intersect_cone(ray, obj, &hit->side, &tmp_reverse);
+        else if (obj->type == MODEL)
+        	t = intersect_model(ray, obj, hit, &tri_i, &tmp_reverse);
 
         if (t > 0 && t < closest)
         {
@@ -73,6 +76,8 @@ bool	find_hit(t_ray *ray, t_rt *info, t_hit *hit, bool shadow_hit)
                 hit->normal = get_cylinder_normal(obj, hit->hit_point, ray->direction, hit->side);
             else if (obj->type == CONE)
                 hit->normal = get_cone_normal(obj, hit->hit_point, ray->direction, hit->side);
+			else if (obj->type == MODEL)
+				hit->normal = get_model_normal(obj->mesh, hit->hit_point, ray->direction, tri_i);
 
             hit->obj = obj;
         }

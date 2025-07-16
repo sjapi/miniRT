@@ -52,10 +52,10 @@ void print_scene(t_scene *scene)
         print_point(scene->lights[i].point);
         printf(" ratio=%.2f color=#%06X\n", scene->lights[i].ratio, scene->lights[i].color);
     }
-
     // Objects
     for (int i = 0; i < scene->objs_count; i++)
     {
+		/*
         t_obj *obj = &scene->objs[i];
         printf("obj %d: ", i + 1);
         switch (obj->type)
@@ -80,6 +80,23 @@ void print_scene(t_scene *scene)
 		if (obj->type == 4)
 				printf(" height=%.2f", obj->attrs[CYLINDER_H_I]);
    	    printf("\n");
+		*/
+        t_obj *obj = &scene->objs[i];
+		if (obj->type != MODEL)
+			continue ;
+		int j = 0;
+		printf("%d\n", obj->mesh->size);
+		while (j < obj->mesh->size)
+		{
+			print_point(obj->mesh->points[obj->mesh->triangles[j]]);
+			printf(" ");
+			print_point(obj->mesh->points[obj->mesh->triangles[j + 1]]);
+			printf(" ");
+			print_point(obj->mesh->points[obj->mesh->triangles[j + 2]]);
+			printf("\n");
+			j+=3;
+		}
+		printf("\n");
     }
 }
 
@@ -240,8 +257,8 @@ int	main(int argc, char **argv)
 	if (!init_info(&info, argv[1]))
 		return (1);
 	init_optimization(&info);
-	render_scene(&info);
 	print_scene(info.scene);
+	render_scene(&info);
 	mlx_hook(info.win, 2, 1L >> 0, handle_key_hooks, &info);
 	mlx_mouse_hook(info.win, handle_mouse_hook, &info);
 	mlx_hook(info.win, 17, 0, destroy, &info);

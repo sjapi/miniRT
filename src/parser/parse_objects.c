@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 20:21:58 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/15 16:47:03 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/16 17:06:11 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,13 +178,11 @@ bool	parse_obj(char *obj_data, t_scene *scene)
 		if (!parse_cone(obj_data, obj))
 			return (false);
 	}
-	/*
-	else if (ft_strncmp(obj_data, "model ", 6) == 0)
+	else if (ft_strncmp(obj_data, "obj ", 4) == 0)
 	{
 		if (!parse_model(obj_data, obj))
 			return (false);
 	}
-	*/
 	else
 		return (true); // TODO: unkown type	
 	return (append_obj(scene, obj));
