@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 09:45:42 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/17 16:50:48 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/17 19:04:18 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ float	v_len(t_vec3 v)
 
 bool	v_normalized(t_vec3 p)
 {
-	return (fabsf(v_len(p) - 1.0) <= 0.001);
+	return (fabsf(v_len(p) - 1.0f) <= 0.001f);
 }
 
 t_vec3	v_add(t_vec3 a, t_vec3 b)

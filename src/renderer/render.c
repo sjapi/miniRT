@@ -27,9 +27,6 @@ long	current_time(void)
 }
 // ====================================
 
-static int      compute_lighting(t_hit *primary_hit, t_rt *infoi);
-
-
 static	void	compute_specular(t_color *final, t_hit *primary_hit, t_ray *shadow_ray, t_light	*light, t_cam *cam) 
 {
 	float	specular;
@@ -96,20 +93,17 @@ static	t_color	compute_object_color(t_hit *hit)
 	return int_to_color(color_int);
 }
 
-int decrease_color(int color, int amount)
+static t_color	decrease_color(t_color color, int amount)
 {
-    int r = (color >> 16) & 0xFF;
-    int g = (color >> 8) & 0xFF;
-    int b = color & 0xFF;
-
-    r = (r > amount) ? r - amount : 0;
-    g = (g > amount) ? g - amount : 0;
-    b = (b > amount) ? b - amount : 0;
-
-    return (r << 16) | (g << 8) | b;
+    color.r = (color.r > amount) ? color.r - amount : 0;
+    color.g = (color.g > amount) ? color.g - amount : 0;
+    color.b = (color.b > amount) ? color.b - amount : 0;
+	return color;
 }
 
-static	int	compute_mirror(t_hit *primary_hit, t_rt *info)
+static t_color	compute_shadow_ray(t_light *light, t_hit *primary_hit, t_rt *info);
+
+static t_color	compute_mirror(t_light *light, t_hit *primary_hit, t_rt *info)
 {
 	t_ray	mirror_ray;
 	t_hit	mirror_hit;
@@ -117,14 +111,13 @@ static	int	compute_mirror(t_hit *primary_hit, t_rt *info)
 	mirror_ray.origin = v_add(primary_hit->hit_point, v_scale(primary_hit->normal, 1e-4));
 	mirror_ray.direction = primary_hit->normal;
 	if (find_hit(&mirror_ray, info, &mirror_hit, false))
-		return (compute_lighting(&mirror_hit, info));
+		return (compute_shadow_ray(light, &mirror_hit, info));
 		//return (mirror_hit.obj->color);
-	return (draw_skybox(info, &mirror_ray));
+	return (int_to_color(draw_skybox(info, &mirror_ray)));
 
 }
 
-
-static int	compute_lighting(t_hit *primary_hit, t_rt *info)
+static t_color	compute_shadow_ray(t_light *light, t_hit *primary_hit, t_rt *info)
 {
 	t_ray	shadow_ray;
 	t_hit	shadow_hit;
@@ -133,7 +126,7 @@ static int	compute_lighting(t_hit *primary_hit, t_rt *info)
 	bool	in_shadow;
 
 	if (primary_hit->obj->mirror)
-		return (decrease_color(compute_mirror(primary_hit, info), 30));
+		return (decrease_color(compute_mirror(light, primary_hit, info), 30));
 	t_color	obj_col = compute_object_color(primary_hit);
 	if (primary_hit->reverse)
 	{
@@ -142,11 +135,11 @@ static int	compute_lighting(t_hit *primary_hit, t_rt *info)
 		obj_col.b = 255.0 - obj_col.b;
 	}
 	t_color	amb_col = int_to_color(get_amb_color(info->scene->amb));
-	t_color light_col = int_to_color(info->scene->lights->color);
+	t_color light_col = int_to_color(light->color);
 	shadow_ray.origin = v_add(primary_hit->hit_point, v_scale(primary_hit->normal, 1e-4));
-	shadow_ray.direction = v_sub(info->scene->lights->point, primary_hit->hit_point);
+	shadow_ray.direction = v_sub(light->point, primary_hit->hit_point);
 	shadow_ray.direction = v_normalize(shadow_ray.direction);
-	light_dist = v_len(v_sub(info->scene->lights->point, primary_hit->hit_point));
+	light_dist = v_len(v_sub(light->point, primary_hit->hit_point));
 	in_shadow = false;
 	if (find_hit(&shadow_ray, info, &shadow_hit, true))
 	{
@@ -156,8 +149,8 @@ static int	compute_lighting(t_hit *primary_hit, t_rt *info)
 	// Compute diffuse
 	if (!in_shadow)
 	{
-		compute_diffuse(&final, primary_hit, &shadow_ray, &info->scene->lights[0], &obj_col);
-		compute_specular(&final, primary_hit, &shadow_ray, &info->scene->lights[0], info->scene->cam);
+		compute_diffuse(&final, primary_hit, &shadow_ray, light, &obj_col);
+		compute_specular(&final, primary_hit, &shadow_ray, light, info->scene->cam);
 	}
 	// Ambient * object
 	t_color ambient_col = {
@@ -165,11 +158,28 @@ static int	compute_lighting(t_hit *primary_hit, t_rt *info)
 		obj_col.g * amb_col.g / 255.0f * info->scene->amb->ratio,
 		obj_col.b * amb_col.b / 255.0f * info->scene->amb->ratio
 	};
-	// Final color
-	final.r = clamp(final.r + ambient_col.r, 0, 255);
-	final.g = clamp(final.g + ambient_col.g, 0, 255);
-	final.b = clamp(final.b + ambient_col.b, 0, 255);
-	return color_to_int(final);
+	final = color_clamp(color_add(final, ambient_col));
+	return (final);
+}
+
+/*
+ * p_hit - primary_hit
+ */
+static int	compute_color(t_hit *p_hit, t_rt *info)
+{
+	int		i;
+	t_color	shadow_color;
+	t_color	total_color;
+
+	ft_bzero(&total_color, sizeof(t_color));
+	i = 0;
+	while (i < info->scene->lights_count)
+	{
+		shadow_color = compute_shadow_ray(&info->scene->lights[i], p_hit, info);
+		total_color = color_add(total_color, shadow_color);
+		i++;
+	}
+	return (color_to_int(color_clamp(total_color)));
 }
 
 void	render_scene(t_rt *info)
@@ -193,11 +203,10 @@ void	render_scene(t_rt *info)
 		while (x < WIN_WIDTH)
 		{
 			init_ray(&ray, info, x, y);
-			hit.contour = false;
-			hit.reverse = false;
+			ft_bzero(&hit, sizeof(t_hit));
 			if (find_hit(&ray, info, &hit, false))
 			{
-				color = compute_lighting(&hit, info);
+				color = compute_color(&hit, info);
 				img_put_pixel_safe(info, x, y, color);
 			}
 			else

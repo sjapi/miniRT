@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:23:26 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/15 19:21:24 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/17 17:53:38 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ float		v_len(t_vec3 v);
 /* colors */
 t_color		int_to_color(int icolor);
 int			color_to_int(t_color color);
+t_color		color_add(t_color a, t_color b);
+t_color		color_clamp(t_color c);
 
 /* other */
 int			clamp(int val, int min, int max);
