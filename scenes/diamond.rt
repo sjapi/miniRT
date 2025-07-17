@@ -2,4 +2,4 @@ A 0.4 255,255,255
 C 0,0,0 0,0,1 80
 L 3,2,5 0.9 255,255,255
 S skybox.xpm
-obj 0,0,3 diamond.rt 50,50,255
+obj 0,0,3 objects/diamond.obj 50,50,255

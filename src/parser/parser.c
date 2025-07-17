@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:01:55 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/17 19:42:55 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/17 22:16:17 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,6 @@ bool	append_light(t_scene *scene, t_light *light)
 	return (true);
 }
 
-
-
 bool	get_line(int fd, char **line)
 {
 	if (*line)
@@ -97,11 +95,11 @@ t_scene	*load_scene(char *file_name)
 		skip_spaces(&line);
 		if (!*line || *line == '\n' || *line == '#')
 			continue ;
-		if ((ft_strncmp(line, "A ", 2) == 0 && !parse_ambient(line, scene))
-			|| (ft_strncmp(line, "C ", 2) == 0 && !parse_camera(line, scene))
-			|| (ft_strncmp(line, "L ", 2) == 0 && !parse_light(line, scene))
-			|| (ft_strncmp(line, "S ", 2) == 0 && !parse_skybox(line, scene))
-			|| !parse_obj(line, scene))
+		if (!((ft_strncmp(line, "A ", 2) == 0 && parse_ambient(line, scene))
+				|| (ft_strncmp(line, "C ", 2) == 0 && parse_camera(line, scene))
+				|| (ft_strncmp(line, "L ", 2) == 0 && parse_light(line, scene))
+				|| (ft_strncmp(line, "S ", 2) == 0 && parse_skybox(line, scene))
+				|| parse_obj(line, scene)))
 			return (free(line), close(fd), NULL);
 	}
 	return (scene);

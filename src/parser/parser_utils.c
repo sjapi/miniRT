@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:03:20 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/17 17:48:55 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/17 22:17:08 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ bool	is_checkerboard(char *str)
 		return (false);
 	if (str[12] && str[12] != '\n' && !is_whitespace(str[12]))
 		return (false);
-	return (true);	
+	return (true);
 }
 
 bool	is_mirror(char *str)
@@ -131,7 +131,7 @@ bool	is_mirror(char *str)
 		return (false);
 	if (str[6] && str[6] != '\n' && !is_whitespace(str[6]))
 		return (false);
-	return (true);	
+	return (true);
 }
 
 // ================================================
@@ -153,11 +153,12 @@ bool	skip_integer(char **str, int *digits)
 	return (*digits > 0);
 }
 
-void	next_info(char **str)
+bool	next_info(char **str)
 {
 	while (**str && !is_whitespace(**str))
 		(*str)++;
 	skip_spaces(str);
+	return (true);
 }
 
 // ===============================================

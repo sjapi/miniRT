@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 20:21:58 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/17 20:32:25 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/17 22:14:11 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 bool	parse_texture(char **obj_data, t_obj *obj)
 {	
 	char	*file_name;
-	int		fd;
 
 	if (!**obj_data || **obj_data == '\n')
 		return (true);	
@@ -32,10 +31,8 @@ bool	parse_texture(char **obj_data, t_obj *obj)
 		obj->mirror = true;
 	else if (get_file_name(*obj_data, &file_name))
 	{
-		fd = open(file_name, O_RDONLY);
-		if (fd == -1)
-			return (print_err("File not exists or premission error"));
-		close(fd);
+		if (!is_valid_file(file_name, ".xpm"))
+			return (print_err("Invalid texture"));
 		obj->texture = malloc(sizeof(t_texture));
 		obj->texture->file_name = file_name;
 	}
@@ -80,8 +77,8 @@ bool	parse_sphere(char *sphere_data, t_obj *sphere)
 	next_info(&sphere_data);
 	if (!get_color(sphere_data, &sphere->color))
 		return (free_obj(sphere), print_err("Sphere has invalid color"));
-	next_info(&sphere_data);
-	parse_texture(&sphere_data, sphere);
+	if (next_info(&sphere_data) && !parse_texture(&sphere_data, sphere))
+		return (free_obj(sphere), print_err("Sphere has invalid texture"));
 	if (*sphere_data && *sphere_data != '\n')
 		return (free_obj(sphere), print_err("Sphere has invalid data"));
 	return (true);
@@ -93,24 +90,19 @@ bool	parse_cylinder(char *cylinder_data, t_obj *cylinder)
 	cylinder->attrs = malloc(sizeof(float) * CYLINDER_ATTR_COUNT);
 	if (!cylinder->attrs)
 		return (free_obj(cylinder), print_err("Can't allocate memory"));	
-	next_info(&cylinder_data);
-	if (!get_coordinates(cylinder_data, &cylinder->center))
+	if (next_info(&cylinder_data) && !get_coordinates(cylinder_data, &cylinder->center))
 		return (free_obj(cylinder), print_err("Cylinder has invalid coordinates"));
-	next_info(&cylinder_data);
-	if (!get_orientation(cylinder_data, &cylinder->norm_vector))
+	if (next_info(&cylinder_data) && !get_orientation(cylinder_data, &cylinder->norm_vector))
 		return (free_obj(cylinder), print_err("Cylinder has invalid orientation"));
-	next_info(&cylinder_data);
-	if (!get_attribute(cylinder_data, &cylinder->attrs[CYLINDER_D_I]))
+	if (next_info(&cylinder_data) && !get_attribute(cylinder_data, &cylinder->attrs[CYLINDER_D_I]))
 		return (free_obj(cylinder), print_err("Cylinder has invalid diameter"));
-	next_info(&cylinder_data);
-	if (!get_attribute(cylinder_data, &cylinder->attrs[CYLINDER_H_I]))
+	if (next_info(&cylinder_data) && !get_attribute(cylinder_data, &cylinder->attrs[CYLINDER_H_I]))
 		return (free_obj(cylinder), print_err("Cylinder has invalid height"));
-	next_info(&cylinder_data);
-	if (!get_color(cylinder_data, &cylinder->color))
+	if (next_info(&cylinder_data) && !get_color(cylinder_data, &cylinder->color))
 		return (free_obj(cylinder), print_err("Cylinder has invalid color"));
-	next_info(&cylinder_data);
-	parse_texture(&cylinder_data, cylinder);
-	if (*cylinder_data && *cylinder_data != '\n')
+	if (next_info(&cylinder_data) && !parse_texture(&cylinder_data, cylinder))
+		return (free_obj(cylinder), print_err("Cylinder has invalid texture"));
+	if (next_info(&cylinder_data) && *cylinder_data && *cylinder_data != '\n')
 		return (free_obj(cylinder), print_err("Cylinder has invalid data"));
 	return (true);
 }
@@ -125,31 +117,36 @@ bool	parse_cone(char *cone_data, t_obj *cone)
 	cone->attrs = malloc(sizeof(float) * CONE_ATTR_COUNT);
 	if (!cone->attrs)
 		return (free_obj(cone), print_err("Can't allocate memory"));	
-	next_info(&cone_data);
-	if (!get_coordinates(cone_data, &cone->center))
+	if (next_info(&cone_data) && !get_coordinates(cone_data, &cone->center))
 		return (free_obj(cone), print_err("Cone has invalid coordinates"));
-	next_info(&cone_data);
-	if (!get_orientation(cone_data, &cone->norm_vector))
+	if (next_info(&cone_data) && !get_orientation(cone_data, &cone->norm_vector))
 		return (free_obj(cone), print_err("Cone has invalid orientation"));
-	next_info(&cone_data);
-	if (!get_attribute(cone_data, &cone->attrs[CONE_A_I]))
+	if (next_info(&cone_data) && !get_attribute(cone_data, &cone->attrs[CONE_A_I]))
 		return (free_obj(cone), print_err("Cone has invalid angle"));
-	next_info(&cone_data);
-	if (!get_attribute(cone_data, &cone->attrs[CONE_H_I]))
+	if (next_info(&cone_data) && !get_attribute(cone_data, &cone->attrs[CONE_H_I]))
 		return (free_obj(cone), print_err("Cone has invalid height"));
-	next_info(&cone_data);
-	if (!get_color(cone_data, &cone->color))
+	if (next_info(&cone_data) && !get_color(cone_data, &cone->color))
 		return (free_obj(cone), print_err("Cone has invalid color"));
-	next_info(&cone_data);
-	parse_texture(&cone_data, cone);
-	if (*cone_data && *cone_data != '\n')
+	if (next_info(&cone_data) && !parse_texture(&cone_data, cone))
+		return (free_obj(cone), print_err("Con has invalid texute"));
+	if (next_info(&cone_data) && *cone_data && *cone_data != '\n')
 		return (free_obj(cone), print_err("Cone has invalid data"));
 	return (true);
 }
 
-/*
- * Here you can just do 'return (parse_plane(...))'
- */
+void	calculate_bounding(t_obj *obj)
+{
+		if (obj->type == CYLINDER)
+			obj->bounding_r = sqrt(pow(obj->attrs[CYLINDER_H_I], 2) + pow(obj->attrs[CYLINDER_D_I], 2));
+		else if (obj->type == CONE)
+		{
+			float angle_deg = obj->attrs[CONE_A_I];
+			float height = obj->attrs[CONE_H_I];
+			float radius = height * tanf((angle_deg / 2.0f) * (M_PI / 180.0f));
+			obj->bounding_r = sqrtf(radius * radius + (height * height) / 4.0f)*2;
+		}
+}
+
 bool	parse_obj(char *obj_data, t_scene *scene)
 {
 	t_obj	*obj;
@@ -157,37 +154,13 @@ bool	parse_obj(char *obj_data, t_scene *scene)
 	obj = ft_calloc(sizeof(t_obj), 1);
 	if (!obj)
 		return (print_err("Can't allocate memory"));
-	if (ft_strncmp(obj_data, "pl ", 3) == 0)
-	{
-		if (!parse_plane(obj_data, obj))
-			return (false);
-	}
-	else if (ft_strncmp(obj_data, "sp ", 3) == 0)
-	{
-		if (!parse_sphere(obj_data, obj))
-			return (false);
-	}
-	else if (ft_strncmp(obj_data, "cy ", 3) == 0)
-	{
-		if (!parse_cylinder(obj_data, obj))
-			return (false);
-		obj->bounding_r = sqrt(pow(obj->attrs[CYLINDER_H_I], 2) + pow(obj->attrs[CYLINDER_D_I], 2));
-	}
-	else if (ft_strncmp(obj_data, "co ", 3) == 0)
-	{
-		if (!parse_cone(obj_data, obj))
-			return (false);
-		float angle_deg = obj->attrs[CONE_A_I];
-		float height = obj->attrs[CONE_H_I];
-		float radius = height * tanf((angle_deg / 2.0f) * (M_PI / 180.0f));
-		obj->bounding_r = sqrtf(radius * radius + (height * height) / 4.0f)*2;
-	}
-	else if (ft_strncmp(obj_data, "obj ", 4) == 0)
-	{
-		if (!parse_model(obj_data, obj))
-			return (false);
-	}
-	else
-		return (true); // TODO: unkown type	
-	return (append_obj(scene, obj));
+	if ((ft_strncmp(obj_data, "pl ", 3) == 0 && parse_plane(obj_data, obj))
+		|| (ft_strncmp(obj_data, "sp ", 3) == 0 && parse_sphere(obj_data, obj))
+		|| (ft_strncmp(obj_data, "cy ", 3) == 0 && parse_cylinder(obj_data, obj))
+		|| (ft_strncmp(obj_data, "co ", 3) == 0 && parse_cone(obj_data, obj))
+		|| (ft_strncmp(obj_data, "obj ", 4) == 0 && parse_model(obj_data, obj)))
+			return (calculate_bounding(obj), append_obj(scene, obj));
+	//free(obj);
+	// TODO: Remove all stupid frees
+	return (false);
 }
