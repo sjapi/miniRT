@@ -80,8 +80,8 @@ bool	load_model(int	fd, t_mesh *mesh)
 	int	p_index;
 	int	t_index;
 
-	p_index = -1;
-	t_index = -1;
+	p_index = 0;
+	t_index = 0;
 	line = get_next_line(fd);
 	while (line)
 	{
@@ -90,8 +90,9 @@ bool	load_model(int	fd, t_mesh *mesh)
 		if (ft_strncmp(line, "p ", 2) == 0)
 		{
 			next_info(&line);
-			if (!get_point(line, &mesh->points[p_index++]))
+			if (!get_point(line, &mesh->points[p_index]))
 				return (free(pline), false);
+			p_index++;
 		}
 		else if (ft_strncmp(line, "t ", 2) == 0)
 		{

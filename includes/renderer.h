@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:51:00 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/16 20:56:05 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/17 15:07:05 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ float	intersect_model(t_ray *ray, t_obj *obj, t_hit *hit, int *tj, bool *reverse
 /* normal */
 t_vec3	get_cylinder_normal(t_obj *obj, t_vec3 hit_point, t_vec3 ray_dir, char side);
 t_vec3	get_cone_normal(t_obj *obj, t_vec3 hit_point, t_vec3 ray_dir, char side);
-t_vec3	get_model_normal(t_mesh *mesh, t_vec3 hit_point, t_vec3 ray_dir, int tri_j);
+t_vec3	get_model_normal(t_obj *obj, t_vec3 hit_point, t_vec3 ray_dir, int tri_j);
 
 /* checkerboard */
 bool	sphere_checkerboard(t_vec3 hit_point, t_obj *sphere);

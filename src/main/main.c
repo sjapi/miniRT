@@ -55,48 +55,55 @@ void print_scene(t_scene *scene)
     // Objects
     for (int i = 0; i < scene->objs_count; i++)
     {
-		/*
         t_obj *obj = &scene->objs[i];
         printf("obj %d: ", i + 1);
-        switch (obj->type)
-        {
-            case 1: printf("square"); break;
-            case 2: printf("sphere"); break;
-            case 3: printf("plane"); break;
-            case 4: printf("cylinder"); break;
-            case 5: printf("cone"); break;
-            default: printf("unknown"); break;
-        }
-        printf(" center=");
-        print_point(obj->center);
-        printf(" color=#%06X", obj->color);
-        if (obj->type != 2) // not sphere -> has norm vector
-        {
-            printf(" norm=");
-            print_point(obj->norm_vector);
-        }
-		if (obj->type == 2 || obj->type == 4)
-			printf(" diameter=%.2f", obj->attrs[SPHERE_D_I]);
-		if (obj->type == 4)
-				printf(" height=%.2f", obj->attrs[CYLINDER_H_I]);
-   	    printf("\n");
-		*/
-        t_obj *obj = &scene->objs[i];
 		if (obj->type != MODEL)
-			continue ;
-		int j = 0;
-		printf("%d\n", obj->mesh->size);
-		while (j < obj->mesh->size)
 		{
-			print_point(obj->mesh->points[obj->mesh->triangles[j]]);
-			printf(" ");
-			print_point(obj->mesh->points[obj->mesh->triangles[j + 1]]);
-			printf(" ");
-			print_point(obj->mesh->points[obj->mesh->triangles[j + 2]]);
-			printf("\n");
-			j+=3;
+				switch (obj->type)
+				{
+					case 1: printf("square"); break;
+					case 2: printf("sphere"); break;
+					case 3: printf("plane"); break;
+					case 4: printf("cylinder"); break;
+					case 5: printf("cone"); break;
+					default: printf("unknown"); break;
+				}
+				printf(" center=");
+				print_point(obj->center);
+				printf(" color=#%06X", obj->color);
+				if (obj->type != 2) // not sphere -> has norm vector
+				{
+					printf(" norm=");
+					print_point(obj->norm_vector);
+				}
+				if (obj->type == 2 || obj->type == 4)
+					printf(" diameter=%.2f", obj->attrs[SPHERE_D_I]);
+				if (obj->type == 4)
+						printf(" height=%.2f", obj->attrs[CYLINDER_H_I]);
+				printf("\n");
 		}
-		printf("\n");
+		else
+		{
+				t_obj *obj = &scene->objs[i];
+				if (obj->type != MODEL)
+					continue ;
+				int j = 0;
+				printf("%d\n", obj->mesh->size);
+				while (j < obj->mesh->size)
+				{
+					printf("%d ", obj->mesh->triangles[j]);
+					print_point(obj->mesh->points[obj->mesh->triangles[j]]);
+					printf(" ");
+					printf("%d ", obj->mesh->triangles[j + 1]);
+					print_point(obj->mesh->points[obj->mesh->triangles[j + 1]]);
+					printf(" ");
+					printf("%d ", obj->mesh->triangles[j + 2]);
+					print_point(obj->mesh->points[obj->mesh->triangles[j + 2]]);
+					printf("\n");
+					j+=3;
+				}
+				printf("\n");
+		}
     }
 }
 

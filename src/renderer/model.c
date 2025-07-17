@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 19:54:34 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/16 21:23:01 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/17 15:48:25 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,11 @@ float intersect_triangle(t_ray *ray, t_vec3 v0, t_vec3 v1, t_vec3 v2, bool *reve
     return -1;
 }
 
-t_vec3	get_model_normal(t_mesh *mesh, t_vec3 hit_point, t_vec3 ray_dir, int tri_j)
+t_vec3	get_model_normal(t_obj *obj, t_vec3 hit_point, t_vec3 ray_dir, int tri_j)
 {
-    t_vec3 v0 = mesh->points[(int)mesh->triangles[tri_j + 0]];
-    t_vec3 v1 = mesh->points[(int)mesh->triangles[tri_j + 1]];
-    t_vec3 v2 = mesh->points[(int)mesh->triangles[tri_j + 2]];
+	t_vec3 v0 = v_add(obj->mesh->points[obj->mesh->triangles[tri_j + 0]], obj->center);
+    t_vec3 v1 = v_add(obj->mesh->points[obj->mesh->triangles[tri_j + 1]], obj->center);
+    t_vec3 v2 = v_add(obj->mesh->points[obj->mesh->triangles[tri_j + 2]], obj->center);
 
     t_vec3 edge1 = v_sub(v1, v0);
     t_vec3 edge2 = v_sub(v2, v0);
@@ -61,8 +61,8 @@ t_vec3	get_model_normal(t_mesh *mesh, t_vec3 hit_point, t_vec3 ray_dir, int tri_
     normal = v_normalize(normal);
 
     // Ensure normal faces against ray direction
-    if (v_dot(normal, ray_dir) > 0)
-        normal = v_scale(normal, -1);
+   // if (v_dot(normal, ray_dir) > 0)
+     //   normal = v_scale(normal, -1);
 
     return normal;
 }
