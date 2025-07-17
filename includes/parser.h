@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:00:29 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/16 17:07:29 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/17 19:45:59 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,10 @@ t_scene	*load_scene(char *file_name);
 bool	print_err(char *msg);
 void	free_obj(t_obj *obj);
 bool	append_obj(t_scene *scene, t_obj *obj);
+bool	append_light(t_scene *scene, t_light *light);
 
 /* parser_utils.c */
-bool	is_valid_name(char *file_name);
+bool	is_valid_file(char *file_name, char *ext);
 bool	is_whitespace(char c);
 bool	is_correct_coordinate(char *str);
 bool	is_correct_color(char *str);

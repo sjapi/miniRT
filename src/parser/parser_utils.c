@@ -6,23 +6,32 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:03:20 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/15 21:43:00 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/17 17:48:55 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <fcntl.h>
 #include <unistd.h>
+#include <stdio.h>
 #include "utils.h"
 #include "parser.h"
 
-bool	is_valid_name(char *file_name)
+bool	is_valid_file(char *file_name, char *ext)
 {
 	int	size;
+	int	ext_size;
+	int	fd;
 
+	ext_size = ft_strlen(ext);
 	size = ft_strlen(file_name);
-	if (size < 3)
+	if (size < ext_size)
 		return (false);
-	if (ft_strcmp(&file_name[size - 3], ".rt") != 0)
+	if (ft_strcmp(&file_name[size - ext_size], ext) != 0)
 		return (false);
+	fd = open(file_name, O_RDONLY);
+	if (fd == -1)
+		return (false);
+	close(fd);
 	return (true);
 }
 

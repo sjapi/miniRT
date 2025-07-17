@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:05:46 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/15 16:55:33 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/17 19:15:55 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,7 @@ bool	get_orientation(char *data, t_vec3 *o)
 		data++;
 	data++;
 	o->z = ft_atof(data);
-	if (o->x < -1.0 || o->x > 1.0
-		|| o->y < -1.0 || o->y > 1.0
-		|| o->z < -1.0 || o->z > 1.0)
+	if (!v_normalized(*o))
 		return (false);
 	return (true);
 }

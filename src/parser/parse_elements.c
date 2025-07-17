@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:01:21 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/14 20:20:25 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/17 19:48:54 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ bool	parse_ambient(char *light_data, t_scene *scene)
 {
 	t_amb_light	*amb;
 
+	if (scene->amb)
+		return (print_err("Scene can have only 1 amb"));
 	amb = malloc(sizeof(t_amb_light));
 	if (!amb)
 		return (print_err("Can't allocate memory"));
@@ -56,8 +58,7 @@ bool	parse_light(char *light_data, t_scene *scene)
 	next_info(&light_data);
 	if (*light_data && *light_data != '\n')
 		return (free(light), print_err("Light has invalid data"));
-	scene->lights = light;
-	scene->lights_count++;
+	append_light(scene, light);
 	return (true);
 }
 
@@ -66,19 +67,16 @@ bool	parse_skybox(char *skybox_data, t_scene *scene)
 	t_texture	*skybox;
 	int	fd;
 
+	if (scene->skybox)
+		return (print_err("Scene can have only 1 skybox"));
 	skybox = malloc(sizeof(t_texture));
 	if (!skybox)
 		return (print_err("Can't allocate memory"));
 	next_info(&skybox_data);
 	if (!get_file_name(skybox_data, &skybox->file_name))
 		return (print_err("Skybox has invalid name"));
-	fd = open(skybox->file_name, O_RDONLY);
-	if (fd == -1)
-		return (free(skybox->file_name), print_err("Skybox has invalid name"));
-	fd = open(skybox->file_name, O_RDONLY);
-	if (fd == -1)
-		return (free(skybox->file_name), print_err("Skybox has invalid name"));
-	close(fd);
+	if (!is_valid_file(skybox->file_name, ".xpm"))
+		return (free(skybox->file_name), print_err("Skybox has invalid file"));
 	next_info(&skybox_data);
 	if (*skybox_data && *skybox_data != '\n')
 		return (free(skybox->file_name), print_err("Skybox has invalid data"));
@@ -90,6 +88,8 @@ bool	parse_camera(char *camera_data, t_scene *scene)
 {
 	t_cam	*cam;
 
+	if (scene->cam)
+		return (print_err("Scene can have only 1 camera"));
 	cam = malloc(sizeof(t_cam));
 	if (!cam)
 		return (print_err("Can't allocate memory"));
