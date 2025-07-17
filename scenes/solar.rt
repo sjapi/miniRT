@@ -1,0 +1,16 @@
+A  0.15  255,255,255         
+C  0,0,60   0,0,-1   45     
+L  0,0,50   1.0     255,255,255       
+
+S  solar/2k_stars_milky_way.xpm     
+
+sp  0,0,0       8.0     255,255,255   solar/2k_sun.xpm
+sp  10,0,0      3.0     255,255,255   solar/2k_mercury.xpm
+sp  17,0,0      4.0     255,255,255   solar/2k_venus_atmosphere.xpm
+sp  23,0,0      4.0     255,255,255   solar/2k_earth.xpm
+sp  30,0,0      3.2     255,255,255   solar/2k_mars.xpm
+sp  52,0,0      7.0     255,255,255   solar/2k_jupiter.xpm
+sp  95,0,0      6.0     255,255,255   solar/2k_saturn.xpm
+sp  192,0,0     5.0     255,255,255   solar/2k_uranus.xpm
+sp  300,0,0     5.0     255,255,255   solar/2k_neptune.xpm
+
