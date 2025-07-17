@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 10:52:17 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/17 17:53:13 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/17 20:34:31 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ bool	find_hit(t_ray *ray, t_rt *info, t_hit *hit, bool shadow_hit)
     {
         t = -1.0f;
         obj = &info->scene->objs[i];
-		if (obj->type == CYLINDER && !is_hitable(ray, obj))
+		if ((obj->type == CYLINDER || obj->type == CONE) && !is_hitable(ray, obj))
 			continue ;
         if (obj->type == PLANE)
             t = intersect_plane(ray, obj, &tmp_reverse);

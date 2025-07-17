@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:01:21 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/17 19:48:54 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/17 20:06:17 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ bool	parse_light(char *light_data, t_scene *scene)
 bool	parse_skybox(char *skybox_data, t_scene *scene)
 {
 	t_texture	*skybox;
-	int	fd;
+	int			fd;
 
 	if (scene->skybox)
 		return (print_err("Scene can have only 1 skybox"));
