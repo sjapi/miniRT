@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 16:54:19 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/15 18:20:56 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/17 14:49:10 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@
 # define PLANE  3
 # define CYLINDER 4
 # define CONE 5
+# define MODEL 6
 
 # define CHECKER_CELL_SIZE 1.0
 # define CHECKER_X_COUNT 8

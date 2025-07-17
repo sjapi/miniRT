@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:00:29 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/15 21:43:17 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/16 17:07:29 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,5 +58,9 @@ bool	parse_obj(char *obj_data, t_scene *scene);
 bool	parse_cylinder(char *cylinder_data, t_obj *cylinder);
 bool	parse_sphere(char *sphere_data, t_obj *sphere);
 bool	parse_plane(char *plane_data, t_obj *plane);
+
+/* parse_model.c */
+bool	parse_model(char *model_data, t_obj *model);
+
 
 #endif

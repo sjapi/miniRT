@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 16:16:38 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/15 19:08:05 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/16 19:20:45 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ typedef struct	s_mesh
 	char	*file_name;
 	int	size;
 	int	*triangles;
-	float	*points;
+	t_vec3	*points;
 }	t_mesh;
 
 
