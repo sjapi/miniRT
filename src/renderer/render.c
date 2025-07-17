@@ -182,11 +182,13 @@ static int	compute_color(t_hit *p_hit, t_rt *info)
 	return (color_to_int(color_clamp(total_color)));
 }
 
+void	init_rays_msaa(t_ray rays[4], t_rt *info, int x, int y);
+
 void	render_scene(t_rt *info)
 {
 	int		y;
 	int		x;
-	t_ray	ray;
+	t_ray	rays[4];
 	t_hit	hit;
 	int		color;
 	int		step;
@@ -194,7 +196,6 @@ void	render_scene(t_rt *info)
 
 	init_optimization(info);
 	start = current_time();
-	ray.origin = info->scene->cam->viewpoint;
 	step = (info->mode != RENDER_MODE) + 1;
 	y = 0;
 	while (y < WIN_HEIGHT)
@@ -202,20 +203,33 @@ void	render_scene(t_rt *info)
 		x = 0;
 		while (x < WIN_WIDTH)
 		{
-			init_ray(&ray, info, x, y);
-			ft_bzero(&hit, sizeof(t_hit));
-			if (find_hit(&ray, info, &hit, false))
+			t_color	result;
+			ft_bzero(&result, sizeof(t_color));
+			init_rays_msaa(rays, info, x, y);
+			for (int i = 0; i < 4; i++)
 			{
-				color = compute_color(&hit, info);
-				img_put_pixel_safe(info, x, y, color);
-			}
-			else
-			{
-				if (info->scene->skybox)
-					color = draw_skybox(info, &ray);
+				t_ray ray = rays[i];
+				ray.origin = info->scene->cam->viewpoint;
+				ft_bzero(&hit, sizeof(t_hit));
+				if (find_hit(&ray, info, &hit, false))
+				{
+					color = compute_color(&hit, info);
+					img_put_pixel_safe(info, x, y, color);
+				}
 				else
-					color = info->scene->amb->color * info->scene->amb->ratio;
+				{
+					if (info->scene->skybox)
+						color = draw_skybox(info, &ray);
+					else
+						color = info->scene->amb->color * info->scene->amb->ratio;
+				}
+				result = color_add(result, int_to_color(color));
 			}
+			result.r /= 4;
+			result.g /= 4;
+			result.b /= 4;
+			result = color_clamp(result);
+			color = color_to_int(result);
 			img_put_pixel_safe(info, x, y, color);
 			if (step != 1)
 			{

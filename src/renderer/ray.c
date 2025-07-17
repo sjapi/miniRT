@@ -6,13 +6,14 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 10:49:48 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/14 18:38:21 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/17 20:25:33 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 #include "utils.h"
 #include "renderer.h"
+#include "defines.h"
 #include <math.h>
 
 t_vec3	get_ray_dir(float nx, float ny, t_cam *cam)
@@ -38,4 +39,51 @@ void	init_ray(t_ray *ray, t_rt *info, int x, int y)
 	nx = info->optim->viewport_x[x];
 	ny = info->optim->viewport_y[y];
 	ray->direction = get_ray_dir(nx, ny, info->scene->cam);
+}
+
+/* MSAA */
+static float   get_nx_sample(int x, float aspect_ratio, float tan_fov, float sample)
+{
+    float   nx;
+
+    nx = (float)(x + sample) / (float)WIN_WIDTH;
+    nx = (2.0 * nx - 1.0) * aspect_ratio * tan_fov;
+    return (nx);
+}
+
+static float   get_ny_sample(int y, float tan_fov, float sample)
+{
+    float   ny;
+
+    ny = (float)(y + sample) / (float)WIN_HEIGHT;
+    ny = (1.0 - 2.0 * ny) * tan_fov;
+    return (ny);
+}
+
+void init_rays_msaa(t_ray rays[4], t_rt *info, int x, int y)
+{
+	float	tan_fov;
+	float	x_offsets[4];
+	float	y_offsets[4];
+	float	nx;
+	float	ny;
+	int		i;
+
+	x_offsets[0] = 0.25f;
+	x_offsets[1] = 0.75f;
+	x_offsets[2] = 0.25f;
+	x_offsets[3] = 0.75f;
+	y_offsets[0] = 0.25f;
+	y_offsets[1] = 0.25f;
+	y_offsets[2] = 0.75f;
+	y_offsets[3] = 0.75f;
+	tan_fov = tanf((info->scene->cam->fov * M_PI / 180.0f) / 2.0f);
+	i = 0;
+	while (i < 4)
+	{
+		nx = get_nx_sample(x, info->win_aspect_ratio, tan_fov, x_offsets[i]);
+		ny = get_ny_sample(y, tan_fov, y_offsets[i]);
+		rays[i].direction = get_ray_dir(nx, ny, info->scene->cam);
+		i++;
+	}
 }
