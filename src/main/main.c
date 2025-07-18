@@ -91,16 +91,13 @@ void print_scene(t_scene *scene)
 				printf("%d\n", obj->mesh->size);
 				while (j < obj->mesh->size)
 				{
-					printf("%d ", obj->mesh->triangles[j]);
-					print_point(obj->mesh->points[obj->mesh->triangles[j]]);
+					print_point(*obj->mesh->triangles[j].v0);
 					printf(" ");
-					printf("%d ", obj->mesh->triangles[j + 1]);
-					print_point(obj->mesh->points[obj->mesh->triangles[j + 1]]);
+					print_point(*obj->mesh->triangles[j].v1);
 					printf(" ");
-					printf("%d ", obj->mesh->triangles[j + 2]);
-					print_point(obj->mesh->points[obj->mesh->triangles[j + 2]]);
+					print_point(*obj->mesh->triangles[j].v2);
 					printf("\n");
-					j+=3;
+					j++;
 				}
 				printf("\n");
 		}
@@ -206,6 +203,8 @@ static int	handle_key_hooks(int key, t_rt *info)
 	else if (key == KEY_Q || key == KEY_W || key == KEY_E || key == KEY_S || key == KEY_A || key == KEY_D)
 		render = handle_qweasd(key, info);
 	else if (key == KEY_H || key == KEY_J || key == KEY_K || key == KEY_L)
+		render = handle_hjkl(key, info);
+	else if (key == 65361 || key == 65362 || key == 65364 || key == 65363)
 		render = handle_hjkl(key, info);
 	else if (key == KEY_MINUS || key == KEY_PLUS)
 		render = handle_plus_minus(key, info);

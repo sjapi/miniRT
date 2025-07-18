@@ -10,10 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <math.h>
 #include "minirt.h"
 #include "renderer.h"
 #include "utils.h"
-#include <math.h>
+#include "defines.h"
 
 int draw_skybox(t_rt *info, t_ray *ray)
 {
@@ -28,8 +29,8 @@ int draw_skybox(t_rt *info, t_ray *ray)
 
 	scene = info->scene;
 	dir = ray->direction;
-	u = 0.5f + atan2f(dir.z, dir.x) / (2.0f * M_PI);
-	v = 0.5f - asinf(dir.y) / M_PI;
+	u = 0.5f + atan2f(dir.z, dir.x) * INV_2PI;
+	v = 0.5f - asinf(dir.y) * INV_PI;
 	if (u < 0)
 		u += 1;
 	if (u > 1)

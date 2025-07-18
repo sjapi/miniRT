@@ -81,6 +81,10 @@ bool	parse_sphere(char *sphere_data, t_obj *sphere)
 		return (free_obj(sphere), print_err("Sphere has invalid texture"));
 	if (*sphere_data && *sphere_data != '\n')
 		return (free_obj(sphere), print_err("Sphere has invalid data"));
+	float radius = sphere->attrs[SPHERE_D_I] * 0.5f;
+	t_vec3 r_vec = { radius, radius, radius };
+	sphere->aabb_min = v_sub(sphere->center, r_vec);
+	sphere->aabb_max = v_add(sphere->center, r_vec);
 	return (true);
 }
 
@@ -104,6 +108,29 @@ bool	parse_cylinder(char *cylinder_data, t_obj *cylinder)
 		return (free_obj(cylinder), print_err("Cylinder has invalid texture"));
 	if (next_info(&cylinder_data) && *cylinder_data && *cylinder_data != '\n')
 		return (free_obj(cylinder), print_err("Cylinder has invalid data"));
+	float height = cylinder->attrs[CYLINDER_H_I];
+	float radius = cylinder->attrs[CYLINDER_D_I];
+	t_vec3 axis = v_normalize(cylinder->norm_vector);
+
+	t_vec3 half_height = v_scale(axis, height * 0.5f);
+	t_vec3 top = v_add(cylinder->center, half_height);
+	t_vec3 bottom = v_sub(cylinder->center, half_height);
+
+	t_vec3 min = {
+	fminf(top.x, bottom.x),
+	fminf(top.y, bottom.y),
+	fminf(top.z, bottom.z)
+	};
+
+	t_vec3 max = {
+	fmaxf(top.x, bottom.x),
+	fmaxf(top.y, bottom.y),
+	fmaxf(top.z, bottom.z)
+	};
+
+	t_vec3 r_vec = { radius, radius, radius };
+	cylinder->aabb_min = v_sub(min, r_vec);
+	cylinder->aabb_max = v_add(max, r_vec);
 	return (true);
 }
 

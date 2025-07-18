@@ -26,7 +26,7 @@ float	v_len(t_vec3 v)
 
 bool	v_normalized(t_vec3 p)
 {
-	return (fabsf(v_len(p) - 1.0f) < 1e-6f);
+	return (fabsf(p.x * p.x + p.y * p.y + p.z * p.z - 1.0f) < 1e-6f);
 }
 
 t_vec3	v_add(t_vec3 a, t_vec3 b)
@@ -68,7 +68,5 @@ t_vec3	v_sub(t_vec3 a, t_vec3 b)
 {
 	return ((t_vec3){
 		a.x - b.x,
-		a.y - b.y,
-		a.z - b.z
-	});
+		a.y - b.y,		a.z - b.z	});
 }

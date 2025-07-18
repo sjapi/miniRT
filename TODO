@@ -1,8 +1,8 @@
 H
-1) Error message for not existing file
-2) change file_name -> source
-3) Write free functions for scene
-4) Check does there is objects in scene
+1) change file_name -> source
+2) Write free functions for scene
+3) Check does there is objects in scene
+4) make triangle struct and precalculate points
 
 
 =================================================

@@ -35,14 +35,22 @@ typedef struct s_texture
 	int		endian;
 }	t_texture;
 
+typedef struct	s_tri
+{
+	t_vec3	*v0;
+	t_vec3	*v1;
+	t_vec3	*v2;
+	t_vec3	edge1;
+	t_vec3	edge2;
+}	t_tri;
+
 typedef struct	s_mesh
 {
 	char	*file_name;
 	int	size;
-	int	*triangles;
+	t_tri	*triangles;
 	t_vec3	*points;
 }	t_mesh;
-
 
 /*
  * type 1 = square
@@ -67,6 +75,10 @@ typedef struct s_obj
 	bool		visible;
 	t_texture	*texture;
 	t_mesh		*mesh;
+
+
+	t_vec3	aabb_min;
+	t_vec3	aabb_max;
 }	t_obj;
 
 /*

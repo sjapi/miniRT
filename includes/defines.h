@@ -104,4 +104,6 @@
 # define CAMERA_MODE 2
 # define LIGHT_MODE 3
 
+#define INV_2PI (1.0f / (2.0f * M_PI))
+#define INV_PI (1.0f / M_PI)
 #endif

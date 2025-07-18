@@ -82,8 +82,8 @@ static	t_color	compute_object_color(t_hit *hit)
 	t_vec3 p = v_sub(hit->hit_point, hit->obj->center);
 	float radius = hit->obj->attrs[SPHERE_D_I];
 
-	u = 0.5 + atan2(p.z, p.x) / (2 * M_PI);
-	v = 0.5 - asin(p.y / radius) / M_PI;
+	u = 0.5 + atan2(p.z, p.x) * INV_2PI;
+	v = 0.5 - asin(p.y / radius) * INV_PI;
 
 	sx = clamp((int)(u * hit->obj->texture->width), 0, hit->obj->texture->width - 1);
 	sy = clamp((int)(v * hit->obj->texture->height), 0, hit->obj->texture->height - 1);

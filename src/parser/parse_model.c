@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <math.h>
 #include "get_next_line.h"
 #include "parser.h"
 #include "utils.h"
@@ -24,7 +25,7 @@ static bool	get_model_size(char *file_name, int *p_size, int *m_size)
 		if (ft_strncmp(line, "p ", 2) == 0)
 			(*p_size)++;
 		else if (ft_strncmp(line, "t ", 2) == 0)
-			(*m_size) += 3;
+			(*m_size)++;
 		else if (*line && *line != '\n')
 			return (false);
 		free(pline);
@@ -36,52 +37,59 @@ static bool	get_model_size(char *file_name, int *p_size, int *m_size)
 	return (true);
 }
 
-static	bool get_point(char *data, t_vec3 *p)
+static	bool get_point(char *data, t_vec3 *p, t_vec3 *center)
 {
 	if (!is_correct_coordinate(data))
 		return (false);
-	p->x = ft_atof(data);
+	p->x = ft_atof(data) + center->x;
 	while (*data && *data != ',')
 		data++;
 	data++;
-	p->y = ft_atof(data);
+	p->y = ft_atof(data) + center->y;
 	while (*data && *data != ',')
 		data++;
 	data++;
-	p->z = ft_atof(data);
+	p->z = ft_atof(data) + center->z;
 	return (true);
-	
 }
 
-static	bool get_triangle(char *data, int *triangle, int i)
+static	bool get_triangle(char *data, t_tri *triangle, t_obj *model)
 {
+	t_vec3	*points;
+	int	i;
+
+	points = model->mesh->points;
 	if (!is_correct_coordinate(data))
 		return (false);
-	triangle[i] = ft_atoi(data);
-	printf("%d ", triangle[i]);
+	i = ft_atoi(data);
+	triangle->v0 = &points[i];
 	while (*data && *data != ',')
 		data++;
 	data++;
-	triangle[i + 1] = ft_atoi(data);
-	printf("%d ", triangle[i + 1]);
+	i = ft_atoi(data);
+	triangle->v1 = &points[i];
 	while (*data && *data != ',')
 		data++;
 	data++;
-	triangle[i + 2] = ft_atoi(data);
-	printf("%d\n", triangle[i + 2]);
+	i = ft_atoi(data);
+	triangle->v2 = &points[i];
+
+	triangle->edge1 = v_sub(*triangle->v1, *triangle->v0);
+	triangle->edge2 = v_sub(*triangle->v2, *triangle->v0);	
 	return (true);
-	
 }
 
-bool	load_model(int	fd, t_mesh *mesh)
+bool	load_model(int	fd, t_obj *model)
 {
 	char	*line;
 	char	*pline;
+	t_mesh	*mesh;
 	int	p_index;
 	int	t_index;
 
 	p_index = 0;
 	t_index = 0;
+	mesh = model->mesh;
 	line = get_next_line(fd);
 	while (line)
 	{
@@ -90,16 +98,16 @@ bool	load_model(int	fd, t_mesh *mesh)
 		if (ft_strncmp(line, "p ", 2) == 0)
 		{
 			next_info(&line);
-			if (!get_point(line, &mesh->points[p_index]))
+			if (!get_point(line, &mesh->points[p_index], &model->center))
 				return (free(pline), false);
 			p_index++;
 		}
 		else if (ft_strncmp(line, "t ", 2) == 0)
 		{
 			next_info(&line);
-			if (!get_triangle(line, mesh->triangles, t_index))
+			if (!get_triangle(line, &mesh->triangles[t_index], model))
 				return (free(pline), false);
-			t_index += 3;
+			t_index++;
 		}
 		next_info(&line);
 		if (*line && *line != '\n')
@@ -109,6 +117,41 @@ bool	load_model(int	fd, t_mesh *mesh)
 	}
 	return (true);
 }
+
+static void compute_model_aabb(t_obj *model)
+{
+    if (!model || !model->mesh || model->mesh->size <= 0)
+        return;
+
+    t_vec3 min = { INFINITY, INFINITY, INFINITY };
+    t_vec3 max = { -INFINITY, -INFINITY, -INFINITY };
+
+    for (int i = 0; i < model->mesh->size; ++i)
+    {
+        t_tri *tri = &model->mesh->triangles[i];
+
+        t_vec3 points[3] = { *tri->v0, *tri->v1, *tri->v2 };
+        for (int j = 0; j < 3; ++j)
+        {
+            t_vec3 p = points[j];
+
+            if (p.x < min.x) min.x = p.x;
+            if (p.y < min.y) min.y = p.y;
+            if (p.z < min.z) min.z = p.z;
+
+            if (p.x > max.x) max.x = p.x;
+            if (p.y > max.y) max.y = p.y;
+            if (p.z > max.z) max.z = p.z;
+        }
+    }
+
+    min.y -= 0.01;
+    if (min.y == max.y)
+	    min.y -= 0.001f;
+    model->aabb_min = min;
+    model->aabb_max = max;
+}
+
 
 bool	parse_model(char *model_data, t_obj *model)
 {
@@ -131,13 +174,13 @@ bool	parse_model(char *model_data, t_obj *model)
 		return (print_err("File not exitsts or permission error"));
 	if (!get_model_size(file_name, &p_size, &model->mesh->size))
 		return (print_err(".obj file contains invalid symbols"));
-	model->mesh->triangles = malloc(sizeof(int) * model->mesh->size);
+	model->mesh->triangles = malloc(sizeof(t_tri) * model->mesh->size);
 	if (!model->mesh->triangles)
 		return (print_err("Can't allocate memory"));
 	model->mesh->points = malloc(sizeof(t_vec3) * p_size);
 	if (!model->mesh->points)
 		return (print_err("Can't allocate memory"));	
-	if (!load_model(fd, model->mesh))
+	if (!load_model(fd, model))
 		return (close(fd), print_err("Can't load the model"));
 	next_info(&model_data);
 	if (!get_color(model_data, &model->color))
@@ -146,5 +189,6 @@ bool	parse_model(char *model_data, t_obj *model)
 	if (*model_data && *model_data != '\n')
 		return (free_obj(model), print_err("Model has invalid data"));
 	close(fd);
+	compute_model_aabb(model);
 	return (true);
 }

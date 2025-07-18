@@ -46,13 +46,13 @@ bool translate_cam(t_cam *cam, int key)
 
 bool	rotate_cam(t_cam *cam, int key)
 {
-	if (key == KEY_H)
+	if (key == KEY_H || key == 65361)
 		cam->yaw -= 0.1;
-	else if (key == KEY_L)
+	else if (key == KEY_L || key == 65363)
 		cam->yaw += 0.1;
-	else if (key == KEY_J)
+	else if (key == KEY_J || key == 65362)
 		cam->pitch += 0.1;
-	else if (key == KEY_K)
+	else if (key == KEY_K || key == 65364)
 		cam->pitch -= 0.1;
 	else
 		return (false);

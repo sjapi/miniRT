@@ -17,13 +17,44 @@
 #include "renderer.h"
 #include "defines.h"
 
-bool is_hitable(t_ray *ray, t_obj *obj)
+static bool is_hitable(t_ray *ray, t_obj *obj)
 {
     t_vec3 oc = v_sub(ray->origin, obj->center);
     float half_b = v_dot(oc, ray->direction);
     float c = v_dot(oc, oc) - obj->bounding_r * obj->bounding_r;
     return (half_b * half_b >= c);
 }
+
+
+static bool is_hitable_aabb(t_ray *ray, t_vec3 *box_min, t_vec3 *box_max)
+{
+    float tmin = -INFINITY;
+    float tmax = INFINITY;
+
+    for (int i = 0; i < 3; i++)
+    {
+        float invD = 1.0f / ((&ray->direction.x)[i]);
+        float t0 = (((&box_min->x)[i]) - ((&ray->origin.x)[i])) * invD;
+        float t1 = (((&box_max->x)[i]) - ((&ray->origin.x)[i])) * invD;
+
+        if (invD < 0.0f)
+        {
+            float tmp = t0;
+            t0 = t1;
+            t1 = tmp;
+        }
+
+        if (t0 > tmin)
+            tmin = t0;
+        if (t1 < tmax)
+            tmax = t1;
+
+        if (tmax <= tmin)
+            return false;
+    }
+    return true;
+}
+
 
 /*
  * need to add normal for cylinder - done
@@ -44,8 +75,10 @@ bool	find_hit(t_ray *ray, t_rt *info, t_hit *hit, bool shadow_hit)
     {
         t = -1.0f;
         obj = &info->scene->objs[i];
-		if ((obj->type == CYLINDER || obj->type == CONE) && !is_hitable(ray, obj))
-			continue ;
+	if ((obj->type == SPHERE || obj->type == CYLINDER || obj->type == MODEL) && !is_hitable_aabb(ray, &obj->aabb_min, &obj->aabb_max))
+		continue;
+	if ((obj->type == CONE) && !is_hitable(ray, obj))
+		continue ;
         if (obj->type == PLANE)
             t = intersect_plane(ray, obj, &tmp_reverse);
         else if (obj->type == SPHERE)

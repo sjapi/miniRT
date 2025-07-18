@@ -183,5 +183,5 @@ bool	parse_float(char **str, int *digits)
 		(*digits)++;
 		(*str)++;
 	}
-	return (*digits > 0);
+	return (*digits > 0 && *digits < 10);
 }
