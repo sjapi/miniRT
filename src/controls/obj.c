@@ -6,12 +6,13 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 17:57:47 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/15 18:43:04 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/18 15:53:44 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 #include "defines.h"
+#include "utils.h"
 #include <math.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -67,5 +68,53 @@ bool	rotate_obj(t_obj *obj, int key)
 	else
 		return (false);
 	obj->norm_vector = res;
+	return (true);
+}
+
+static void adjust_attr(float *attr, float delta)
+{
+	*attr = clampf(*attr + delta, 0.1f, 1e9f);
+}
+
+bool resize_obj(t_obj *obj, int key)
+{
+	if (obj->type == SPHERE)
+	{
+		if (key == KEY_RIGHT)
+			adjust_attr(&obj->attrs[SPHERE_D_I], +0.1f);
+		else if (key == KEY_LEFT)
+			adjust_attr(&obj->attrs[SPHERE_D_I], -0.1f);
+		else
+			return (false);
+	}
+	else if (obj->type == CYLINDER)
+	{
+		if (key == KEY_RIGHT)
+			adjust_attr(&obj->attrs[CYLINDER_D_I], +0.1f);
+		else if (key == KEY_LEFT)
+			adjust_attr(&obj->attrs[CYLINDER_D_I], -0.1f);
+		else if (key == KEY_TOP)
+			adjust_attr(&obj->attrs[CYLINDER_H_I], +0.1f);
+		else if (key == KEY_BOTTOM)
+			adjust_attr(&obj->attrs[CYLINDER_H_I], -0.1f);
+		else
+			return (false);
+	}
+	else if (obj->type == CONE)
+	{
+		if (key == KEY_RIGHT)
+			obj->attrs[CONE_A_I] = clampf(obj->attrs[CONE_A_I] - 1, 1, 179);
+		else if (key == KEY_LEFT)
+			obj->attrs[CONE_A_I] = clampf(obj->attrs[CONE_A_I] + 1, 1, 179);
+		else if (key == KEY_TOP)
+			adjust_attr(&obj->attrs[CONE_H_I], +0.1f);
+		else if (key == KEY_BOTTOM)
+			adjust_attr(&obj->attrs[CONE_H_I], -0.1f);
+		else
+			return (false);
+	}
+	else
+		return (false);
+	calculate_bounding(obj);
 	return (true);
 }

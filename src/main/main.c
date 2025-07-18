@@ -200,6 +200,7 @@ static int	handle_key_hooks(int key, t_rt *info)
 	t_cam	*cam;
 	bool	render;
 	
+	printf("key %d\n", key);
 	cam = info->scene->cam;
 	if (key == KEY_ESC)
 		return (destroy(info), 0);
@@ -263,8 +264,6 @@ int	main(int argc, char **argv)
 		return (printf("miniRT: wrong arguments count\n"), 1);
 	if (!init_info(&info, argv[1]))
 		return (1);
-	init_optimization(&info);
-	print_scene(info.scene);
 	render_scene(&info);
 	mlx_hook(info.win, 2, 1L >> 0, handle_key_hooks, &info);
 	mlx_mouse_hook(info.win, handle_mouse_hook, &info);

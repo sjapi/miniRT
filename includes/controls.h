@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 14:57:20 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/15 18:41:46 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/18 14:51:13 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,6 @@ bool	translate_obj(t_obj *obj, int key);
 bool	translate_cam(t_cam *cam, int key);
 bool	rotate_obj(t_obj *obj, int key);
 bool	rotate_cam(t_cam *cam, int key);
+bool	resize_obj(t_obj *obj, int key);
 
 #endif

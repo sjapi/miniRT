@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 14:54:45 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/15 18:40:08 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/18 15:08:53 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,13 @@ bool	handle_other_keys(int key, t_rt *info)
 	else if (key == KEY_C && info->mode == CAMERA_MODE)
 	{
 		info->mode = RENDER_MODE;
+	}
+	else if (key == KEY_RIGHT || key == KEY_LEFT || key == KEY_TOP || key == KEY_BOTTOM)
+	{
+		if (info->mode == OBJECT_MODE && info->scene->selected != NULL)
+		{
+			resize_obj(info->scene->selected, key);
+		}
 	}
 	else
 	{
