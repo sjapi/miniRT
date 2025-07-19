@@ -14,6 +14,7 @@ RESET = \033[0m
 
 MAIN = \
 	main.c optimization.c \
+	free.c
 
 PARSER = \
 	parser.c parser_utils.c parser_tools.c \

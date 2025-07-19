@@ -20,99 +20,6 @@
 #include "renderer.h"
 #include "utils.h"
 #include "controls.h"
-// ========================================================================
-
-void print_point(t_vec3 p)
-{
-    printf("(%.2f, %.2f, %.2f)", p.x, p.y, p.z);
-}
-
-void print_scene(t_scene *scene)
-{
-    // Ambient light
-    if (scene->amb)
-    {
-        printf("amb: ratio=%.2f color=#%06X\n", scene->amb->ratio, scene->amb->color);
-    }
-
-    // Camera
-    if (scene->cam)
-    {
-        printf("cam: view_point=");
-        print_point(scene->cam->viewpoint);
-        printf(" orient_v=");
-        print_point(scene->cam->orient_v);
-        printf(" fov=%u\n", scene->cam->fov);
-    }
-
-    // Lights
-    for (int i = 0; i < scene->lights_count; i++)
-    {
-        printf("light %d: point=", i + 1);
-        print_point(scene->lights[i].point);
-        printf(" ratio=%.2f color=#%06X\n", scene->lights[i].ratio, scene->lights[i].color);
-    }
-    // Objects
-    for (int i = 0; i < scene->objs_count; i++)
-    {
-        t_obj *obj = &scene->objs[i];
-        printf("obj %d: ", i + 1);
-		if (obj->type != MODEL)
-		{
-				switch (obj->type)
-				{
-					case 1: printf("square"); break;
-					case 2: printf("sphere"); break;
-					case 3: printf("plane"); break;
-					case 4: printf("cylinder"); break;
-					case 5: printf("cone"); break;
-					default: printf("unknown"); break;
-				}
-				printf(" center=");
-				print_point(obj->center);
-				printf(" color=#%06X", obj->color);
-				if (obj->type != 2) // not sphere -> has norm vector
-				{
-					printf(" norm=");
-					print_point(obj->norm_vector);
-				}
-				if (obj->type == 2 || obj->type == 4)
-					printf(" diameter=%.2f", obj->attrs[SPHERE_D_I]);
-				if (obj->type == 4)
-						printf(" height=%.2f", obj->attrs[CYLINDER_H_I]);
-				printf("\n");
-		}
-		else
-		{
-				t_obj *obj = &scene->objs[i];
-				if (obj->type != MODEL)
-					continue ;
-				int j = 0;
-				printf("%d\n", obj->mesh->size);
-				while (j < obj->mesh->size)
-				{
-					printf("%d ", obj->mesh->triangles[j]);
-					print_point(obj->mesh->points[obj->mesh->triangles[j]]);
-					printf(" ");
-					printf("%d ", obj->mesh->triangles[j + 1]);
-					print_point(obj->mesh->points[obj->mesh->triangles[j + 1]]);
-					printf(" ");
-					printf("%d ", obj->mesh->triangles[j + 2]);
-					print_point(obj->mesh->points[obj->mesh->triangles[j + 2]]);
-					printf("\n");
-					j+=3;
-				}
-				printf("\n");
-		}
-    }
-}
-
-// ========================================================================
-
-static void	free_scene(t_scene *scene)
-{
-	(void)scene;
-}
 
 static void	init_helpers(t_rt *info)
 {
@@ -123,16 +30,11 @@ static void	init_helpers(t_rt *info)
 	cam->pitch = asinf(cam->orient_v.y);
 }
 
-/* MacOS does not have mlx_destoy_display func */
+void	free_rt(t_rt *info);
+
 static int	destroy(t_rt *info)
 {
-	mlx_destroy_image(info->mlx, info->img);
-	mlx_destroy_window(info->mlx, info->win);
-#ifdef __linux__
-	mlx_destroy_display(info->mlx);
-#endif
-	free(info->mlx);
-	free_scene(info->scene);
+	free_rt(info);
 	exit(0);
 }
 
