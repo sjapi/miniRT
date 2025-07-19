@@ -66,18 +66,18 @@ endif
 all: $(MLX_LIB) $(NAME)
 
 $(MLX_LIB):
-	@echo "$(CYAN)⚙️ Building MLX...$(RESET)"
+	@echo "$(RED)⚙️ Building MLX...$(RESET)"
 	@$(MAKE) -C $(MLX_DIR)
 
 $(OBJS_DIR)%.o: $(SRCS_DIR)%.c
 	@mkdir -p $(dir $@)
-	@echo "$(CYAN)[Compiling]$(RESET) $<"
+	@echo "$(RED)[Compiling]$(RESET) $<"
 	@$(CC) $(CFLAGS) -I$(INC_DIR) -I$(MLX_DIR) -c $< -o $@
 
 $(NAME): $(OBJS)
 	@echo "$(YELLOW)🔧 Linking objects...$(RESET)"
 	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LGFLAGS)
-	@echo "$(CYAN)✅ Build complete: ./$(NAME)$(RESET)"
+	@echo "$(RED)✅ Build complete: ./$(NAME)$(RESET)"
 	@sleep 0.07
 	@echo "\033[38;5;226m███╗░░░███╗██╗███╗░░██╗██╗██████╗░████████╗\033[0m"
 	@sleep 0.07
