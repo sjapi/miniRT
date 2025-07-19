@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 18:36:01 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/14 18:41:00 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/19 21:09:47 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 
 static t_optim	*alloc_optim(void)
 {
-	t_optim *optim;
+	t_optim	*optim;
 
 	optim = malloc(sizeof(t_optim));
 	if (!optim)
@@ -85,7 +85,8 @@ static void	optimize_cone(t_obj *cone)
 	t_vec3	apex;
 	float	angle_rad;
 
-	apex = v_add(cone->center, v_scale(cone->norm_vector, cone->attrs[CONE_H_I]));
+	apex = v_add(cone->center,
+			v_scale(cone->norm_vector, cone->attrs[CONE_H_I]));
 	cone->attrs[CONE_AP_X_I] = apex.x;
 	cone->attrs[CONE_AP_Y_I] = apex.y;
 	cone->attrs[CONE_AP_Z_I] = apex.z;
@@ -93,11 +94,6 @@ static void	optimize_cone(t_obj *cone)
 	cone->attrs[CONE_AR_I] = angle_rad;
 	cone->attrs[CONE_TAN2] = tanf(angle_rad) * tanf(angle_rad);
 	cone->attrs[CONE_COS2] = cosf(angle_rad) * cosf(angle_rad);
-}
-
-static void	optimize_cylinder(t_obj *cylinder)
-{
-	(void)cylinder;
 }
 
 static void	optimize_objs(t_rt *info)
@@ -111,8 +107,6 @@ static void	optimize_objs(t_rt *info)
 		obj = &info->scene->objs[i];
 		if (obj->type == CONE)
 			optimize_cone(obj);
-		else if (obj->type == CYLINDER)
-			optimize_cylinder(obj);
 		else if (obj->type == SPHERE)
 			obj->attrs[SPHERE_R_I] = obj->attrs[SPHERE_D_I] * 0.5;
 		i++;
@@ -121,7 +115,7 @@ static void	optimize_objs(t_rt *info)
 
 static void	optimize_cam_basis(t_cam *cam)
 {
-	t_vec3  world_up;
+	t_vec3	world_up;
 
 	if (fabsf(cam->orient_v.x) < 1e-6 && fabsf(cam->orient_v.z) < 1e-6)
 		world_up = (t_vec3){0, 0, 1};
@@ -133,7 +127,7 @@ static void	optimize_cam_basis(t_cam *cam)
 
 bool	init_optimization(t_rt *info)
 {
-	t_optim *optim;
+	t_optim	*optim;
 
 	optim = alloc_optim();
 	if (!optim)

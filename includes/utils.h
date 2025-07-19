@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:23:26 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/19 20:52:05 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/19 21:03:58 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,7 @@ float		clampf(float val, float min, float max);
 float	get_nx(int x, float aspect_ratio, float tan_fov);
 float	get_ny(int y, float aspect_ratio);
 void	calculate_bounding(t_obj *obj);
+
+long	current_time(void);
 
 #endif

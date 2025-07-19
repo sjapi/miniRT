@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 19:43:16 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/19 19:58:14 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/19 21:11:44 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ static void	free_texture(t_texture *t)
 {
 	free(t->mlx);
 	free(t->file_name);
-//	free(t->data);
 	free(t);
 }
 
@@ -63,12 +62,8 @@ void	free_rt(t_rt *info)
 	free(info->optim->viewport_y);
 	free(info->optim);
 	free_scene(info->scene);
-
-//	free(info->addr);
 	mlx_destroy_image(info->mlx, info->img);
 	mlx_destroy_window(info->mlx, info->win);
-#ifdef __linux__
 	mlx_destroy_display(info->mlx);
-#endif
 	free(info->mlx);
 }

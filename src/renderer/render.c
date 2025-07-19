@@ -17,16 +17,6 @@
 #include <math.h>
 #include <sys/time.h>
 
-// ============== TESTING =============
-long	current_time(void)
-{
-	struct timeval	tv;
-
-	gettimeofday(&tv, NULL);
-	return ((tv.tv_sec * 1000L) + (tv.tv_usec / 1000));
-}
-// ====================================
-
 static	void	compute_specular(t_color *final, t_hit *primary_hit, t_ray *shadow_ray, t_light	*light, t_cam *cam) 
 {
 	float	specular;
@@ -179,8 +169,7 @@ static t_color	compute_color(t_hit *p_hit, t_rt *info)
 	return (color_clamp(total_color));
 }
 
-/* refactored */
-static t_color	get_color(t_hit *hit, t_ray *ray, t_rt *info)
+static t_color	manage_hit(t_hit *hit, t_ray *ray, t_rt *info)
 {
 	t_color	result;
 
@@ -208,7 +197,7 @@ static int	render_pixel_full(int x, int y, t_rt *info)
 	i = -1;
 	while (++i < 4)
 	{
-		color = get_color(&hit, &rays[i], info);
+		color = manage_hit(&hit, &rays[i], info);
 		result = color_add(result, color);
 	}
 	result = color_clamp(color_avg(result, 4));
@@ -224,7 +213,7 @@ static int	render_pixel_light(int x, int y, t_rt *info)
 	int		i;
 
 	init_ray(&ray, info, x, y);
-	result = get_color(&hit, &ray, info);
+	result = manage_hit(&hit, &ray, info);
 	img_put_pixel_safe(info, x, y, color_to_int(result));
 	img_put_pixel_safe(info, x + 1, y, color_to_int(result));
 	img_put_pixel_safe(info, x, y + 1, color_to_int(result));
