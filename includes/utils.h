@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:23:26 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/18 15:41:08 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/19 21:03:58 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ t_color		int_to_color(int icolor);
 int			color_to_int(t_color color);
 t_color		color_add(t_color a, t_color b);
 t_color		color_clamp(t_color c);
+t_color		color_avg(t_color c, int count);
 
 /* other */
 int			clamp(int val, int min, int max);
@@ -61,5 +62,7 @@ float		clampf(float val, float min, float max);
 float	get_nx(int x, float aspect_ratio, float tan_fov);
 float	get_ny(int y, float aspect_ratio);
 void	calculate_bounding(t_obj *obj);
+
+long	current_time(void);
 
 #endif

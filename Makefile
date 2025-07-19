@@ -14,6 +14,7 @@ RESET = \033[0m
 
 MAIN = \
 	main.c optimization.c \
+	free.c
 
 PARSER = \
 	parser.c parser_utils.c parser_tools.c \
@@ -23,7 +24,7 @@ PARSER = \
 UTILS = \
 	vector.c ambient.c ft_atof.c ft_atoi.c \
 	ft_memcpy.c color.c clamp.c ft_calloc.c \
-	ft_bzero.c ft_abs.c
+	ft_bzero.c ft_abs.c time.c
 
 UTILS_STRING = \
 	ft_strlen.c ft_strcmp.c
@@ -66,18 +67,18 @@ endif
 all: $(MLX_LIB) $(NAME)
 
 $(MLX_LIB):
-	@echo "$(CYAN)⚙️ Building MLX...$(RESET)"
+	@echo "$(RED)⚙️ Building MLX...$(RESET)"
 	@$(MAKE) -C $(MLX_DIR)
 
 $(OBJS_DIR)%.o: $(SRCS_DIR)%.c
 	@mkdir -p $(dir $@)
-	@echo "$(CYAN)[Compiling]$(RESET) $<"
+	@echo "$(RED)[Compiling]$(RESET) $<"
 	@$(CC) $(CFLAGS) -I$(INC_DIR) -I$(MLX_DIR) -c $< -o $@
 
 $(NAME): $(OBJS)
 	@echo "$(YELLOW)🔧 Linking objects...$(RESET)"
 	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LGFLAGS)
-	@echo "$(CYAN)✅ Build complete: ./$(NAME)$(RESET)"
+	@echo "$(RED)✅ Build complete: ./$(NAME)$(RESET)"
 	@sleep 0.07
 	@echo "\033[38;5;226m███╗░░░███╗██╗███╗░░██╗██╗██████╗░████████╗\033[0m"
 	@sleep 0.07

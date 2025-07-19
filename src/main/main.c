@@ -4,8 +4,9 @@
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
-/*   Created: 2025/07/01 16:20:31 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/08 16:56:38 by haaghaja         ###   ########.fr       */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/19 21:06:54 by azolotar          #+#    #+#             */
+/*   Updated: 2025/07/19 21:07:18 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,16 +121,11 @@ static void	init_helpers(t_rt *info)
 	cam->pitch = asinf(cam->orient_v.y);
 }
 
-/* MacOS does not have mlx_destoy_display func */
+void	free_rt(t_rt *info);
+
 static int	destroy(t_rt *info)
 {
-	mlx_destroy_image(info->mlx, info->img);
-	mlx_destroy_window(info->mlx, info->win);
-#ifdef __linux__
-	mlx_destroy_display(info->mlx);
-#endif
-	free(info->mlx);
-	free_scene(info->scene);
+	free_rt(info);
 	exit(0);
 }
 
@@ -165,7 +161,6 @@ static bool	init_info(t_rt *info, char *file_name)
 		&info->scene->skybox->endian
 	);
 	info->scene->skybox->bpp = info->scene->skybox->bpp/ 8;
-	info->bpp = info->bpp/8;
 	// ===================  OBJ ========================
 	int	i = -1;
 	while (i++ < info->scene->objs_count)
@@ -197,26 +192,26 @@ static bool	init_info(t_rt *info, char *file_name)
 static int	handle_key_hooks(int key, t_rt *info)
 {
 	t_cam	*cam;
-	bool	render;
+	bool	rerender;
 	
 	printf("key %d\n", key);
 	cam = info->scene->cam;
 	if (key == KEY_ESC)
 		return (destroy(info), 0);
 	else if (key == KEY_Q || key == KEY_W || key == KEY_E || key == KEY_S || key == KEY_A || key == KEY_D)
-		render = handle_qweasd(key, info);
+		rerender = handle_qweasd(key, info);
 	else if (key == KEY_H || key == KEY_J || key == KEY_K || key == KEY_L)
-		render = handle_hjkl(key, info);
+		rerender = handle_hjkl(key, info);
 	else if (key == 65361 || key == 65362 || key == 65364 || key == 65363)
-		render = handle_hjkl(key, info);
+		rerender = handle_hjkl(key, info);
 	else if (key == KEY_MINUS || key == KEY_PLUS)
-		render = handle_plus_minus(key, info);
+		rerender = handle_plus_minus(key, info);
 	else if (key == KEY_X || key == KEY_Y || key == KEY_Z)
-		render = handle_xyz(key, info);
+		rerender = handle_xyz(key, info);
 	else
-		render = handle_other_keys(key, info);
-	if (render)
-		render_scene(info);
+		rerender = handle_other_keys(key, info);
+	if (rerender)
+		render(info);
 	return (0);
 }
 
@@ -253,7 +248,7 @@ int	handle_mouse_hook(int button, int x, int y, t_rt *info)
 			info->mode = RENDER_MODE;
 		}
 	}
-	render_scene(info);
+	render(info);
 	return (0);
 }
 
@@ -265,7 +260,7 @@ int	main(int argc, char **argv)
 		return (printf("miniRT: wrong arguments count\n"), 1);
 	if (!init_info(&info, argv[1]))
 		return (1);
-	render_scene(&info);
+	render(&info);
 	mlx_hook(info.win, 2, 1L >> 0, handle_key_hooks, &info);
 	mlx_mouse_hook(info.win, handle_mouse_hook, &info);
 	mlx_hook(info.win, 17, 0, destroy, &info);

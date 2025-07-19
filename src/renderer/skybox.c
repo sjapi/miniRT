@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 15:47:52 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/11 21:54:09 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/19 20:36:30 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "utils.h"
 #include "defines.h"
 
-int draw_skybox(t_rt *info, t_ray *ray)
+t_color	draw_skybox(t_rt *info, t_ray *ray)
 {
 	t_scene	*scene;
 	t_vec3	dir;
@@ -41,5 +41,5 @@ int draw_skybox(t_rt *info, t_ray *ray)
 	sy = clamp(sy, 0, scene->skybox->height - 1);
 	pixel = scene->skybox->data + sy * scene->skybox->line_length + sx * (scene->skybox->bpp);
 	color = *(int *)pixel;
-	return (color);
+	return (int_to_color(color));
 }

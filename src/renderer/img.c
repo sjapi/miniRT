@@ -24,7 +24,7 @@ void	img_put_pixel_safe(t_rt *info, int x, int y, int color)
 	if (y < 0 || y >= WIN_HEIGHT)
 		return ;
 	*/
-	pixel = info->addr + (info->line_len * y + x * (info->bpp));
+	pixel = info->addr + (info->line_len * y + x * (info->bpp/8));
 	*(int *)pixel = color;
 }
 

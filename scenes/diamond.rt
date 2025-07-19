@@ -1,5 +1,5 @@
 A 0.4 255,255,255
 C 0,0,-3 0,0,1 80
 L 1,3,0 0.9 255,255,255
-S skybox.xpm
+S xpms/skybox.xpm
 obj 0,0,0 objects/diamond.obj 50,50,255
