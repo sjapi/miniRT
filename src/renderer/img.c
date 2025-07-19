@@ -18,12 +18,13 @@
 void	img_put_pixel_safe(t_rt *info, int x, int y, int color)
 {
 	char	*pixel;
-
+	/*
 	if (x < 0 || x >= WIN_WIDTH)
 		return ;
 	if (y < 0 || y >= WIN_HEIGHT)
 		return ;
-	pixel = info->addr + (info->line_len * y + x * (info->bpp / 8));
+	*/
+	pixel = info->addr + (info->line_len * y + x * (info->bpp));
 	*(int *)pixel = color;
 }
 

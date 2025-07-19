@@ -39,7 +39,7 @@ int draw_skybox(t_rt *info, t_ray *ray)
 	sy = (int)(v * scene->skybox->height);
 	sx = clamp(sx, 0, scene->skybox->width - 1);
 	sy = clamp(sy, 0, scene->skybox->height - 1);
-	pixel = scene->skybox->data + sy * scene->skybox->line_length + sx * (scene->skybox->bpp / 8);
+	pixel = scene->skybox->data + sy * scene->skybox->line_length + sx * (scene->skybox->bpp);
 	color = *(int *)pixel;
 	return (color);
 }

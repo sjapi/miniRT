@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 14:54:45 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/15 18:40:08 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/18 16:29:31 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,18 @@ bool	handle_qweasd(int key, t_rt *info)
 {
 	t_obj	*obj;
 
-	obj = info->scene->selected;
 	if (info->mode == OBJECT_MODE && obj != NULL)
 	{
+		obj = info->scene->selected;
 		return (translate_obj(obj, key));
 	}
 	else if (info->mode == CAMERA_MODE)
 	{
 		return (translate_cam(info->scene->cam, key));
+	}
+	else if (info->mode == LIGHT_MODE)
+	{
+		return (translate_lights(info->scene->lights, info->scene->lights_count, key));
 	}
 	else
 	{
@@ -38,7 +42,17 @@ bool	handle_qweasd(int key, t_rt *info)
 
 bool	handle_hjkl(int key, t_rt *info)
 {
-	if (info->mode == CAMERA_MODE)
+	if (info->mode == RENDER_MODE && key == KEY_L)
+	{
+		info->mode = LIGHT_MODE;
+		return (true);
+	}
+	else if (info->mode == LIGHT_MODE && key == KEY_L)
+	{
+		info->mode = RENDER_MODE;
+		return (true);
+	}
+	else if (info->mode == CAMERA_MODE)
 	{
 		return (rotate_cam(info->scene->cam, key));
 	}
@@ -111,6 +125,13 @@ bool	handle_other_keys(int key, t_rt *info)
 	else if (key == KEY_C && info->mode == CAMERA_MODE)
 	{
 		info->mode = RENDER_MODE;
+	}
+	else if (key == KEY_RIGHT || key == KEY_LEFT || key == KEY_TOP || key == KEY_BOTTOM)
+	{
+		if (info->mode == OBJECT_MODE && info->scene->selected != NULL)
+		{
+			resize_obj(info->scene->selected, key);
+		}
 	}
 	else
 	{
