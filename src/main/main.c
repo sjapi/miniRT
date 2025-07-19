@@ -100,24 +100,24 @@ static bool	init_info(t_rt *info, char *file_name)
 static int	handle_key_hooks(int key, t_rt *info)
 {
 	t_cam	*cam;
-	bool	render;
+	bool	rerender;
 	
 	printf("key %d\n", key);
 	cam = info->scene->cam;
 	if (key == KEY_ESC)
 		return (destroy(info), 0);
 	else if (key == KEY_Q || key == KEY_W || key == KEY_E || key == KEY_S || key == KEY_A || key == KEY_D)
-		render = handle_qweasd(key, info);
+		rerender = handle_qweasd(key, info);
 	else if (key == KEY_H || key == KEY_J || key == KEY_K || key == KEY_L)
-		render = handle_hjkl(key, info);
+		rerender = handle_hjkl(key, info);
 	else if (key == KEY_MINUS || key == KEY_PLUS)
-		render = handle_plus_minus(key, info);
+		rerender = handle_plus_minus(key, info);
 	else if (key == KEY_X || key == KEY_Y || key == KEY_Z)
-		render = handle_xyz(key, info);
+		rerender = handle_xyz(key, info);
 	else
-		render = handle_other_keys(key, info);
-	if (render)
-		render_scene(info);
+		rerender = handle_other_keys(key, info);
+	if (rerender)
+		render(info);
 	return (0);
 }
 
@@ -154,7 +154,7 @@ int	handle_mouse_hook(int button, int x, int y, t_rt *info)
 			info->mode = RENDER_MODE;
 		}
 	}
-	render_scene(info);
+	render(info);
 	return (0);
 }
 
@@ -166,7 +166,7 @@ int	main(int argc, char **argv)
 		return (printf("miniRT: wrong arguments count\n"), 1);
 	if (!init_info(&info, argv[1]))
 		return (1);
-	render_scene(&info);
+	render(&info);
 	mlx_hook(info.win, 2, 1L >> 0, handle_key_hooks, &info);
 	mlx_mouse_hook(info.win, handle_mouse_hook, &info);
 	mlx_hook(info.win, 17, 0, destroy, &info);

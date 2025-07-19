@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:51:00 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/17 15:07:05 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/19 20:40:06 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define RENDERER_H
 
 # include "minirt.h"
+# include "utils.h"
 # include <stdbool.h>
 
 /*
@@ -48,7 +49,7 @@ typedef struct	s_hit
 bool	init_optimization(t_rt *info);
 
 /* render.c */
-void	render_scene(t_rt *info);
+void	render(t_rt *info);
 
 /* draw.c */
 void	img_put_pixel_safe(t_rt *info, int x, int y, int color);
@@ -56,10 +57,11 @@ void	img_draw_line(t_rt *info, t_vec3 a, t_vec3 b, int color);
 void	draw_xyz_axis(t_rt *info);
 
 /* skybox.c */
-int		draw_skybox(t_rt *info, t_ray *ray);
+t_color	draw_skybox(t_rt *info, t_ray *ray);
 
 /* ray.c */
 void	init_ray(t_ray *ray, t_rt *info, int x, int y);
+void	init_rays_msaa(t_ray rays[4], t_rt *info, int x, int y);
 
 t_vec3	get_ray_dir(float nx, float ny, t_cam *cam);
 
