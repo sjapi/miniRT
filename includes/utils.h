@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:23:26 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/19 21:03:58 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/20 16:52:48 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,6 @@ float	get_ny(int y, float aspect_ratio);
 void	calculate_bounding(t_obj *obj);
 
 long	current_time(void);
+bool	match(int val, int *arr, int len);
 
 #endif

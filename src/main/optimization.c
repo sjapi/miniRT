@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 18:36:01 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/19 21:09:47 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/20 17:10:48 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,24 +41,6 @@ static t_optim	*alloc_optim(void)
 	return (optim);
 }
 
-float	get_nx(int x, float aspect_ratio, float tan_fov)
-{
-	float	nx;
-
-	nx = (float)(x + 0.5) / (float)WIN_WIDTH;
-	nx = (2.0 * nx - 1.0) * aspect_ratio * tan_fov;
-	return (nx);
-}
-
-float	get_ny(int y, float tan_fov)
-{
-	float	ny;
-
-	ny = (float)(y + 0.5) / (float)WIN_HEIGHT;
-	ny = (1.0 - 2.0 * ny) * tan_fov;
-	return (ny);
-}
-
 static void	optimize_viewport(t_rt *info, t_optim *optim)
 {
 	float	tan_fov;
@@ -80,36 +62,31 @@ static void	optimize_viewport(t_rt *info, t_optim *optim)
 	}
 }
 
-static void	optimize_cone(t_obj *cone)
-{
-	t_vec3	apex;
-	float	angle_rad;
-
-	apex = v_add(cone->center,
-			v_scale(cone->norm_vector, cone->attrs[CONE_H_I]));
-	cone->attrs[CONE_AP_X_I] = apex.x;
-	cone->attrs[CONE_AP_Y_I] = apex.y;
-	cone->attrs[CONE_AP_Z_I] = apex.z;
-	angle_rad = cone->attrs[CONE_A_I] * M_PI / 180.0;
-	cone->attrs[CONE_AR_I] = angle_rad;
-	cone->attrs[CONE_TAN2] = tanf(angle_rad) * tanf(angle_rad);
-	cone->attrs[CONE_COS2] = cosf(angle_rad) * cosf(angle_rad);
-}
-
 static void	optimize_objs(t_rt *info)
 {
 	int		i;
 	t_obj	*obj;
+	t_vec3	apex;
+	float	angle_rad;
 
-	i = 0;
-	while (i < info->scene->objs_count)
+	i = -1;
+	while (++i < info->scene->objs_count)
 	{
 		obj = &info->scene->objs[i];
 		if (obj->type == CONE)
-			optimize_cone(obj);
+		{
+			apex = v_add(obj->center,
+					v_scale(obj->norm_vector, obj->attrs[CONE_H_I]));
+			obj->attrs[CONE_AP_X_I] = apex.x;
+			obj->attrs[CONE_AP_Y_I] = apex.y;
+			obj->attrs[CONE_AP_Z_I] = apex.z;
+			angle_rad = obj->attrs[CONE_A_I] * M_PI / 180.0;
+			obj->attrs[CONE_AR_I] = angle_rad;
+			obj->attrs[CONE_TAN2] = tanf(angle_rad) * tanf(angle_rad);
+			obj->attrs[CONE_COS2] = cosf(angle_rad) * cosf(angle_rad);
+		}
 		else if (obj->type == SPHERE)
 			obj->attrs[SPHERE_R_I] = obj->attrs[SPHERE_D_I] * 0.5;
-		i++;
 	}
 }
 

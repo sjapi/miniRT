@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 16:16:38 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/16 19:20:45 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/20 16:33:03 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,5 +157,9 @@ typedef struct s_rt
 	t_scene	*scene;
 	char	mode;
 }	t_rt;
+
+void	free_rt(t_rt *info);
+
+bool	init_rt(t_rt *info, char *file_name);
 
 #endif

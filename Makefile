@@ -14,7 +14,7 @@ RESET = \033[0m
 
 MAIN = \
 	main.c optimization.c \
-	free.c
+	free.c init.c
 
 PARSER = \
 	parser.c parser_utils.c parser_tools.c \
@@ -24,7 +24,7 @@ PARSER = \
 UTILS = \
 	vector.c ambient.c ft_atof.c ft_atoi.c \
 	ft_memcpy.c color.c clamp.c ft_calloc.c \
-	ft_bzero.c ft_abs.c time.c
+	ft_bzero.c ft_abs.c time.c utils.c
 
 UTILS_STRING = \
 	ft_strlen.c ft_strcmp.c

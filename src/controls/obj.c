@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 17:57:47 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/18 15:53:44 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/20 16:58:04 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,4 +117,16 @@ bool resize_obj(t_obj *obj, int key)
 		return (false);
 	calculate_bounding(obj);
 	return (true);
+}
+
+void	select_obj(t_obj *obj, t_scene *scene)
+{
+	obj->selected = true;
+	scene->selected = obj;
+}
+
+void	deselect_obj(t_scene *scene)
+{
+	scene->selected->selected = false;
+	scene->selected = NULL;
 }
