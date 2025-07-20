@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 12:12:04 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/19 20:18:19 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/20 13:14:32 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,8 @@ t_color	color_clamp(t_color c)
 
 t_color	color_avg(t_color c, int count)
 {
-	t_color	res;
-
-	res.r /= count;
-	res.g /= count;
-	res.b /= count;
-	return (res);
+	c.r /= count;
+	c.g /= count;
+	c.b /= count;
+	return (c);
 }
