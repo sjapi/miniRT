@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 17:57:47 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/20 19:20:24 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/20 20:01:49 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ bool	rotate_obj(t_obj *obj, int key)
 	else if (key == KEY_Y)
 	{
 		res.x = res.x * cosf(angle) + res.z * sinf(angle);
-		res.z = -v.x * sinf(angle) + res.z * cosf(angle);
+		res.z = -res.x * sinf(angle) + res.z * cosf(angle);
 	}
 	else if (key == KEY_Z)
 	{

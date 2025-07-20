@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:51:00 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/20 18:11:55 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/20 20:15:44 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,5 +93,9 @@ bool	cone_checkerboard(t_vec3 hit_point, t_obj *cone, bool base);
 
 /* info */
 void	draw_info(t_rt *info);
+
+void	compute_specular(t_color *final, t_hit *phit, t_ray *sray, t_light	*l, t_cam *c);
+void	compute_diffuse(t_color *final, t_hit *phit, t_ray *sray, t_light *l, t_color *obj_col);
+t_color	compute_color(t_hit *p_hit, t_rt *info);
 
 #endif

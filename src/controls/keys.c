@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 14:54:45 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/20 19:17:50 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/20 20:07:55 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,22 +105,25 @@ bool	handle_other_keys(int key, t_rt *info)
 	bool	render;
 
 	render = true;
-	if (info->mode == OBJECT_MODE && info->scene->selected != NULL)
+	printf("in handle funce\n");
+	if (key == KEY_R && info->mode != RENDER_MODE)
 	{
-		if (key == KEY_R && info->mode != RENDER_MODE)
-			info->mode = RENDER_MODE;
-		else if (key == KEY_C && info->mode != CAMERA_MODE)
-			info->mode = CAMERA_MODE;
-		else if (key == KEY_C && info->mode == CAMERA_MODE)
-			info->mode = RENDER_MODE;
-		else if (match(key,
-				(int []){KEY_TOP, KEY_BOTTOM, KEY_LEFT, KEY_RIGHT}, 4))
-		{
-			if (info->mode == OBJECT_MODE && info->scene->selected != NULL)
-				resize_obj(info->scene->selected, key);
-		}
-		else
-			render = false;
+		if (info->mode == OBJECT_MODE && info->scene->selected != NULL)
+			deselect_obj(info->scene);
+		info->mode = RENDER_MODE;
+	}
+	else if (key == KEY_C && info->mode != CAMERA_MODE)
+	{
+		printf("in other mode\n");
+		info->mode = CAMERA_MODE;
+	}
+	else if (key == KEY_C && info->mode == CAMERA_MODE)
+		info->mode = RENDER_MODE;
+	else if (match(key,
+			(int []){KEY_TOP, KEY_BOTTOM, KEY_LEFT, KEY_RIGHT}, 4))
+	{
+		if (info->mode == OBJECT_MODE && info->scene->selected != NULL)
+			resize_obj(info->scene->selected, key);
 	}
 	else
 		render = false;

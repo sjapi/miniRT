@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 21:06:54 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/20 19:13:02 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/20 20:03:11 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,6 @@ static int	handle_key_hooks(int key, t_rt *info)
 		rerender = handle_xyz(key, info);
 	else
 	{
-		
-		printf("here\n");
 		rerender = handle_other_keys(key, info);
 	}
 	if (rerender)
