@@ -42,6 +42,10 @@ CONTROLS = \
 	mouse.c keys.c obj.c \
 	cam.c lights.c
 
+BOUNDING = \
+	bvh.c sort.c calculation.c \
+	bvh_utils.c
+
 SRCS = \
 	$(addprefix $(SRCS_DIR)main/, $(MAIN)) \
 	$(addprefix $(SRCS_DIR)get_next_line/, $(GNL)) \
@@ -49,6 +53,7 @@ SRCS = \
 	$(addprefix $(SRCS_DIR)utils/string/, $(UTILS_STRING)) \
 	$(addprefix $(SRCS_DIR)renderer/, $(RENDERER)) \
 	$(addprefix $(SRCS_DIR)utils/, $(UTILS)) \
+	$(addprefix $(SRCS_DIR)bounding/, $(BOUNDING)) \
 	$(addprefix $(SRCS_DIR)controls/, $(CONTROLS))
 
 OBJS = $(patsubst $(SRCS_DIR)%.c, $(OBJS_DIR)%.o, $(SRCS))

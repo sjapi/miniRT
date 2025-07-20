@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:51:00 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/19 20:40:06 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/20 15:15:51 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct	s_hit
 	char		side;
 	bool		contour;
 	bool		reverse;
+	int			tri_i;
 }	t_hit;
 
 /* optimization */

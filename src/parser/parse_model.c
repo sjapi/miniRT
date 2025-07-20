@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_model.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/20 13:13:39 by haaghaja          #+#    #+#             */
+/*   Updated: 2025/07/20 17:53:42 by haaghaja         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdbool.h>
 #include <stdlib.h>
 #include <fcntl.h>
@@ -8,12 +20,12 @@
 #include "utils.h"
 #include "defines.h"
 
-
 static bool	get_model_size(char *file_name, int *p_size, int *m_size)
 {
-	int	fd;
+	int		fd;
 	char	*line;
 	char	*pline;
+
 	fd = open(file_name, O_RDONLY);
 	*p_size = 0;
 	*m_size = 0;
@@ -37,7 +49,7 @@ static bool	get_model_size(char *file_name, int *p_size, int *m_size)
 	return (true);
 }
 
-static	bool get_point(char *data, t_vec3 *p, t_vec3 *center)
+static bool	get_point(char *data, t_vec3 *p, t_vec3 *center)
 {
 	if (!is_correct_coordinate(data))
 		return (false);
@@ -53,10 +65,10 @@ static	bool get_point(char *data, t_vec3 *p, t_vec3 *center)
 	return (true);
 }
 
-static	bool get_triangle(char *data, t_tri *triangle, t_obj *model)
+static bool	get_triangle(char *data, t_tri *triangle, t_obj *model)
 {
 	t_vec3	*points;
-	int	i;
+	int		i;
 
 	points = model->mesh->points;
 	if (!is_correct_coordinate(data))
@@ -73,19 +85,18 @@ static	bool get_triangle(char *data, t_tri *triangle, t_obj *model)
 	data++;
 	i = ft_atoi(data);
 	triangle->v2 = &points[i];
-
 	triangle->edge1 = v_sub(*triangle->v1, *triangle->v0);
-	triangle->edge2 = v_sub(*triangle->v2, *triangle->v0);	
+	triangle->edge2 = v_sub(*triangle->v2, *triangle->v0);
 	return (true);
 }
 
-bool	load_model(int	fd, t_obj *model)
+bool	load_model(int fd, t_obj *model)
 {
 	char	*line;
 	char	*pline;
 	t_mesh	*mesh;
-	int	p_index;
-	int	t_index;
+	int		p_index;
+	int		t_index;
 
 	p_index = 0;
 	t_index = 0;
@@ -118,47 +129,12 @@ bool	load_model(int	fd, t_obj *model)
 	return (true);
 }
 
-static void compute_model_aabb(t_obj *model)
-{
-    if (!model || !model->mesh || model->mesh->size <= 0)
-        return;
-
-    t_vec3 min = { INFINITY, INFINITY, INFINITY };
-    t_vec3 max = { -INFINITY, -INFINITY, -INFINITY };
-
-    for (int i = 0; i < model->mesh->size; ++i)
-    {
-        t_tri *tri = &model->mesh->triangles[i];
-
-        t_vec3 points[3] = { *tri->v0, *tri->v1, *tri->v2 };
-        for (int j = 0; j < 3; ++j)
-        {
-            t_vec3 p = points[j];
-
-            if (p.x < min.x) min.x = p.x;
-            if (p.y < min.y) min.y = p.y;
-            if (p.z < min.z) min.z = p.z;
-
-            if (p.x > max.x) max.x = p.x;
-            if (p.y > max.y) max.y = p.y;
-            if (p.z > max.z) max.z = p.z;
-        }
-    }
-
-    min.y -= 0.01;
-    if (min.y == max.y)
-	    min.y -= 0.001f;
-    model->aabb_min = min;
-    model->aabb_max = max;
-}
-
-
 bool	parse_model(char *model_data, t_obj *model)
 {
 	char	*file_name;
-	int	fd;
-	int	p_size;
-	
+	int		fd;
+	int		p_size;
+
 	model->type = MODEL;
 	next_info(&model_data);
 	model->mesh = ft_calloc(sizeof(t_mesh), 1);
@@ -179,7 +155,7 @@ bool	parse_model(char *model_data, t_obj *model)
 		return (print_err("Can't allocate memory"));
 	model->mesh->points = malloc(sizeof(t_vec3) * p_size);
 	if (!model->mesh->points)
-		return (print_err("Can't allocate memory"));	
+		return (print_err("Can't allocate memory"));
 	if (!load_model(fd, model))
 		return (close(fd), print_err("Can't load the model"));
 	next_info(&model_data);
@@ -189,6 +165,5 @@ bool	parse_model(char *model_data, t_obj *model)
 	if (*model_data && *model_data != '\n')
 		return (free_obj(model), print_err("Model has invalid data"));
 	close(fd);
-	compute_model_aabb(model);
 	return (true);
 }

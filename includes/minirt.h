@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 16:16:38 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/16 19:20:45 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/20 14:12:58 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define MINIRT_H
 
 #include <stdbool.h>
+
+typedef struct s_bvh_node t_bvh_node;
 
 typedef struct s_vec3
 {
@@ -133,6 +135,7 @@ typedef struct s_scene
 	t_texture	*skybox;
 	int			lights_count;
 	t_obj		*selected;
+	t_bvh_node	*bvh;
 }	t_scene;
 
 typedef struct	s_optim

@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 21:06:54 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/19 21:07:18 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/20 18:56:21 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 #include "renderer.h"
 #include "utils.h"
 #include "controls.h"
+#include "bounding.h"
+
 // ========================================================================
 
 void print_point(t_vec3 p)
@@ -142,8 +144,8 @@ static bool	init_info(t_rt *info, char *file_name)
 	info->img = mlx_new_image(info->mlx, WIN_WIDTH, WIN_HEIGHT);
 	info->addr = mlx_get_data_addr(info->img, &info->bpp, &info->line_len, &info->endian);
 
-	if (!info->scene->skybox)
-		return (true);
+	if (info->scene->skybox)
+	{
 	info->scene->skybox->mlx = mlx_xpm_file_to_image(
 		info->mlx, info->scene->skybox->file_name,
 		&info->scene->skybox->width,
@@ -161,6 +163,7 @@ static bool	init_info(t_rt *info, char *file_name)
 		&info->scene->skybox->endian
 	);
 	info->scene->skybox->bpp = info->scene->skybox->bpp/ 8;
+	}
 	// ===================  OBJ ========================
 	int	i = -1;
 	while (i++ < info->scene->objs_count)
@@ -186,6 +189,8 @@ static bool	init_info(t_rt *info, char *file_name)
 		);
 	}
 	// =================================================
+	info->scene->bvh = build_bvh(info->scene->objs, 0, info->scene->objs_count);
+	printf("DONE\n");
 	return (true);
 }
 
@@ -210,6 +215,11 @@ static int	handle_key_hooks(int key, t_rt *info)
 		rerender = handle_xyz(key, info);
 	else
 		rerender = handle_other_keys(key, info);
+	if (info->mode == OBJECT_MODE)
+	{
+		info->scene->bvh = build_bvh(info->scene->objs, 0, info->scene->objs_count);
+		find_selected(info->scene);
+	}
 	if (rerender)
 		render(info);
 	return (0);
@@ -260,6 +270,7 @@ int	main(int argc, char **argv)
 		return (printf("miniRT: wrong arguments count\n"), 1);
 	if (!init_info(&info, argv[1]))
 		return (1);
+	print_scene(info.scene);
 	render(&info);
 	mlx_hook(info.win, 2, 1L >> 0, handle_key_hooks, &info);
 	mlx_mouse_hook(info.win, handle_mouse_hook, &info);

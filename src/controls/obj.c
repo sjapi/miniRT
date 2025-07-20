@@ -6,13 +6,14 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 17:57:47 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/18 15:53:44 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/20 18:55:36 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 #include "defines.h"
 #include "utils.h"
+#include "bounding.h"
 #include <math.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -36,6 +37,7 @@ bool	translate_obj(t_obj *obj, int key)
 		obj->center.z -= val;
 	else
 		return (false);
+	calculate_aabb(obj);
 	return (true);
 }
 
@@ -68,6 +70,7 @@ bool	rotate_obj(t_obj *obj, int key)
 	else
 		return (false);
 	obj->norm_vector = res;
+	calculate_aabb(obj);
 	return (true);
 }
 
@@ -115,6 +118,6 @@ bool resize_obj(t_obj *obj, int key)
 	}
 	else
 		return (false);
-	calculate_bounding(obj);
+	calculate_aabb(obj);
 	return (true);
 }

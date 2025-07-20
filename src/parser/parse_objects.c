@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 20:21:58 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/17 22:14:11 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/20 18:10:24 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include "parser.h"
 #include "defines.h"
 #include "utils.h"
+#include "bounding.h"
 
 bool	parse_texture(char **obj_data, t_obj *obj)
 {	
@@ -32,7 +33,7 @@ bool	parse_texture(char **obj_data, t_obj *obj)
 	else if (get_file_name(*obj_data, &file_name))
 	{
 		if (!is_valid_file(file_name, ".xpm"))
-			return (print_err("Invalid texture"));
+			return (free(file_name), print_err("Invalid texture"));
 		obj->texture = malloc(sizeof(t_texture));
 		obj->texture->file_name = file_name;
 	}
@@ -81,10 +82,6 @@ bool	parse_sphere(char *sphere_data, t_obj *sphere)
 		return (free_obj(sphere), print_err("Sphere has invalid texture"));
 	if (*sphere_data && *sphere_data != '\n')
 		return (free_obj(sphere), print_err("Sphere has invalid data"));
-	float radius = sphere->attrs[SPHERE_D_I] * 0.5f;
-	t_vec3 r_vec = { radius, radius, radius };
-	sphere->aabb_min = v_sub(sphere->center, r_vec);
-	sphere->aabb_max = v_add(sphere->center, r_vec);
 	return (true);
 }
 
@@ -108,29 +105,6 @@ bool	parse_cylinder(char *cylinder_data, t_obj *cylinder)
 		return (free_obj(cylinder), print_err("Cylinder has invalid texture"));
 	if (next_info(&cylinder_data) && *cylinder_data && *cylinder_data != '\n')
 		return (free_obj(cylinder), print_err("Cylinder has invalid data"));
-	float height = cylinder->attrs[CYLINDER_H_I];
-	float radius = cylinder->attrs[CYLINDER_D_I];
-	t_vec3 axis = v_normalize(cylinder->norm_vector);
-
-	t_vec3 half_height = v_scale(axis, height * 0.5f);
-	t_vec3 top = v_add(cylinder->center, half_height);
-	t_vec3 bottom = v_sub(cylinder->center, half_height);
-
-	t_vec3 min = {
-	fminf(top.x, bottom.x),
-	fminf(top.y, bottom.y),
-	fminf(top.z, bottom.z)
-	};
-
-	t_vec3 max = {
-	fmaxf(top.x, bottom.x),
-	fmaxf(top.y, bottom.y),
-	fmaxf(top.z, bottom.z)
-	};
-
-	t_vec3 r_vec = { radius, radius, radius };
-	cylinder->aabb_min = v_sub(min, r_vec);
-	cylinder->aabb_max = v_add(max, r_vec);
 	return (true);
 }
 
@@ -161,19 +135,6 @@ bool	parse_cone(char *cone_data, t_obj *cone)
 	return (true);
 }
 
-void	calculate_bounding(t_obj *obj)
-{
-		if (obj->type == CYLINDER)
-			obj->bounding_r = sqrt(pow(obj->attrs[CYLINDER_H_I], 2) + pow(obj->attrs[CYLINDER_D_I], 2));
-		else if (obj->type == CONE)
-		{
-			float angle_deg = obj->attrs[CONE_A_I];
-			float height = obj->attrs[CONE_H_I];
-			float radius = height * tanf((angle_deg / 2.0f) * (M_PI / 180.0f));
-			obj->bounding_r = sqrtf(radius * radius + (height * height) / 4.0f)*2;
-		}
-}
-
 bool	parse_obj(char *obj_data, t_scene *scene)
 {
 	t_obj	*obj;
@@ -186,7 +147,7 @@ bool	parse_obj(char *obj_data, t_scene *scene)
 		|| (ft_strncmp(obj_data, "cy ", 3) == 0 && parse_cylinder(obj_data, obj))
 		|| (ft_strncmp(obj_data, "co ", 3) == 0 && parse_cone(obj_data, obj))
 		|| (ft_strncmp(obj_data, "obj ", 4) == 0 && parse_model(obj_data, obj)))
-			return (calculate_bounding(obj), append_obj(scene, obj));
+			return (calculate_aabb(obj), append_obj(scene, obj));
 	//free(obj);
 	// TODO: Remove all stupid frees
 	return (false);
