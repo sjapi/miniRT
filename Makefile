@@ -38,7 +38,7 @@ RENDERER = \
 
 CONTROLS = \
 	mouse.c keys.c obj.c \
-	cam.c lights.c
+	cam.c lights.c helper.c
 
 SRCS = \
 	$(addprefix $(SRCS_DIR)main/, $(MAIN)) \

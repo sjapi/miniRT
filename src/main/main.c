@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 21:06:54 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/20 17:00:49 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/20 19:13:02 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,18 @@ static int	handle_key_hooks(int key, t_rt *info)
 		rerender = handle_qweasd(key, info);
 	else if (match(key, (int []){KEY_H, KEY_J, KEY_K, KEY_L}, 4))
 		rerender = handle_hjkl(key, info);
-	else if (match(key, (int []){KEY_TOP, KEY_BOTTOM, KEY_LEFT, KEY_RIGHT}, 4))
-		rerender = handle_hjkl(key, info);
+//	else if (match(key, (int []){KEY_TOP, KEY_BOTTOM, KEY_LEFT, KEY_RIGHT}, 4))
+//		rerender = handle_hjkl(key, info);
 	else if (key == KEY_MINUS || key == KEY_PLUS)
 		rerender = handle_plus_minus(key, info);
 	else if (key == KEY_X || key == KEY_Y || key == KEY_Z)
 		rerender = handle_xyz(key, info);
 	else
+	{
+		
+		printf("here\n");
 		rerender = handle_other_keys(key, info);
+	}
 	if (rerender)
 		render(info);
 	return (0);
