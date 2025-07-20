@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 16:21:07 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/18 16:33:58 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/20 19:21:07 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,3 @@ bool	translate_lights(t_light *lights, int lights_count, int key)
 	}
 	return (true);
 }
-

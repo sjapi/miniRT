@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 14:54:45 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/18 16:29:31 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/20 20:07:55 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ bool	handle_qweasd(int key, t_rt *info)
 	}
 	else if (info->mode == LIGHT_MODE)
 	{
-		return (translate_lights(info->scene->lights, info->scene->lights_count, key));
+		return (translate_lights(info->scene->lights,
+				info->scene->lights_count, key));
 	}
 	else
 	{
@@ -104,38 +105,27 @@ bool	handle_other_keys(int key, t_rt *info)
 	bool	render;
 
 	render = true;
+	printf("in handle funce\n");
 	if (key == KEY_R && info->mode != RENDER_MODE)
 	{
 		if (info->mode == OBJECT_MODE && info->scene->selected != NULL)
-		{
-			info->scene->selected->selected = false;
-			info->scene->selected = NULL;
-		}
+			deselect_obj(info->scene);
 		info->mode = RENDER_MODE;
 	}
 	else if (key == KEY_C && info->mode != CAMERA_MODE)
 	{
-		if (info->mode == OBJECT_MODE && info->scene->selected != NULL)
-		{
-			info->scene->selected->selected = false;
-			info->scene->selected = NULL;
-		}
+		printf("in other mode\n");
 		info->mode = CAMERA_MODE;
 	}
 	else if (key == KEY_C && info->mode == CAMERA_MODE)
-	{
 		info->mode = RENDER_MODE;
-	}
-	else if (key == KEY_RIGHT || key == KEY_LEFT || key == KEY_TOP || key == KEY_BOTTOM)
+	else if (match(key,
+			(int []){KEY_TOP, KEY_BOTTOM, KEY_LEFT, KEY_RIGHT}, 4))
 	{
 		if (info->mode == OBJECT_MODE && info->scene->selected != NULL)
-		{
 			resize_obj(info->scene->selected, key);
-		}
 	}
 	else
-	{
 		render = false;
-	}
 	return (render);
 }

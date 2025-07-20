@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 14:57:20 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/20 16:58:14 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/20 19:02:30 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,9 @@ bool	resize_obj(t_obj *obj, int key);
 t_obj	*mouse_click_obj(int button, int x, int y, t_rt *info);
 void	select_obj(t_obj *obj, t_scene *scene);
 void	deselect_obj(t_scene *scene);
+
+bool	adjust_sphere(t_obj *obj, int key);
+bool	adjust_cylinder(t_obj *obj, int key);
+bool	adjust_cone(t_obj *obj, int key);
 
 #endif

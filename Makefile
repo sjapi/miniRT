@@ -19,13 +19,13 @@ MAIN = \
 PARSER = \
 	parser.c parser_utils.c parser_tools.c \
 	parse_elements.c parse_objects.c \
-	parse_model.c
-
+	parse_model.c 
 UTILS = \
 	vector1.c ambient.c ft_atof.c ft_atoi.c \
-	ft_memcpy.c color.c clamp.c ft_calloc.c \
+	ft_memcpy.c color1.c clamp.c ft_calloc.c \
 	ft_bzero.c ft_abs.c time.c utils.c \
-	ft_strlen.c ft_strcmp.c vector2.c
+	ft_strlen.c ft_strcmp.c vector2.c \
+	color2.c
 
 GNL = \
 	get_next_line.c get_next_line_utils.c
@@ -34,11 +34,13 @@ RENDERER = \
 	render.c img.c ray.c \
 	hit.c plane.c sphere.c model.c \
 	cylinder.c cone.c skybox.c \
-	checkerboard.c info.c
+	checkerboard.c info.c specular.c diffuse.c \
+	compute_color.c
+
 
 CONTROLS = \
 	mouse.c keys.c obj.c \
-	cam.c lights.c
+	cam.c lights.c helper.c
 
 BOUNDING = \
 	bvh.c sort.c calculation.c \
