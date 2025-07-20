@@ -22,12 +22,10 @@ PARSER = \
 	parse_model.c
 
 UTILS = \
-	vector.c ambient.c ft_atof.c ft_atoi.c \
+	vector1.c ambient.c ft_atof.c ft_atoi.c \
 	ft_memcpy.c color.c clamp.c ft_calloc.c \
-	ft_bzero.c ft_abs.c time.c utils.c
-
-UTILS_STRING = \
-	ft_strlen.c ft_strcmp.c
+	ft_bzero.c ft_abs.c time.c utils.c \
+	ft_strlen.c ft_strcmp.c vector2.c
 
 GNL = \
 	get_next_line.c get_next_line_utils.c
@@ -46,7 +44,6 @@ SRCS = \
 	$(addprefix $(SRCS_DIR)main/, $(MAIN)) \
 	$(addprefix $(SRCS_DIR)get_next_line/, $(GNL)) \
 	$(addprefix $(SRCS_DIR)parser/, $(PARSER)) \
-	$(addprefix $(SRCS_DIR)utils/string/, $(UTILS_STRING)) \
 	$(addprefix $(SRCS_DIR)renderer/, $(RENDERER)) \
 	$(addprefix $(SRCS_DIR)utils/, $(UTILS)) \
 	$(addprefix $(SRCS_DIR)controls/, $(CONTROLS))

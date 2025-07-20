@@ -1,32 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memcpy.c                                        :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/20 17:48:19 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/20 17:48:20 by azolotar         ###   ########.fr       */
+/*   Created: 2025/07/20 17:51:09 by azolotar          #+#    #+#             */
+/*   Updated: 2025/07/20 17:51:11 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-
-void	*ft_memcpy(void *dest, const void *src, size_t n)
+int	ft_strlen(char *str)
 {
-	unsigned char	*dest_ptr;
-	unsigned char	*src_ptr;
-	size_t			i;
+	int	size;
 
-	i = 0;
-	if (!dest && !src)
-		return (NULL);
-	dest_ptr = (unsigned char *)dest;
-	src_ptr = (unsigned char *)src;
-	while (i < n)
-	{
-		dest_ptr[i] = src_ptr[i];
-		i++;
-	}
-	return (dest_ptr);
+	size = 0;
+	while (str[size])
+		size++;
+	return (size);
 }

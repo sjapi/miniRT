@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 12:12:04 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/20 13:14:32 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/20 17:49:28 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ t_color	int_to_color(int icolor)
 
 int	color_to_int(t_color color)
 {
-	return ((color.r & 0xFF) << 16) | ((color.g & 0xFF) << 8) | (color.b & 0xFF);
+	return (((color.r & 0xFF) << 16)
+		| ((color.g & 0xFF) << 8) | (color.b & 0xFF));
 }
 
 t_color	color_add(t_color a, t_color b)
@@ -42,7 +43,7 @@ t_color	color_clamp(t_color c)
 	c.r = clampf(c.r, 0, 255);
 	c.g = clampf(c.g, 0, 255);
 	c.b = clampf(c.b, 0, 255);
-	return c;
+	return (c);
 }
 
 t_color	color_avg(t_color c, int count)
