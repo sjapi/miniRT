@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:23:26 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/20 16:52:48 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/20 18:26:25 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,34 +17,34 @@
 # include <stdbool.h>
 # include <stdio.h>
 
-typedef struct	s_color
+typedef struct s_color
 {
 	int	r;
-	int g;
+	int	g;
 	int	b;
 }	t_color;
 
 /* libft */
-int		ft_strlen(char *str);
-int		ft_strcmp(const char *s1, const char *s2);
-int		ft_strncmp(const char *s1, const char *s2, int n);
-int		ft_atoi(char *str);
-float	ft_atof(char *str);
-void	*ft_memcpy(void *dest, const void *src, size_t n);
-void	*ft_bzero(void *s, size_t n);
-void	*ft_calloc(size_t count, size_t size);
-int		ft_abs(int n);
+int			ft_strlen(char *str);
+int			ft_strcmp(const char *s1, const char *s2);
+int			ft_strncmp(const char *s1, const char *s2, int n);
+int			ft_atoi(char *str);
+float		ft_atof(char *str);
+void		*ft_memcpy(void *dest, const void *src, size_t n);
+void		*ft_bzero(void *s, size_t n);
+void		*ft_calloc(size_t count, size_t size);
+int			ft_abs(int n);
 
 /* miniRT related */
 int			get_amb_color(t_amb_light *amb);
 
 /* vectors */
 bool		v_normalized(t_vec3 p);
-t_vec3	v_add(t_vec3 a, t_vec3 b);
-t_vec3	v_scale(t_vec3 v, float s);
-t_vec3	v_cross(t_vec3 a, t_vec3 b);
-t_vec3	v_normalize(t_vec3 v);
-t_vec3	v_sub(t_vec3 a, t_vec3 b);
+t_vec3		v_add(t_vec3 a, t_vec3 b);
+t_vec3		v_scale(t_vec3 v, float s);
+t_vec3		v_cross(t_vec3 a, t_vec3 b);
+t_vec3		v_normalize(t_vec3 v);
+t_vec3		v_sub(t_vec3 a, t_vec3 b);
 float		v_dot(t_vec3 a, t_vec3 b);
 float		v_len(t_vec3 v);
 
@@ -59,11 +59,11 @@ t_color		color_avg(t_color c, int count);
 int			clamp(int val, int min, int max);
 float		clampf(float val, float min, float max);
 
-float	get_nx(int x, float aspect_ratio, float tan_fov);
-float	get_ny(int y, float aspect_ratio);
-void	calculate_bounding(t_obj *obj);
+float		get_nx(int x, float aspect_ratio, float tan_fov);
+float		get_ny(int y, float aspect_ratio);
+void		calculate_bounding(t_obj *obj);
 
-long	current_time(void);
-bool	match(int val, int *arr, int len);
+long		current_time(void);
+bool		match(int val, int *arr, int len);
 
 #endif

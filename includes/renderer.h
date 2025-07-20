@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:51:00 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/19 20:40:06 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/20 18:11:55 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 /*
  * origin is position of cam
  */
-typedef struct	s_ray
+typedef struct s_ray
 {
 	t_vec3	origin;
 	t_vec3	direction;
@@ -34,15 +34,14 @@ typedef struct	s_ray
  * hit - hit or not
  * reverse - for checkerboard
  */
-typedef struct	s_hit
+typedef struct s_hit
 {
-	float		t;
+	float	t;
 	t_vec3	hit_point;
 	t_vec3	normal;
-	t_obj		*obj;
-	char		side;
-	bool		contour;
-	bool		reverse;
+	t_obj	*obj;
+	char	side;
+	bool	reverse;
 }	t_hit;
 
 /* optimization */
@@ -70,15 +69,21 @@ bool	find_hit(t_ray *ray, t_rt *info, t_hit *hit, bool shadow);
 
 /* intersection */
 float	intersect_plane(t_ray *ray, t_obj *plane, bool *reverse);
-float 	intersect_sphere(t_ray *ray, t_obj *sphere, bool *reverse);
-float	intersect_cylinder(t_ray *ray, t_obj *cylinder, char *side, bool *reverse);
-float	intersect_cone(t_ray *ray, t_obj *cone, char *side, bool *reverse);
-float	intersect_model(t_ray *ray, t_obj *obj, t_hit *hit, int *tj, bool *reverse);
+float	intersect_sphere(t_ray *ray, t_obj *sphere, bool *reverse);
+float	intersect_cylinder(
+			t_ray *ray, t_obj *cylinder, char *side, bool *reverse);
+float	intersect_cone(
+			t_ray *ray, t_obj *cone, char *side, bool *reverse);
+float	intersect_model(
+			t_ray *ray, t_obj *obj, t_hit *hit, int *tj, bool *reverse);
 
 /* normal */
-t_vec3	get_cylinder_normal(t_obj *obj, t_vec3 hit_point, t_vec3 ray_dir, char side);
-t_vec3	get_cone_normal(t_obj *obj, t_vec3 hit_point, t_vec3 ray_dir, char side);
-t_vec3	get_model_normal(t_obj *obj, t_vec3 hit_point, t_vec3 ray_dir, int tri_j);
+t_vec3	get_cylinder_normal(
+			t_obj *obj, t_vec3 hit_point, t_vec3 ray_dir, char side);
+t_vec3	get_cone_normal(
+			t_obj *obj, t_vec3 hit_point, t_vec3 ray_dir, char side);
+t_vec3	get_model_normal(
+			t_obj *obj, t_vec3 hit_point, t_vec3 ray_dir, int tri_j);
 
 /* checkerboard */
 bool	sphere_checkerboard(t_vec3 hit_point, t_obj *sphere);

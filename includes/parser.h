@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:00:29 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/18 15:41:01 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/20 18:26:45 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,5 @@ bool	parse_plane(char *plane_data, t_obj *plane);
 
 /* parse_model.c */
 bool	parse_model(char *model_data, t_obj *model);
-
 
 #endif

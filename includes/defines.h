@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 16:54:19 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/18 15:01:55 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/20 18:16:30 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 
 # define WIN_WIDTH 800
 # define WIN_HEIGHT 600
+
+# define INV_2PI 0.15915494309f
+# define INV_PI 0.31830988618f
 
 # ifdef __linux__
 #  define KEY_ESC 65307
@@ -89,29 +92,27 @@
 # define HIT_TOP 1
 
 # define SPHERE_ATTR_COUNT 2
-# define SPHERE_D_I 0 /* SPHERE DIAMETER ATTRIBUTE INDEX */
-# define SPHERE_R_I 1 /* SPHERE RADIUS OPTIMIZATION INDEX */
+# define SPHERE_D_I 0
+# define SPHERE_R_I 1
 
 # define CYLINDER_ATTR_COUNT 2
-# define CYLINDER_D_I 0 /* CYLINDER DIAMETER ATTRIBUTE INDEX */
-# define CYLINDER_H_I 1 /* CYLINDER HEIGHT ATTRIBUTE INDEX */
+# define CYLINDER_D_I 0
+# define CYLINDER_H_I 1
 
 # define CONE_ATTR_COUNT 8
-# define CONE_A_I 0 /* CONE ANGLE ATTRIBUTE INDEX */
-# define CONE_H_I 1 /* CONE HEIGHT ATTRIBUTE INDEX */
-# define CONE_AP_X_I 2 /* CONE APEX X OPTIMIZATION INDEX */
-# define CONE_AP_Y_I 3 /* CONE APEX Y OPTIMIZATION INDEX */
-# define CONE_AP_Z_I 4 /* CONE APEX Z OPTIMIZATION INDEX */
-# define CONE_AP_Z_I 4 /* CONE APEX Z OPTIMIZATION INDEX */
-# define CONE_AR_I 5 /* CONE ANGLE RADIANS OPTIMIZATION INDEX */
-# define CONE_TAN2 6 /* CONE TAN(ANGLE_RAD) * TAN(ANGLE_RAD) OPTIMIZATION INDEX */
-# define CONE_COS2 7/* CONE COS(ANGLE_RAD) * COS(ANGLE_RAD) OPTIMIZATION INDEX */
+# define CONE_A_I 0
+# define CONE_H_I 1
+# define CONE_AP_X_I 2
+# define CONE_AP_Y_I 3
+# define CONE_AP_Z_I 4
+# define CONE_AP_Z_I 4
+# define CONE_AR_I 5
+# define CONE_TAN2 6
+# define CONE_COS2 7
 
 # define RENDER_MODE 0
 # define OBJECT_MODE 1
 # define CAMERA_MODE 2
 # define LIGHT_MODE 3
 
-#define INV_2PI (1.0f / (2.0f * M_PI))
-#define INV_PI (1.0f / M_PI)
 #endif

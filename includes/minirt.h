@@ -6,14 +6,13 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 16:16:38 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/20 16:33:03 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/20 18:24:55 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINIRT_H
 # define MINIRT_H
-
-#include <stdbool.h>
+# include <stdbool.h>
 
 typedef struct s_vec3
 {
@@ -21,7 +20,6 @@ typedef struct s_vec3
 	float	y;
 	float	z;
 }	t_vec3;
-
 
 typedef struct s_texture
 {
@@ -35,7 +33,7 @@ typedef struct s_texture
 	int		endian;
 }	t_texture;
 
-typedef struct	s_tri
+typedef struct s_tri
 {
 	t_vec3	*v0;
 	t_vec3	*v1;
@@ -44,10 +42,10 @@ typedef struct	s_tri
 	t_vec3	edge2;
 }	t_tri;
 
-typedef struct	s_mesh
+typedef struct s_mesh
 {
 	char	*file_name;
-	int	size;
+	int		size;
 	t_tri	*triangles;
 	t_vec3	*points;
 }	t_mesh;
@@ -64,9 +62,9 @@ typedef struct s_obj
 {
 	int			id;
 	char		type;
-	t_vec3	center;
+	t_vec3		center;
 	int			color;
-	t_vec3	norm_vector; // for plane??
+	t_vec3		norm_vector;
 	float		*attrs;
 	float		bounding_r;
 	bool		selected;
@@ -76,9 +74,8 @@ typedef struct s_obj
 	t_texture	*texture;
 	t_mesh		*mesh;
 
-
-	t_vec3	aabb_min;
-	t_vec3	aabb_max;
+	t_vec3		aabb_min;
+	t_vec3		aabb_max;
 }	t_obj;
 
 /*
@@ -97,14 +94,6 @@ typedef struct s_cam
 	t_vec3	up;
 }	t_cam;
 
-/*
- * IMO: parser should convert it to int val
- * color = 0xFF00FF (255,0,255)
- * wanted to delete this struct, cause it useless in miniRT
- * but decided to leave it, cause it may be helpfull if we'll decide to change ration during rendering
- * (idk why)
- * and to calculate final ambient light color
- */
 typedef struct s_amb_light
 {
 	float	ratio;
@@ -113,15 +102,11 @@ typedef struct s_amb_light
 
 typedef struct s_light
 {
-	t_vec3	point;
+	t_vec3		point;
 	float		ratio;
 	int			color;
 }	t_light;
 
-/*
- * need to figure out can be more than one light?
- * yep, can be, in bonus part (which we will do)
- */
 typedef struct s_scene
 {
 	t_obj		*objs;
@@ -135,7 +120,7 @@ typedef struct s_scene
 	t_obj		*selected;
 }	t_scene;
 
-typedef struct	s_optim
+typedef struct s_optim
 {
 	float	*viewport_x;
 	float	*viewport_y;
