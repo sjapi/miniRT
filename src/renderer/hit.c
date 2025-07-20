@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 10:52:17 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/20 15:52:21 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/20 19:19:23 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,16 +46,6 @@ static bool is_hitable_aabb(t_ray *ray, t_vec3 *box_min, t_vec3 *box_max)
     }
     return true;
 }
-
-/*
-static bool is_hitable(t_ray *ray, t_obj *obj)
-{
-    t_vec3 oc = v_sub(ray->origin, obj->center);
-    float half_b = v_dot(oc, ray->direction);
-    float c = v_dot(oc, oc) - obj->bounding_r * obj->bounding_r;
-    return (half_b * half_b >= c);
-}
-*/
 
 static bool traverse_bvh(t_bvh_node *node, t_ray *ray, t_hit *closest_hit, bool shadow_hit)
 {

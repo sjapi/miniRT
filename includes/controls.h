@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 14:57:20 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/18 16:27:10 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/20 16:58:14 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,10 @@ bool	translate_lights(t_light *lights, int lights_count, int key);
 bool	rotate_obj(t_obj *obj, int key);
 bool	rotate_cam(t_cam *cam, int key);
 bool	resize_obj(t_obj *obj, int key);
+
+/* other */
+t_obj	*mouse_click_obj(int button, int x, int y, t_rt *info);
+void	select_obj(t_obj *obj, t_scene *scene);
+void	deselect_obj(t_scene *scene);
 
 #endif

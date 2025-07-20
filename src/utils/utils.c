@@ -1,32 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memcpy.c                                        :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/20 17:48:19 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/20 17:48:20 by azolotar         ###   ########.fr       */
+/*   Created: 2025/07/20 16:49:37 by azolotar          #+#    #+#             */
+/*   Updated: 2025/07/20 16:58:56 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
+#include <stdbool.h>
 
-void	*ft_memcpy(void *dest, const void *src, size_t n)
+bool	match(int val, int *arr, int len)
 {
-	unsigned char	*dest_ptr;
-	unsigned char	*src_ptr;
-	size_t			i;
-
-	i = 0;
-	if (!dest && !src)
-		return (NULL);
-	dest_ptr = (unsigned char *)dest;
-	src_ptr = (unsigned char *)src;
-	while (i < n)
+	len -= 1;
+	while (len >= 0)
 	{
-		dest_ptr[i] = src_ptr[i];
-		i++;
+		if (arr[len] == val)
+			return (true);
+		len--;
 	}
-	return (dest_ptr);
+	return (false);
 }

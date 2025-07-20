@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 10:49:48 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/17 20:25:33 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/20 17:03:50 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,24 @@ static float   get_ny_sample(int y, float tan_fov, float sample)
     ny = (float)(y + sample) / (float)WIN_HEIGHT;
     ny = (1.0 - 2.0 * ny) * tan_fov;
     return (ny);
+}
+
+float	get_nx(int x, float aspect_ratio, float tan_fov)
+{
+	float	nx;
+
+	nx = (float)(x + 0.5) / (float)WIN_WIDTH;
+	nx = (2.0 * nx - 1.0) * aspect_ratio * tan_fov;
+	return (nx);
+}
+
+float	get_ny(int y, float tan_fov)
+{
+	float	ny;
+
+	ny = (float)(y + 0.5) / (float)WIN_HEIGHT;
+	ny = (1.0 - 2.0 * ny) * tan_fov;
+	return (ny);
 }
 
 void init_rays_msaa(t_ray rays[4], t_rt *info, int x, int y)

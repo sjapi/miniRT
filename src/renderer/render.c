@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 12:45:57 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/15 19:24:03 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/20 17:31:50 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,7 +182,7 @@ static t_color	manage_hit(t_hit *hit, t_ray *ray, t_rt *info)
 	else if (info->scene->skybox)
 		result = draw_skybox(info, ray);
 	else
-		result = int_to_color(info->scene->amb->color * info->scene->amb->ratio);
+		result = int_to_color(get_amb_color(info->scene->amb));
 	return (result);
 }
 

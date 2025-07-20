@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 17:57:47 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/20 18:55:36 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/20 19:00:04 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,4 +120,16 @@ bool resize_obj(t_obj *obj, int key)
 		return (false);
 	calculate_aabb(obj);
 	return (true);
+}
+
+void	select_obj(t_obj *obj, t_scene *scene)
+{
+	obj->selected = true;
+	scene->selected = obj;
+}
+
+void	deselect_obj(t_scene *scene)
+{
+	scene->selected->selected = false;
+	scene->selected = NULL;
 }

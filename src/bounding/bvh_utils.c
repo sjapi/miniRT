@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 16:56:54 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/20 18:54:49 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/20 19:23:41 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ t_vec3	v_max(t_vec3 *v0, t_vec3 *v1)
 {
 	t_vec3	max;
 
-	max.x = fminf(v0->x, v1->x);
-	max.y = fminf(v0->y, v1->y);
-	max.z = fminf(v0->z, v1->z);
+	max.x = fmaxf(v0->x, v1->x);
+	max.y = fmaxf(v0->y, v1->y);
+	max.z = fmaxf(v0->z, v1->z);
 	return (max);
 }
 

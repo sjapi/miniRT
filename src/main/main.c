@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 21:06:54 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/20 18:56:21 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/20 20:16:35 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,191 +23,23 @@
 #include "controls.h"
 #include "bounding.h"
 
-// ========================================================================
-
-void print_point(t_vec3 p)
-{
-    printf("(%.2f, %.2f, %.2f)", p.x, p.y, p.z);
-}
-
-void print_scene(t_scene *scene)
-{
-    // Ambient light
-    if (scene->amb)
-    {
-        printf("amb: ratio=%.2f color=#%06X\n", scene->amb->ratio, scene->amb->color);
-    }
-
-    // Camera
-    if (scene->cam)
-    {
-        printf("cam: view_point=");
-        print_point(scene->cam->viewpoint);
-        printf(" orient_v=");
-        print_point(scene->cam->orient_v);
-        printf(" fov=%u\n", scene->cam->fov);
-    }
-
-    // Lights
-    for (int i = 0; i < scene->lights_count; i++)
-    {
-        printf("light %d: point=", i + 1);
-        print_point(scene->lights[i].point);
-        printf(" ratio=%.2f color=#%06X\n", scene->lights[i].ratio, scene->lights[i].color);
-    }
-    // Objects
-    for (int i = 0; i < scene->objs_count; i++)
-    {
-        t_obj *obj = &scene->objs[i];
-        printf("obj %d: ", i + 1);
-		if (obj->type != MODEL)
-		{
-				switch (obj->type)
-				{
-					case 1: printf("square"); break;
-					case 2: printf("sphere"); break;
-					case 3: printf("plane"); break;
-					case 4: printf("cylinder"); break;
-					case 5: printf("cone"); break;
-					default: printf("unknown"); break;
-				}
-				printf(" center=");
-				print_point(obj->center);
-				printf(" color=#%06X", obj->color);
-				if (obj->type != 2) // not sphere -> has norm vector
-				{
-					printf(" norm=");
-					print_point(obj->norm_vector);
-				}
-				if (obj->type == 2 || obj->type == 4)
-					printf(" diameter=%.2f", obj->attrs[SPHERE_D_I]);
-				if (obj->type == 4)
-						printf(" height=%.2f", obj->attrs[CYLINDER_H_I]);
-				printf("\n");
-		}
-		else
-		{
-				t_obj *obj = &scene->objs[i];
-				if (obj->type != MODEL)
-					continue ;
-				int j = 0;
-				printf("%d\n", obj->mesh->size);
-				while (j < obj->mesh->size)
-				{
-					print_point(*obj->mesh->triangles[j].v0);
-					printf(" ");
-					print_point(*obj->mesh->triangles[j].v1);
-					printf(" ");
-					print_point(*obj->mesh->triangles[j].v2);
-					printf("\n");
-					j++;
-				}
-				printf("\n");
-		}
-    }
-}
-
-// ========================================================================
-
-static void	free_scene(t_scene *scene)
-{
-	(void)scene;
-}
-
-static void	init_helpers(t_rt *info)
-{
-	t_cam	*cam;
-
-	cam = info->scene->cam;
-	cam->yaw = atan2f(cam->orient_v.x, cam->orient_v.z);
-	cam->pitch = asinf(cam->orient_v.y);
-}
-
-void	free_rt(t_rt *info);
-
 static int	destroy(t_rt *info)
 {
 	free_rt(info);
 	exit(0);
 }
 
-static bool	init_info(t_rt *info, char *file_name)
-{
-	info->win_aspect_ratio = (float)WIN_WIDTH / (float)WIN_HEIGHT;
-	info->scene = load_scene(file_name);
-	if (!info->scene)
-		return (false);
-	init_helpers(info);
-	info->mode = RENDER_MODE;
-	info->mlx = mlx_init();
-	info->win = mlx_new_window(info->mlx, WIN_WIDTH, WIN_HEIGHT, "miniRT");
-	info->img = mlx_new_image(info->mlx, WIN_WIDTH, WIN_HEIGHT);
-	info->addr = mlx_get_data_addr(info->img, &info->bpp, &info->line_len, &info->endian);
-
-	if (info->scene->skybox)
-	{
-	info->scene->skybox->mlx = mlx_xpm_file_to_image(
-		info->mlx, info->scene->skybox->file_name,
-		&info->scene->skybox->width,
-		&info->scene->skybox->height
-	);
-	if (!info->scene->skybox->mlx)
-	{
-		printf("Failed to load skybox\n");
-		exit(1);
-	}
-	info->scene->skybox->data = mlx_get_data_addr(
-		info->scene->skybox->mlx,
-		&info->scene->skybox->bpp,
-		&info->scene->skybox->line_length,
-		&info->scene->skybox->endian
-	);
-	info->scene->skybox->bpp = info->scene->skybox->bpp/ 8;
-	}
-	// ===================  OBJ ========================
-	int	i = -1;
-	while (i++ < info->scene->objs_count)
-	{
-		t_obj *obj = &info->scene->objs[i];
-		if (obj->type != SPHERE || !obj->texture)
-			continue ;
-		obj->texture->mlx = mlx_xpm_file_to_image(
-			info->mlx, obj->texture->file_name,
-			&obj->texture->width,
-			&obj->texture->height
-		);
-		if (!obj->texture->mlx)
-		{
-			printf("Failed to load texture\n");
-			exit(1);
-		}
-		obj->texture->data = mlx_get_data_addr(
-			obj->texture->mlx,
-			&obj->texture->bpp,
-			&obj->texture->line_length,
-			&obj->texture->endian
-		);
-	}
-	// =================================================
-	info->scene->bvh = build_bvh(info->scene->objs, 0, info->scene->objs_count);
-	printf("DONE\n");
-	return (true);
-}
-
 static int	handle_key_hooks(int key, t_rt *info)
 {
 	t_cam	*cam;
 	bool	rerender;
-	
-	printf("key %d\n", key);
+
 	cam = info->scene->cam;
 	if (key == KEY_ESC)
 		return (destroy(info), 0);
-	else if (key == KEY_Q || key == KEY_W || key == KEY_E || key == KEY_S || key == KEY_A || key == KEY_D)
+	else if (match(key, (int []){KEY_Q, KEY_W, KEY_E, KEY_S, KEY_A, KEY_D}, 6))
 		rerender = handle_qweasd(key, info);
-	else if (key == KEY_H || key == KEY_J || key == KEY_K || key == KEY_L)
-		rerender = handle_hjkl(key, info);
-	else if (key == 65361 || key == 65362 || key == 65364 || key == 65363)
+	else if (match(key, (int []){KEY_H, KEY_J, KEY_K, KEY_L}, 4))
 		rerender = handle_hjkl(key, info);
 	else if (key == KEY_MINUS || key == KEY_PLUS)
 		rerender = handle_plus_minus(key, info);
@@ -225,41 +57,33 @@ static int	handle_key_hooks(int key, t_rt *info)
 	return (0);
 }
 
-t_obj	*mouse_click_obj(int button, int x, int y, t_rt *info);
-
-int	handle_mouse_hook(int button, int x, int y, t_rt *info)
+static int	handle_mouse_hook(int button, int x, int y, t_rt *info)
 {
 	t_obj	*obj;
+	t_obj	*selected;
 
 	obj = mouse_click_obj(button, x, y, info);
-	if (obj != NULL)
+	selected = info->scene->selected;
+	if (obj != NULL && selected != NULL && obj->id == selected->id)
+		return (0);
+	else if (obj != NULL && selected != NULL && obj->id != selected->id)
 	{
-		if (info->scene->selected != NULL)
-		{
-			if (info->scene->selected->id == obj->id)
-				return (0);
-			info->scene->selected->selected = false;
-			info->scene->selected = NULL;
-			printf("object deselected\n");
-		}
-		obj->selected = true;
-		info->scene->selected = obj;
-		printf("obj selected\n");
-		if (info->mode != OBJECT_MODE)
-			info->mode = OBJECT_MODE;
+		deselect_obj(info->scene);
+		select_obj(obj, info->scene);
+	}
+	else if (obj != NULL && selected == NULL)
+	{
+		select_obj(obj, info->scene);
+		info->mode = OBJECT_MODE;
+	}
+	else if (obj == NULL && selected != NULL)
+	{
+		deselect_obj(info->scene);
+		info->mode = RENDER_MODE;
 	}
 	else
-	{
-		if (info->scene->selected != NULL)
-		{
-			info->scene->selected->selected = false;
-			info->scene->selected = NULL;
-			printf("object deselected\n");
-			info->mode = RENDER_MODE;
-		}
-	}
-	render(info);
-	return (0);
+		return (0);
+	return (render(info), 0);
 }
 
 int	main(int argc, char **argv)
@@ -268,9 +92,8 @@ int	main(int argc, char **argv)
 
 	if (argc != 2)
 		return (printf("miniRT: wrong arguments count\n"), 1);
-	if (!init_info(&info, argv[1]))
+	if (!init_rt(&info, argv[1]))
 		return (1);
-	print_scene(info.scene);
 	render(&info);
 	mlx_hook(info.win, 2, 1L >> 0, handle_key_hooks, &info);
 	mlx_mouse_hook(info.win, handle_mouse_hook, &info);

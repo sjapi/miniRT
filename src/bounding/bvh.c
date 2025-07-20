@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 14:28:35 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/20 18:51:39 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/20 19:05:41 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void	v_to_min(t_vec3 *v0, t_vec3 *v1)
 
 t_bvh_node *build_bvh(t_obj *objects, int start, int end)
 {
-	printf("Called\n");
     t_bvh_node *node = malloc(sizeof(t_bvh_node));
     if (!node)
         return NULL;
