@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 16:56:54 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/20 19:23:41 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/21 17:22:39 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,10 @@ void	find_selected(t_scene *scene)
 	int	i;
 
 	i = 0;
-	while (i++ < scene->objs_count)
+	while (i < scene->objs_count)
 	{
 		if (scene->objs[i].selected)
 			scene->selected = &scene->objs[i];
+		i++;
 	}
 }

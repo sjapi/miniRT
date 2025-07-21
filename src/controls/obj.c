@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 17:57:47 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/20 20:38:26 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/21 17:16:36 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,6 @@ bool	resize_obj(t_obj *obj, int key)
 	else if (obj->type == CYLINDER && !adjust_cylinder(obj, key))
 		return (false);
 	else if (obj->type == CONE && !adjust_cone(obj, key))
-		return (false);
-	else
 		return (false);
 	calculate_aabb(obj);
 	return (true);
