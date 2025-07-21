@@ -102,6 +102,7 @@ typedef struct s_amb_light
 {
 	float	ratio;
 	int		color;
+	float	opt;
 }	t_amb_light;
 
 typedef struct s_light

@@ -21,7 +21,7 @@
 
 static void	init_shadow_ray(t_ray *shadow_ray, t_hit *p_hit, t_light *light)
 {
-	shadow_ray->origin = v_add(p_hit->hit_point, v_scale(p_hit->normal, 1e-4));
+	shadow_ray->origin = p_hit->hit_point;//v_add(p_hit->hit_point, v_scale(p_hit->normal, 1e-4));
 	shadow_ray->direction = v_normalize(v_sub(light->point, p_hit->hit_point));
 }
 
@@ -81,7 +81,10 @@ static t_color	compute_mirror(t_color obj_col, t_light *light, t_hit *primary_hi
 	ray.origin = v_add(primary_hit->hit_point, v_scale(primary_hit->normal, 1e-4));
 	ray.direction = primary_hit->normal;
 	if (find_hit(&ray, info, &hit, false))
+	{
+		obj_col = get_obj_color(&hit);
 		return (compute_shadow_ray(obj_col, light, &hit, info));
+	}
 	if (info->scene->skybox)
 		return (draw_skybox(info, &ray));
 	return ((t_color){0, 0, 0});
@@ -91,14 +94,19 @@ static t_color	compute_shadow_ray(t_color obj_col, t_light *light, t_hit *primar
 {
 	t_ray	shadow_ray;
 	t_hit	shadow_hit;
+	t_vec3	light_vec;
 	t_color	final;
 	float	light_dist;
 	bool	in_shadow;
 
 	if (primary_hit->obj->mirror)
-		return (decrease_color(compute_mirror(obj_col, light, primary_hit, info), 30));
-	init_shadow_ray(&shadow_ray, primary_hit, light);
-	light_dist = v_len(v_sub(light->point, primary_hit->hit_point));
+		return ((compute_mirror(obj_col, light, primary_hit, info)));
+	//init_shadow_ray(&shadow_ray, primary_hit, light);
+	light_vec = v_sub(light->point, primary_hit->hit_point);
+	shadow_ray.origin = primary_hit->hit_point; //v_add(p_hit->hit_point, v_scale(p_hit->normal, 1e-4));
+	shadow_ray.direction = v_normalize(light_vec);
+
+	light_dist = v_len(light_vec);
 	in_shadow = find_hit(&shadow_ray, info, &shadow_hit, true);
 	in_shadow = in_shadow && shadow_hit.t > 1e-3 && shadow_hit.t < light_dist;
 	ft_bzero(&final, sizeof(t_color));
@@ -126,8 +134,8 @@ t_color	compute_color(t_hit *p_hit, t_rt *info)
 	while (++i < info->scene->lights_count)
 	{
 		shadow_color = compute_shadow_ray(obj_color, &info->scene->lights[i], p_hit, info);
-		shadow_color = color_clamp(color_add(shadow_color, amb_color));
 		total_color = color_add(total_color, shadow_color);
 	}
+	total_color = color_clamp(color_add(total_color, amb_color));
 	return (color_clamp(total_color));
 }
