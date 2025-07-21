@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:23:26 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/20 19:36:37 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/21 18:54:00 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ t_color		color_add(t_color a, t_color b);
 t_color		color_clamp(t_color c);
 t_color		color_avg(t_color c, int count);
 t_color		decrease_color(t_color color, int amount);
+t_color		reverse_color(t_color color);
 
 /* other */
 int			clamp(int val, int min, int max);
