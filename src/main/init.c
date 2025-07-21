@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 15:21:16 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/21 20:08:11 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/21 22:14:43 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static void	init_cam(t_cam *cam)
 {
 	cam->yaw = atan2f(cam->orient_v.x, cam->orient_v.z);
 	cam->pitch = asinf(cam->orient_v.y);
+	cam->t_fov = tanf((cam->fov * M_PI / 180.0f) / 2.0f);
 }
 
 static void	init_mlx(t_rt *info)

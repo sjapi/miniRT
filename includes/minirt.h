@@ -6,12 +6,13 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 16:16:38 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/21 19:52:03 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/21 22:13:55 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINIRT_H
 # define MINIRT_H
+
 # include <stdbool.h>
 
 typedef struct s_bvh_node t_bvh_node;
@@ -88,6 +89,7 @@ typedef struct s_cam
 	t_vec3	viewpoint;
 	t_vec3	orient_v;
 	int		fov;
+	float	t_fov;
 
 	float	yaw;
 	float	pitch;
