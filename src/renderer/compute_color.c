@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 20:10:39 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/20 20:14:22 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/21 17:58:08 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,13 @@ static t_color	compute_mirror(t_light *light, t_hit *primary_hit, t_rt *info)
 
 	mirror_ray.origin = v_add(primary_hit->hit_point, v_scale(primary_hit->normal, 1e-4));
 	mirror_ray.direction = primary_hit->normal; if (find_hit(&mirror_ray, info, &mirror_hit, false))
+	{
 		return (compute_shadow_ray(light, &mirror_hit, info));
-		//return (mirror_hit.obj->color);
-	return (draw_skybox(info, &mirror_ray));
-
+	}
+	if (info->scene->skybox)
+		return (draw_skybox(info, &mirror_ray));
+	else
+		return ((t_color){0, 0, 0});
 }
 
 static t_color	compute_shadow_ray(t_light *light, t_hit *primary_hit, t_rt *info)
