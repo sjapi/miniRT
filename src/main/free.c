@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 19:43:16 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/19 21:11:44 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/21 21:56:35 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,22 @@
 #include <stdio.h>
 #include "mlx.h"
 
-static void	free_texture(t_texture *t)
+static void	my_free(void *ptr)
 {
-	free(t->mlx);
-	free(t->file_name);
-	free(t);
+	if (ptr)
+		free(ptr);
 }
 
-static void	free_objects(t_obj *objs, int count)
+static void	free_texture(t_rt *info, t_texture *t)
+{
+	printf("FREER\n");
+	if (t->mlx)
+		mlx_destroy_image(info->mlx, t->mlx);
+	my_free(t->file_name);
+	my_free(t);
+}
+
+static void	free_objects(t_rt *info, t_obj *objs, int count)
 {
 	int		i;
 	t_obj	*obj;
@@ -31,39 +39,47 @@ static void	free_objects(t_obj *objs, int count)
 	while (i < count)
 	{
 		obj = &objs[i];
-		free(obj->attrs);
+		my_free(obj->attrs);
 		if (obj->texture)
-			free_texture(obj->texture);
+			free_texture(info, obj->texture);
 		if (obj->mesh)
 		{
-			free(obj->mesh->file_name);
-			free(obj->mesh->triangles);
-			free(obj->mesh->points);
-			free(obj->mesh);
+			my_free(obj->mesh->file_name);
+			my_free(obj->mesh->triangles);
+			my_free(obj->mesh->points);
+			my_free(obj->mesh);
 		}
 		i++;
 	}
 	free(objs);
 }
 
-static void	free_scene(t_scene *scene)
+static void	free_scene(t_rt *info, t_scene *scene)
 {
-	free_objects(scene->objs, scene->objs_count);
-	free(scene->amb);
-	free(scene->cam);
-	free(scene->lights);
+	if (!scene)
+		return ;
+	free_objects(info, scene->objs, scene->objs_count);
+	my_free(scene->amb);
+	my_free(scene->cam);
+	my_free(scene->lights);
 	if (scene->skybox)
-		free_texture(scene->skybox);
+		free_texture(info, scene->skybox);
+	my_free(scene);
 }
 
 void	free_rt(t_rt *info)
 {
-	free(info->optim->viewport_x);
-	free(info->optim->viewport_y);
-	free(info->optim);
-	free_scene(info->scene);
+	if (info->optim)
+	{
+		my_free(info->optim->viewport_x);
+		my_free(info->optim->viewport_y);
+		my_free(info->optim);
+	}
+	free_scene(info, info->scene);
+	if (!info->mlx)
+		return ;
 	mlx_destroy_image(info->mlx, info->img);
 	mlx_destroy_window(info->mlx, info->win);
 	mlx_destroy_display(info->mlx);
-	free(info->mlx);
+	my_free(info->mlx);
 }

@@ -6,16 +6,16 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:01:21 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/17 20:06:17 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/21 20:50:57 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <fcntl.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
 #include "parser.h"
+#include "utils.h"
 
 bool	parse_ambient(char *light_data, t_scene *scene)
 {
@@ -65,7 +65,6 @@ bool	parse_light(char *light_data, t_scene *scene)
 bool	parse_skybox(char *skybox_data, t_scene *scene)
 {
 	t_texture	*skybox;
-	int			fd;
 
 	if (scene->skybox)
 		return (print_err("Scene can have only 1 skybox"));
@@ -107,4 +106,18 @@ bool	parse_camera(char *camera_data, t_scene *scene)
 		return (free(cam), print_err("Camera has invalid data"));
 	scene->cam = cam;
 	return (true);
+}
+
+bool	parse_element(char *line, t_scene *scene)
+{	
+		skip_spaces(&line);
+		if (!*line || *line == '\n' || *line == '#')
+			return (true);
+		if (!((ft_strncmp(line, "A ", 2) == 0 && parse_ambient(line, scene))
+				|| (ft_strncmp(line, "C ", 2) == 0 && parse_camera(line, scene))
+				|| (ft_strncmp(line, "L ", 2) == 0 && parse_light(line, scene))
+				|| (ft_strncmp(line, "S ", 2) == 0 && parse_skybox(line, scene))
+				|| parse_obj(line, scene)))
+			return (false);
+		return (true);
 }

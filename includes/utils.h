@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:23:26 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/20 19:36:37 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/21 21:07:19 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void		*ft_memcpy(void *dest, const void *src, size_t n);
 void		*ft_bzero(void *s, size_t n);
 void		*ft_calloc(size_t count, size_t size);
 int			ft_abs(int n);
+int			ft_isdigit(int c);
 
 /* miniRT related */
 int			get_amb_color(t_amb_light *amb);

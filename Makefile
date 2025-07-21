@@ -25,7 +25,7 @@ UTILS = \
 	ft_memcpy.c color1.c clamp.c ft_calloc.c \
 	ft_bzero.c ft_abs.c time.c utils.c \
 	ft_strlen.c ft_strcmp.c vector2.c \
-	color2.c
+	color2.c ft_isdigit.c
 
 GNL = \
 	get_next_line.c get_next_line_utils.c

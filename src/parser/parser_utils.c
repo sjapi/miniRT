@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:03:20 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/17 22:17:08 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/21 21:46:30 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,20 +40,35 @@ bool	is_whitespace(char c)
 	return (c == ' ' || c == '\t');
 }
 
-bool	is_float(char *num)
+bool is_float(char *num)
 {
-	while (*num >= '0' && *num <= '9')
-		num++;
-	if (*num == '.' && num[1] >= '0' && num[1] <= '9')
-	{
-		num++;
-		while (*num >= '0' && *num <= '9')
-			num++;
-	}
-	if (*num && *num != '\n' && !is_whitespace(*num))
-		return (false);
-	return (true);
+    int		digits;
+    bool	has_dot;
+
+	digits = 0;
+	has_dot = false;
+    if (*num == '-' || *num == '+')
+        num++;
+    while (*num)
+    {
+        if (ft_isdigit(*num))
+            digits++;
+        else if (*num == '.' && digits > 0 && digits < 11)
+        {
+            if (has_dot)
+                return (false);
+            has_dot = (true);
+			digits = 0;
+        }
+        else if (*num == '\n' || is_whitespace(*num))
+            break;
+        else
+            return (false);
+        num++;
+    }
+    return (digits > 0 && digits < 11);
 }
+
 
 bool	is_int(char *num)
 {
@@ -76,7 +91,6 @@ bool	is_correct_color(char *str)
 	int	digits;
 
 	commas = 0;
-	skip_spaces(&str);
 	while (*str)
 	{
 		if (skip_integer(&str, &digits) == 0 || digits > 3)
@@ -98,7 +112,6 @@ bool	is_correct_coordinate(char *str)
 	int	digits;
 
 	commas = 0;
-	skip_spaces(&str);
 	while (str)
 	{
 		if (!parse_float(&str, &digits))
@@ -167,21 +180,21 @@ bool	parse_float(char **str, int *digits)
 	*digits = 0;
 	if (**str == '-')
 		(*str)++;
-	while (**str >= '0' && **str <= '9')
+	while (ft_isdigit(**str))
 	{
 		(*digits)++;
 		(*str)++;
 	}
 	if (!**str || **str == '\n' || is_whitespace(**str) || **str == ',')
-		return (*digits > 0);
+		return (*digits > 0 && *digits < 10);
 	if (**str != '.' || *digits == 0)
 		return (false);
 	(*str)++;
 	*digits = 0;
-	while (**str >= '0' && **str <= '9')
+	while (ft_isdigit(**str))
 	{
 		(*digits)++;
 		(*str)++;
 	}
-	return (*digits > 0 && *digits < 10);
+	return (*digits > 0 && *digits < 11);
 }

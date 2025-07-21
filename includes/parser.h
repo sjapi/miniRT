@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:00:29 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/20 18:26:45 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/21 20:49:44 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include "minirt.h"
 
 /* parser.c */
-t_scene	*load_scene(char *file_name);
+bool	load_scene(char *file_name, t_scene **scene);
 bool	print_err(char *msg);
 void	free_obj(t_obj *obj);
 bool	append_obj(t_scene *scene, t_obj *obj);
@@ -53,6 +53,7 @@ bool	parse_ambient(char *light_data, t_scene *scene);
 bool	parse_light(char *light_data, t_scene *scene);
 bool	parse_camera(char *camera_data, t_scene *scene);
 bool	parse_skybox(char *skybox_data, t_scene *scene);
+bool	parse_element(char *line, t_scene *scene);
 
 /* parse_objects.c */
 bool	parse_obj(char *obj_data, t_scene *scene);

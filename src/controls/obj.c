@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 17:57:47 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/21 17:16:36 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/21 20:32:25 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ bool	rotate_obj(t_obj *obj, int key)
 	}
 	else
 		return (false);
-	obj->norm_vector = res;
+	obj->norm_vector = v_normalize(res);
 	calculate_aabb(obj);
 	return (true);
 }

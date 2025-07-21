@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:01:55 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/17 22:16:17 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/21 21:49:16 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 
 bool	print_err(char *msg)
 {
-	printf("Error\n");
-	printf("miniRT: parser: %s\n", msg);
+	//printf("Error\n");
+	printf("miniRT: %s\n", msg);
 	return (false);
 }
 
@@ -48,6 +48,7 @@ bool	append_obj(t_scene *scene, t_obj *obj)
 	free(scene->objs);
 	scene->objs = new_objs;
 	scene->objs_count++;
+	free(obj);
 	return (true);
 }
 
@@ -64,6 +65,7 @@ bool	append_light(t_scene *scene, t_light *light)
 	free(scene->lights);
 	scene->lights = new_lights;
 	scene->lights_count++;
+	free(light);
 	return (true);
 }
 
@@ -77,30 +79,22 @@ bool	get_line(int fd, char **line)
 	return (true);
 }
 
-t_scene	*load_scene(char *file_name)
+bool load_scene(char *file_name, t_scene **scene)
 {
-	t_scene	*scene;
 	char	*line;
 	int		fd;
 
 	if (!is_valid_file(file_name, ".rt"))
-		return (NULL);
+		return (print_err("Invalid scene"));
 	fd = open(file_name, O_RDONLY);
-	scene = ft_calloc(sizeof(t_scene), 1);
-	if (!scene)
-		return (NULL);
+	*scene = ft_calloc(sizeof(t_scene), 1);
+	if (!*scene)
+		return (print_err("Can't allocate memory"));
 	line = NULL;
 	while (get_line(fd, &line))
 	{
-		skip_spaces(&line);
-		if (!*line || *line == '\n' || *line == '#')
-			continue ;
-		if (!((ft_strncmp(line, "A ", 2) == 0 && parse_ambient(line, scene))
-				|| (ft_strncmp(line, "C ", 2) == 0 && parse_camera(line, scene))
-				|| (ft_strncmp(line, "L ", 2) == 0 && parse_light(line, scene))
-				|| (ft_strncmp(line, "S ", 2) == 0 && parse_skybox(line, scene))
-				|| parse_obj(line, scene)))
-			return (free(line), close(fd), NULL);
+		if (!parse_element(line, *scene))
+			return (free(line), close(fd), false); 
 	}
-	return (scene);
+	return (close(fd), true);
 }

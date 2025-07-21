@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 21:06:54 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/21 17:21:04 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/21 19:23:11 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static int	handle_key_hooks(int key, t_rt *info)
 	return (0);
 }
 
-static int	handle_mouse_hook(int button, int x, int y, t_rt *info)
+int	handle_mouse_hook1(int button, int x, int y, t_rt *info)
 {
 	t_obj	*obj;
 	t_obj	*selected;
@@ -85,13 +85,47 @@ static int	handle_mouse_hook(int button, int x, int y, t_rt *info)
 		return (0);
 	return (render(info), 0);
 }
+int	handle_mouse_hook(int button, int x, int y, t_rt *info)
+{
+	t_obj	*obj;
 
+	obj = mouse_click_obj(button, x, y, info);
+	if (obj != NULL)
+	{
+		if (info->scene->selected != NULL)
+		{
+			if (info->scene->selected->id == obj->id)
+				return (0);
+			info->scene->selected->selected = false;
+			info->scene->selected = NULL;
+			printf("object deselected\n");
+		}
+		obj->selected = true;
+		info->scene->selected = obj;
+		printf("obj selected\n");
+		if (info->mode != OBJECT_MODE)
+			info->mode = OBJECT_MODE;
+	}
+	else
+	{
+		if (info->scene->selected != NULL)
+		{
+			info->scene->selected->selected = false;
+			info->scene->selected = NULL;
+			printf("object deselected\n");
+			info->mode = RENDER_MODE;
+		}
+	}
+	render(info);
+	return (0);
+}
 int	main(int argc, char **argv)
 {
 	t_rt	info;
 
 	if (argc != 2)
 		return (printf("miniRT: wrong arguments count\n"), 1);
+	ft_bzero(&info, sizeof(t_rt));
 	if (!init_rt(&info, argv[1]))
 		return (1);
 	render(&info);
