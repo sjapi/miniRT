@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 19:43:16 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/21 21:56:35 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/22 16:35:22 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ static void	my_free(void *ptr)
 
 static void	free_texture(t_rt *info, t_texture *t)
 {
-	printf("FREER\n");
 	if (t->mlx)
 		mlx_destroy_image(info->mlx, t->mlx);
 	my_free(t->file_name);

@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 20:10:39 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/22 14:50:40 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/22 17:13:44 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static t_color	get_obj_color(t_hit *hit)
 static t_color	compute_amb_color(t_color obj_color, t_amb_light *amb)
 {
 	t_color	amb_color;
-
+	
 	amb_color = int_to_color(get_amb_color(amb));
 	amb_color.r = obj_color.r * amb_color.r / 255.0f * amb->ratio;
 	amb_color.g = obj_color.g * amb_color.g / 255.0f * amb->ratio;
@@ -131,6 +131,7 @@ t_color	compute_color(t_hit *p_hit, t_rt *info)
 				obj_color, &info->scene->lights[i], p_hit, info);
 		total_color = color_add(total_color, shadow_color);
 	}
-	total_color = color_clamp(color_add(total_color, amb_color));
+	if (!p_hit->obj->mirror)
+		total_color = color_clamp(color_add(total_color, amb_color));
 	return (color_clamp(total_color));
 }

@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:05:46 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/17 22:03:47 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/22 16:05:28 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,36 +87,6 @@ bool	get_orientation(char *data, t_vec3 *o)
 	data++;
 	o->z = ft_atof(data);
 	if (!v_normalized(*o))
-		return (false);
-	return (true);
-}
-
-bool	get_ratio(char *data, float *ratio)
-{
-	if (!is_float(data))
-		return (false);
-	*ratio = ft_atof(data);
-	if (*ratio < 0.0 || *ratio > 1.0)
-		return (false);
-	return (true);
-}
-
-bool	get_fov(char *data, int *fov)
-{
-	if (!is_int(data))
-		return (false);
-	*fov = ft_atoi(data);
-	if (*fov < 0 || *fov > 180)
-		return (false);
-	return (true);
-}
-
-bool	get_attribute(char *data, float *attr)
-{
-	if (!is_float(data))
-		return (false);
-	*attr = ft_atof(data);
-	if (*attr < 0.0)
 		return (false);
 	return (true);
 }
