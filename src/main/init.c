@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 15:21:16 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/22 17:13:27 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/22 17:19:00 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ bool	init_rt(t_rt *info, char *file_name)
 {
 	if (!load_scene(file_name, &info->scene))
 		return (free_rt(info), print_err("Error"));
-	if (!info->scene->cam || !info->scene->amb || info->scene->lights_count == 0)
+	if (info->scene->cam == NULL || info->scene->amb == NULL
+		|| info->scene->lights_count == 0)
 		return (free_rt(info), printf("Error\n"), false);
 	init_cam(info->scene->cam);
 	info->mode = CAMERA_MODE;

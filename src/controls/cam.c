@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 18:02:45 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/20 20:38:10 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/22 17:15:15 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ bool	translate_cam(t_cam *cam, int key)
 
 bool	rotate_cam(t_cam *cam, int key)
 {
-	if (key == KEY_H )
+	if (key == KEY_H)
 		cam->yaw -= 0.1;
 	else if (key == KEY_L)
 		cam->yaw += 0.1;

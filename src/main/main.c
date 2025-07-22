@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 21:06:54 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/21 19:23:11 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/22 17:17:20 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ static int	destroy(t_rt *info)
 
 static int	handle_key_hooks(int key, t_rt *info)
 {
-	t_cam	*cam;
+	t_scene	*scene;
 	bool	rerender;
 
-	cam = info->scene->cam;
+	scene = info->scene;
 	if (key == KEY_ESC)
 		return (destroy(info), 0);
 	else if (match(key, (int []){KEY_Q, KEY_W, KEY_E, KEY_S, KEY_A, KEY_D}, 6))
@@ -49,8 +49,8 @@ static int	handle_key_hooks(int key, t_rt *info)
 		rerender = handle_other_keys(key, info);
 	if (info->mode == OBJECT_MODE)
 	{
-		info->scene->bvh = build_bvh(info->scene->objs, 0, info->scene->objs_count);
-		find_selected(info->scene);
+		scene->bvh = build_bvh(scene->objs, 0, scene->objs_count);
+		find_selected(scene);
 	}
 	if (rerender)
 		render(info);
@@ -85,6 +85,7 @@ int	handle_mouse_hook1(int button, int x, int y, t_rt *info)
 		return (0);
 	return (render(info), 0);
 }
+
 int	handle_mouse_hook(int button, int x, int y, t_rt *info)
 {
 	t_obj	*obj;
@@ -98,11 +99,9 @@ int	handle_mouse_hook(int button, int x, int y, t_rt *info)
 				return (0);
 			info->scene->selected->selected = false;
 			info->scene->selected = NULL;
-			printf("object deselected\n");
 		}
 		obj->selected = true;
 		info->scene->selected = obj;
-		printf("obj selected\n");
 		if (info->mode != OBJECT_MODE)
 			info->mode = OBJECT_MODE;
 	}
@@ -112,13 +111,13 @@ int	handle_mouse_hook(int button, int x, int y, t_rt *info)
 		{
 			info->scene->selected->selected = false;
 			info->scene->selected = NULL;
-			printf("object deselected\n");
 			info->mode = RENDER_MODE;
 		}
 	}
 	render(info);
 	return (0);
 }
+
 int	main(int argc, char **argv)
 {
 	t_rt	info;

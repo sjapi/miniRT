@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 14:54:45 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/22 16:30:54 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/22 17:14:55 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,6 @@ bool	handle_other_keys(int key, t_rt *info)
 	bool	render;
 
 	render = true;
-	printf("in handle funce\n");
 	if (key == KEY_R && info->mode != RENDER_MODE)
 	{
 		if (info->mode == OBJECT_MODE && info->scene->selected != NULL)
@@ -114,10 +113,7 @@ bool	handle_other_keys(int key, t_rt *info)
 		info->mode = RENDER_MODE;
 	}
 	else if (key == KEY_C && info->mode != CAMERA_MODE)
-	{
-		printf("in other mode\n");
 		info->mode = CAMERA_MODE;
-	}
 	else if (key == KEY_C && info->mode == CAMERA_MODE)
 		info->mode = RENDER_MODE;
 	else if (match(key,
