@@ -34,9 +34,12 @@ RENDERER = \
 	render.c img.c ray.c \
 	hit.c plane.c sphere.c model.c \
 	cylinder.c cone.c skybox.c \
-	checkerboard.c info.c specular.c diffuse.c \
-	compute_color.c
-
+	info.c specular.c diffuse.c \
+	compute_color.c \
+	checkerboard_sphere.c \
+	checkerboard_plane.c \
+	checkerboard_cylinder.c \
+	checkerboard_cone.c
 
 CONTROLS = \
 	mouse.c keys.c obj.c \

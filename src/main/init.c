@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 15:21:16 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/21 22:14:43 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/22 14:21:21 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ bool	init_rt(t_rt *info, char *file_name)
 	if (!info->scene->cam || !info->scene->amb || info->scene->lights_count == 0)
 		return (free_rt(info), printf("Error\n"), false);
 	init_cam(info->scene->cam);
-	info->mode = RENDER_MODE;
+	info->mode = CAMERA_MODE;
 	info->win_aspect_ratio = (float)WIN_WIDTH / (float)WIN_HEIGHT;
 	init_mlx(info);
 	if (info->scene->skybox != NULL)
