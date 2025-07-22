@@ -5,6 +5,14 @@
 **miniRT** is a ray tracer for the 42 curriculum. It renders basic shapes with lighting using clean C and the **minilibX** library.
 
 <p align="center">
+  <img src="https://github.com/sjapi/miniRT/blob/main/solar.png" width="800" />
+</p>
+
+<p align="center">
+  <img src="https://github.com/sjapi/miniRT/blob/main/rgb_cone.png" width="800" />
+</p>
+
+<p align="center">
   <img src="https://github.com/sjapi/miniRT/blob/main/readme_example.png" width="800" />
 </p>
 
@@ -16,12 +24,29 @@
 - Plane
 - Cylinder
 - Cone
+- Custom OBJ (based on \"tribbles\", custom `.obj` format)
+
+## Textures & Materials
+
+- Checkerboard
+- Image textures
+- Bump mapping
+- Mirror (sphere only)
 
 ## Features
 
 - Diffuse shading
 - Specular highlights
+- Multi-sample anti-aliasing
+- Bounding boxes
 - Skybox
+
+## Modes
+
+- **Render Mode**
+- **Camera Mode**
+- **Light Mode**
+- **Object Mode**
 
 ## Controls
 
