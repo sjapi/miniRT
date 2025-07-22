@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:01:55 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/21 21:49:16 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/22 16:18:37 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,9 @@
 
 bool	print_err(char *msg)
 {
-	//printf("Error\n");
-	printf("miniRT: %s\n", msg);
+	if (msg)
+		printf("miniRT: %s\n", msg);
 	return (false);
-}
-
-void	free_obj(t_obj *obj)
-{
-	if (obj->attrs)
-		free(obj->attrs);
-	if (obj->texture)
-		free(obj->texture);
-	free(obj);
 }
 
 bool	append_obj(t_scene *scene, t_obj *obj)
@@ -54,16 +45,16 @@ bool	append_obj(t_scene *scene, t_obj *obj)
 
 bool	append_light(t_scene *scene, t_light *light)
 {
-	t_light	*new_lights;
+	t_light	*new;
 
-	new_lights = malloc(sizeof(t_light) * (scene->lights_count + 1));
-	if (!new_lights)
+	new = malloc(sizeof(t_light) * (scene->lights_count + 1));
+	if (!new)
 		return (false);
 	if (scene->lights_count > 0)
-		ft_memcpy(new_lights, scene->lights, sizeof(t_light) * scene->lights_count);
-	new_lights[scene->lights_count] = *light;
+		ft_memcpy(new, scene->lights, sizeof(t_light) * scene->lights_count);
+	new[scene->lights_count] = *light;
 	free(scene->lights);
-	scene->lights = new_lights;
+	scene->lights = new;
 	scene->lights_count++;
 	free(light);
 	return (true);
@@ -79,7 +70,7 @@ bool	get_line(int fd, char **line)
 	return (true);
 }
 
-bool load_scene(char *file_name, t_scene **scene)
+bool	load_scene(char *file_name, t_scene **scene)
 {
 	char	*line;
 	int		fd;
@@ -94,7 +85,7 @@ bool load_scene(char *file_name, t_scene **scene)
 	while (get_line(fd, &line))
 	{
 		if (!parse_element(line, *scene))
-			return (free(line), close(fd), false); 
+			return (free(line), close(fd), false);
 	}
 	return (close(fd), true);
 }

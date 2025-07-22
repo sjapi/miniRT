@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 15:21:16 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/21 22:14:43 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/22 15:51:23 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static void	init_obj_textures(t_rt *info)
 bool	init_rt(t_rt *info, char *file_name)
 {
 	if (!load_scene(file_name, &info->scene))
-		return (free_rt(info), false);
+		return (free_rt(info), print_err("Error"));
 	if (!info->scene->cam || !info->scene->amb || info->scene->lights_count == 0)
 		return (free_rt(info), printf("Error\n"), false);
 	init_cam(info->scene->cam);

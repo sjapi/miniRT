@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:01:21 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/21 20:50:57 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/22 15:17:25 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,15 +109,15 @@ bool	parse_camera(char *camera_data, t_scene *scene)
 }
 
 bool	parse_element(char *line, t_scene *scene)
-{	
-		skip_spaces(&line);
-		if (!*line || *line == '\n' || *line == '#')
-			return (true);
-		if (!((ft_strncmp(line, "A ", 2) == 0 && parse_ambient(line, scene))
-				|| (ft_strncmp(line, "C ", 2) == 0 && parse_camera(line, scene))
-				|| (ft_strncmp(line, "L ", 2) == 0 && parse_light(line, scene))
-				|| (ft_strncmp(line, "S ", 2) == 0 && parse_skybox(line, scene))
-				|| parse_obj(line, scene)))
-			return (false);
+{
+	skip_spaces(&line);
+	if (!*line || *line == '\n' || *line == '#')
 		return (true);
+	if (!((ft_strncmp(line, "A ", 2) == 0 && parse_ambient(line, scene))
+			|| (ft_strncmp(line, "C ", 2) == 0 && parse_camera(line, scene))
+			|| (ft_strncmp(line, "L ", 2) == 0 && parse_light(line, scene))
+			|| (ft_strncmp(line, "S ", 2) == 0 && parse_skybox(line, scene))
+			|| parse_obj(line, scene)))
+		return (false);
+	return (true);
 }

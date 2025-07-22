@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:00:29 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/21 20:49:44 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/22 16:21:43 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,12 @@
 /* parser.c */
 bool	load_scene(char *file_name, t_scene **scene);
 bool	print_err(char *msg);
-void	free_obj(t_obj *obj);
 bool	append_obj(t_scene *scene, t_obj *obj);
 bool	append_light(t_scene *scene, t_light *light);
+bool	get_line(int fd, char **line);
 
 /* parser_utils.c */
+int		count_digits(char *num);
 bool	is_valid_file(char *file_name, char *ext);
 bool	is_whitespace(char c);
 bool	is_correct_coordinate(char *str);
@@ -32,11 +33,9 @@ bool	is_int(char *num);
 bool	is_float(char *num);
 bool	is_checkerboard(char *str);
 bool	is_mirror(char *str);
-
 bool	next_info(char **data);
 void	skip_spaces(char **str);
 bool	skip_integer(char **str, int *digits);
-
 bool	parse_float(char **str, int *digits);
 
 /* parser_tools.c */
@@ -60,8 +59,7 @@ bool	parse_obj(char *obj_data, t_scene *scene);
 bool	parse_cylinder(char *cylinder_data, t_obj *cylinder);
 bool	parse_sphere(char *sphere_data, t_obj *sphere);
 bool	parse_plane(char *plane_data, t_obj *plane);
-
-/* parse_model.c */
+bool    parse_cone(char *data, t_obj *cone);
 bool	parse_model(char *model_data, t_obj *model);
 
 #endif

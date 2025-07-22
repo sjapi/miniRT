@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:03:20 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/21 21:46:30 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/22 15:45:26 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,56 +32,6 @@ bool	is_valid_file(char *file_name, char *ext)
 	if (fd == -1)
 		return (false);
 	close(fd);
-	return (true);
-}
-
-bool	is_whitespace(char c)
-{
-	return (c == ' ' || c == '\t');
-}
-
-bool is_float(char *num)
-{
-    int		digits;
-    bool	has_dot;
-
-	digits = 0;
-	has_dot = false;
-    if (*num == '-' || *num == '+')
-        num++;
-    while (*num)
-    {
-        if (ft_isdigit(*num))
-            digits++;
-        else if (*num == '.' && digits > 0 && digits < 11)
-        {
-            if (has_dot)
-                return (false);
-            has_dot = (true);
-			digits = 0;
-        }
-        else if (*num == '\n' || is_whitespace(*num))
-            break;
-        else
-            return (false);
-        num++;
-    }
-    return (digits > 0 && digits < 11);
-}
-
-
-bool	is_int(char *num)
-{
-	int	digits;
-
-	digits = 0;
-	while (*num >= '0' && *num <= '9')
-	{
-		digits++;
-		num++;
-	}
-	if ((*num && *num != '\n' && !is_whitespace(*num)) || digits > 10)
-		return (false);
 	return (true);
 }
 
@@ -145,56 +95,4 @@ bool	is_mirror(char *str)
 	if (str[6] && str[6] != '\n' && !is_whitespace(str[6]))
 		return (false);
 	return (true);
-}
-
-// ================================================
-
-void	skip_spaces(char **str)
-{
-	while (is_whitespace(**str))
-		(*str)++;
-}
-
-bool	skip_integer(char **str, int *digits)
-{
-	*digits = 0;
-	while (**str >= '0' && **str <= '9')
-	{
-		(*digits)++;
-		(*str)++;
-	}
-	return (*digits > 0);
-}
-
-bool	next_info(char **str)
-{
-	while (**str && !is_whitespace(**str))
-		(*str)++;
-	skip_spaces(str);
-	return (true);
-}
-
-// ===============================================
-bool	parse_float(char **str, int *digits)
-{
-	*digits = 0;
-	if (**str == '-')
-		(*str)++;
-	while (ft_isdigit(**str))
-	{
-		(*digits)++;
-		(*str)++;
-	}
-	if (!**str || **str == '\n' || is_whitespace(**str) || **str == ',')
-		return (*digits > 0 && *digits < 10);
-	if (**str != '.' || *digits == 0)
-		return (false);
-	(*str)++;
-	*digits = 0;
-	while (ft_isdigit(**str))
-	{
-		(*digits)++;
-		(*str)++;
-	}
-	return (*digits > 0 && *digits < 11);
 }

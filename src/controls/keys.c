@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 14:54:45 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/20 20:07:55 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/22 16:30:54 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ bool	handle_plus_minus(int key, t_rt *info)
 			cam->fov = clamp(cam->fov + 1, 1, 179);
 		else
 			return (false);
+		cam->t_fov = tanf((cam->fov * M_PI / 180.0f) / 2.0f);
 		return (true);
 	}
 	else
