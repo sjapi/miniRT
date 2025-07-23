@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 15:21:16 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/22 17:19:00 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/24 02:25:39 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static void	init_skybox(t_rt *info)
 	info->scene->skybox->bpp = info->scene->skybox->bpp / 8;
 }
 
-static void	init_obj_textures(t_rt *info)
+static bool	init_obj_textures(t_rt *info)
 {
 	int		i;
 	t_obj	*obj;
@@ -61,27 +61,24 @@ static void	init_obj_textures(t_rt *info)
 	while (++i < info->scene->objs_count)
 	{
 		obj = &info->scene->objs[i];
-		if (obj->type != SPHERE || !obj->texture)
+		if ((obj->type != SPHERE && obj->type != CYLINDER && obj->type != PLANE) || !obj->texture)
 			continue ;
 		obj->texture->mlx = mlx_xpm_file_to_image(info->mlx,
 				obj->texture->file_name, &obj->texture->width,
 				&obj->texture->height);
 		if (!obj->texture->mlx)
-		{
-			print_err("Failed to object texture");
-			free_rt(info);
-			exit(1);
-		}
+			return (free_rt(info), print_err("Failed to open texture"));
 		obj->texture->data = mlx_get_data_addr(obj->texture->mlx,
 				&obj->texture->bpp, &obj->texture->line_length,
 				&obj->texture->endian);
 	}
+	return (true);
 }
 
 bool	init_rt(t_rt *info, char *file_name)
 {
 	if (!load_scene(file_name, &info->scene))
-		return (free_rt(info), print_err("Error"));
+		return (free_rt(info), false);
 	if (info->scene->cam == NULL || info->scene->amb == NULL
 		|| info->scene->lights_count == 0)
 		return (free_rt(info), printf("Error\n"), false);
@@ -91,7 +88,8 @@ bool	init_rt(t_rt *info, char *file_name)
 	init_mlx(info);
 	if (info->scene->skybox != NULL)
 		init_skybox(info);
-	init_obj_textures(info);
+	if (!init_obj_textures(info))
+		return (false);
 	info->scene->bvh = build_bvh(info->scene->objs, 0, info->scene->objs_count);
 	return (true);
 }

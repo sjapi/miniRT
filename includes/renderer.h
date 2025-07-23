@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:51:00 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/23 22:02:05 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/24 02:13:09 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,18 @@ void	draw_xyz_axis(t_rt *info);
 /* skybox.c */
 t_color	draw_skybox(t_rt *info, t_ray *ray);
 
+
+/* ray_utils.c */
+float	get_nx_sample(int x, float ratio, float tan_fov, float sample);
+float	get_ny_sample(int y, float tan_fov, float sample);
+float	get_nx(int x, float aspect_ratio, float tan_fov);
+float	get_ny(int y, float tan_fov);
+
+
+
 /* ray.c */
 void	init_ray(t_ray *ray, t_rt *info, int x, int y);
 void	init_rays_msaa(t_ray rays[4], t_rt *info, int x, int y);
-
 t_vec3	get_ray_dir(float nx, float ny, t_cam *cam);
 
 /* hit.c */
@@ -73,22 +81,13 @@ bool	is_hittable_object(t_ray *ray, t_hit *hit, t_obj *obj);
 bool	is_hittable_aabb(t_ray *ray, t_vec3 *box_min, t_vec3 *box_max);
 
 /* intersection */
-float	intersect_plane(t_ray *ray, t_obj *plane, bool *reverse);
-float	intersect_sphere(t_ray *ray, t_obj *sphere, bool *reverse);
-float	intersect_cylinder(
-			t_ray *ray, t_obj *cylinder, char *side, bool *reverse);
-float	intersect_cone(
-			t_ray *ray, t_obj *cone, char *side, bool *reverse);
-float	intersect_model(
-			t_ray *ray, t_obj *obj, t_hit *hit, int *tj, bool *reverse);
+float	intersect_cone(t_ray *ray, t_obj *obj, char *s, bool *reverse);
+float	intersect_model(t_ray *ray, t_obj *obj, t_hit *hit, int *ti);
 
 /* normal */
-t_vec3	get_cylinder_normal(
-			t_obj *obj, t_vec3 hit_point, t_vec3 ray_dir, char side);
-t_vec3	get_cone_normal(
-			t_obj *obj, t_vec3 hit_point, t_vec3 ray_dir, char side);
-t_vec3	get_model_normal(
-			t_obj *obj, t_vec3 hit_point, t_vec3 ray_dir, int tri_j);
+t_vec3	get_cylinder_normal(t_obj *obj, t_vec3 hit, t_vec3 dir, char side);
+t_vec3	get_cone_normal(t_obj *obj, t_vec3 hit, t_vec3 dir, char side);
+t_vec3	get_model_normal(t_obj *obj, t_vec3 dir, int ti);
 
 /* checkerboard */
 bool	sphere_checkerboard(t_vec3 hit_point, t_obj *sphere);
@@ -96,11 +95,33 @@ bool	cylinder_checkerboard(t_vec3 hit_point, t_obj *cyl, bool base);
 bool	plane_checkerboard(t_vec3 hit_point, t_obj *plane);
 bool	cone_checkerboard(t_vec3 hit_point, t_obj *cone, bool base);
 
+/* color */
+t_color	compute_color(t_hit *p_hit, t_rt *info);
+void	compute_specular(t_color *fin, t_hit *phit, t_ray *sray, t_light *l, t_cam *cam);
+void	compute_diffuse(t_color *fin, t_hit *phit, t_ray *sray, t_light *l, t_color *obj_col);
+
+t_color	compute_mirror(t_color obj_col, t_light *light, t_hit *p_hit, t_rt *info);
+t_color	get_texture_color(t_hit *hit);
+
 /* info */
 void	draw_info(t_rt *info);
 
-void	compute_specular(t_color *final, t_hit *phit, t_ray *sray, t_light	*l, t_cam *c);
-void	compute_diffuse(t_color *final, t_hit *phit, t_ray *sray, t_light *l, t_color *obj_col);
-t_color	compute_color(t_hit *p_hit, t_rt *info);
+
+/* texture */
+void	apply_bump(t_hit *hit, float u, float v);
+
+
+/* sphere */
+t_color	get_sp_texture(t_hit *hit);
+float	intersect_sphere(t_ray *ray, t_obj *obj, bool *reverse);
+
+/* plane */
+float	intersect_plane(t_ray *ray, t_obj *obj, bool *reverse);
+t_color	get_pl_texture(t_hit *hit);
+
+/* cylinder */
+t_color	get_cy_texture(t_hit *hit);
+float	intersect_cylinder(t_ray *ray, t_obj *obj, char *side, bool *reverse);
+
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 22:00:20 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/23 22:04:00 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/24 01:36:59 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,24 +55,26 @@ bool	is_hittable_aabb(t_ray *ray, t_vec3 *box_min, t_vec3 *box_max)
 	return (true);
 }
 
-bool	is_hittable_object(t_ray *ray, t_hit *hit, t_obj *obj)
+bool	is_hittable_object(t_ray *ray, t_hit *closest_hit, t_obj *obj)
 {
 	float	t;
 	bool	tr;
 
+	t = INFINITY;
+	tr = false;
 	if (obj->type == SPHERE)
 		t = intersect_sphere(ray, obj, &tr);
 	else if (obj->type == CYLINDER)
-		t = intersect_cylinder(ray, obj, &hit->side, &tr);
+		t = intersect_cylinder(ray, obj, &closest_hit->side, &tr);
 	else if (obj->type == CONE)
-		t = intersect_cone(ray, obj, &hit->side, &tr);
+		t = intersect_cone(ray, obj, &closest_hit->side, &tr);
 	else if (obj->type == MODEL)
-		t = intersect_model(ray, obj, hit, &hit->tri_i, &tr);
-	if (t > 1e-3 && t < hit->t)
+		t = intersect_model(ray, obj, closest_hit, &closest_hit->tri_i);
+	if (t > 1e-3 && t < closest_hit->t)
 	{
-		hit->t = t;
-		hit->obj = obj;
-		hit->reverse = tr;
+		closest_hit->t = t;
+		closest_hit->obj = obj;
+		closest_hit->reverse = tr;
 		return (true);
 	}
 	return (false);

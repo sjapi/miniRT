@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 14:34:24 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/23 18:13:49 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/23 22:44:47 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,7 @@ t_vec3	get_cone_normal(t_obj *obj, t_vec3 hit_point, t_vec3 ray_dir, char side)
 	t_vec3	n;
 	float	m;
 
-	apex = (t_vec3){obj->attrs[CONE_AP_X_I], obj->attrs[CONE_AP_Y_I],
-		obj->attrs[CONE_AP_Z_I]};
+	apex = v_add(obj->center, v_scale(obj->norm_vector, obj->attrs[CONE_H_I]));
 	if (side == HIT_BOTTOM)
 		normal = obj->norm_vector;
 	else
@@ -50,9 +49,8 @@ static float	intersect_cone_base(t_ray *ray, t_obj *obj)
 	t_vec3	p;
 	t_vec3	diff;
 
-	apex = (t_vec3){obj->attrs[CONE_AP_X_I],
-		obj->attrs[CONE_AP_Y_I], obj->attrs[CONE_AP_Z_I]};
-	base_center = v_sub(apex, v_scale(obj->norm_vector, obj->attrs[CONE_H_I]));
+	base_center = obj->center;
+	apex = v_add(base_center, v_scale(obj->norm_vector, obj->attrs[CONE_H_I]));
 	norm[0] = v_dot(ray->direction, obj->norm_vector);
 	if (fabsf(norm[0]) < 1e-6)
 		return (-1.0);
@@ -98,8 +96,7 @@ static float	intersect_cone_surface(t_ray *ray, t_obj *obj)
 	t_vec3	co;
 	float	norm[6];
 
-	apex = (t_vec3){obj->attrs[CONE_AP_X_I], obj->attrs[CONE_AP_Y_I],
-		obj->attrs[CONE_AP_Z_I]};
+	apex = v_add(obj->center, v_scale(obj->norm_vector, obj->attrs[CONE_H_I]));
 	co = v_sub(ray->origin, apex);
 	norm[0] = v_dot(ray->direction, obj->norm_vector);
 	norm[1] = v_dot(co, obj->norm_vector);
@@ -134,6 +131,7 @@ float	intersect_cone(t_ray *ray, t_obj *obj, char *side, bool *reverse)
 		t = base;
 		*side = HIT_BOTTOM;
 	}
+	*reverse = true;
 	if (t > 0 && (obj->checkerboard || obj->selected))
 	{
 		hit_point = v_add(ray->origin, v_scale(ray->direction, t));

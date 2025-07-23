@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 21:06:54 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/23 20:22:24 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/24 02:25:16 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,13 +99,10 @@ int	handle_mouse_hook(int button, int x, int y, t_rt *info)
 		info->scene->selected = obj;
 		info->mode = OBJECT_MODE;
 	}
-	else
+	else if (info->scene->selected != NULL)
 	{
-		if (info->scene->selected != NULL)
-		{
-			info->scene->selected->selected = false;
-			info->scene->selected = NULL;
-		}
+		info->scene->selected->selected = false;
+		info->scene->selected = NULL;
 	}
 	render(info);
 	return (0);
@@ -119,7 +116,7 @@ int	main(int argc, char **argv)
 		return (printf("miniRT: wrong arguments count\n"), 1);
 	ft_bzero(&info, sizeof(t_rt));
 	if (!init_rt(&info, argv[1]))
-		return (1);
+		return (printf("Error\n"), 1);
 	render(&info);
 	mlx_hook(info.win, 2, 1L >> 0, handle_key_hooks, &info);
 	mlx_mouse_hook(info.win, handle_mouse_hook, &info);

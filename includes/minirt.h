@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 16:16:38 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/23 16:37:10 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/23 19:16:49 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include <stdbool.h>
 
-typedef struct s_bvh_node t_bvh_node;
+typedef struct s_bvh_node	t_bvh_node;
 
 typedef struct s_vec3
 {

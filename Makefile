@@ -32,20 +32,26 @@ GNL = \
 	get_next_line.c get_next_line_utils.c
 RENDERER = \
 	render.c img.c ray.c \
-	hit.c model.c \
+	ray_utils.c \
+	hit.c model/model.c \
 	skybox.c \
 	info.c specular.c diffuse.c \
 	compute_color.c \
-	intersect_sphere.c \
-	intersect_plane.c \
-	intersect_cylinder.c \
-	intersect_cylinder_helper.c \
-	intersect_cone.c \
-	checkerboard_sphere.c \
-	checkerboard_plane.c \
-	checkerboard_cylinder.c \
-	checkerboard_cone.c \
-	hit_utils.c
+	sphere/intersect_sphere.c \
+	sphere/texture.c \
+	plane/intersect_plane.c \
+	plane/texture.c \
+	cylinder/intersect_cylinder.c \
+	cylinder/intersect_cylinder_helper.c \
+	cylinder/texture.c \
+	cone/intersect_cone.c \
+	sphere/checkerboard_sphere.c \
+	plane/checkerboard_plane.c \
+	cylinder/checkerboard_cylinder.c \
+	cone/checkerboard_cone.c \
+	hit_utils.c \
+	mirror.c \
+	texture.c
 
 CONTROLS = \
 	mouse.c keys.c obj.c \

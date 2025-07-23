@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 10:52:17 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/23 22:05:32 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/24 02:17:18 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,18 @@
 
 static bool	traverse_bvh(t_bvh_node *node, t_ray *ray, t_hit *hit)
 {
+	t_obj	*obj;
 	bool	left_node;
 	bool	right_node;
 
+	obj = NULL;
 	if (!node || !is_hittable_aabb(ray, &node->aabb_min, &node->aabb_max))
 		return (false);
 	if (node->object)
-		return (is_hittable_object(ray, hit, node->object));
+	{
+		obj = node->object;
+		return (is_hittable_object(ray, hit, obj));
+	}
 	left_node = traverse_bvh(node->left, ray, hit);
 	right_node = traverse_bvh(node->right, ray, hit);
 	return (left_node || right_node);
@@ -76,11 +81,13 @@ bool	find_hit(t_ray *ray, t_scene *scene, t_hit *hit)
 	else if (obj->type == SPHERE)
 		hit->normal = v_normalize(v_sub(hit->hit_point, obj->center));
 	else if (obj->type == CYLINDER)
-		hit->normal = get_cylinder_normal(obj, hit->hit_point, ray->direction, hit->side);
+		hit->normal = get_cylinder_normal(obj, hit->hit_point,
+				ray->direction, hit->side);
 	else if (obj->type == CONE)
-		hit->normal = get_cone_normal(obj, hit->hit_point, ray->direction, hit->side);
+		hit->normal = get_cone_normal(obj, hit->hit_point,
+				ray->direction, hit->side);
 	else if (obj->type == MODEL)
-		hit->normal = get_model_normal(obj, hit->hit_point, ray->direction, hit->tri_i);
+		hit->normal = get_model_normal(obj, ray->direction, hit->tri_i);
 	return (true);
 }
 
@@ -92,7 +99,7 @@ bool	is_in_shadow(t_ray *ray, t_scene *scene, float d)
 	hit_planes(ray, scene, &hit);
 	if (hit.t > 1e-6 && hit.t < d)
 		return (true);
-	if (traverse_bvh(scene->bvh, ray, &hit) && hit.t > 1e-6 && hit.t < d)
+	if (traverse_bvh(scene->bvh, ray, &hit) && hit.t < d)
 		return (true);
 	return (false);
 }
