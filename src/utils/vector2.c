@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 17:52:48 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/20 17:54:59 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/23 18:38:45 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,11 @@ float	v_dot(t_vec3 a, t_vec3 b)
 t_vec3	v_sub(t_vec3 a, t_vec3 b)
 {
 	return ((t_vec3){a.x - b.x, a.y - b.y, a.z - b.z});
+}
+
+void	v_set(t_vec3 *v, float value)
+{
+	v->x = value;
+	v->y = value;
+	v->z = value;
 }

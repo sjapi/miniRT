@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 16:11:02 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/23 18:11:05 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/23 20:13:13 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,25 +22,26 @@ static void	calc_sphere_aabb(t_obj *sphere)
 	t_vec3	r_vec;
 
 	radius = sphere->attrs[SPHERE_D_I] * 0.5f;
-	r_vec.x = radius;
-	r_vec.y = radius;
-	r_vec.z = radius;
+	v_set(&r_vec, radius);
 	sphere->aabb_min = v_sub(sphere->center, r_vec);
 	sphere->aabb_max = v_add(sphere->center, r_vec);
 }
 
-static void calc_cylinder_aabb(t_obj *cylinder)
+static void	calc_cylinder_aabb(t_obj *cylinder)
 {
-	float	height;
 	float	radius;
-	
-	height = cylinder->attrs[CYLINDER_H_I];
+	float	h;
+	t_vec3	bottom;
+	t_vec3	top;
+	t_vec3	r_vec;
+
 	radius = cylinder->attrs[CYLINDER_D_I] * 0.5f;
-	t_vec3 bottom = cylinder->center;
-	t_vec3 top = v_add(cylinder->center, v_scale(cylinder->norm_vector, height));
+	h = cylinder->attrs[CYLINDER_H_I];
+	bottom = cylinder->center;
+	top = v_add(cylinder->center, v_scale(cylinder->norm_vector, h));
 	cylinder->aabb_min = v_min(&top, &bottom);
 	cylinder->aabb_max = v_max(&top, &bottom);
-	t_vec3 r_vec = { radius, radius, radius };
+	v_set(&r_vec, radius);
 	cylinder->aabb_min = v_sub(cylinder->aabb_min, r_vec);
 	cylinder->aabb_max = v_add(cylinder->aabb_max, r_vec);
 }
@@ -49,41 +50,42 @@ static void	calc_cone_aabb(t_obj *cone)
 {
 	float	h;
 	float	r;
-	t_vec3	half_height;
 	t_vec3	top;
 	t_vec3	bottom;
 	t_vec3	r_vec;
 
 	h = cone->attrs[CONE_H_I];
-	r = tanf(cone->attrs[CONE_A_I] * (M_PI / 180.0f)) * (h);
-	half_height = v_scale(cone->norm_vector, h);
-	top = v_add(cone->center, half_height);
-	bottom = v_sub(cone->center, half_height);
+	r = tanf(cone->attrs[CONE_A_I] * (M_PI / 180.0f)) * h;
+	top = v_add(cone->center, v_scale(cone->norm_vector, h));
+	bottom = cone->center;
 	cone->aabb_min = v_min(&top, &bottom);
 	cone->aabb_max = v_max(&top, &bottom);
-	r_vec.x = r;
-	r_vec.y = r;
-	r_vec.z = r;
+	v_set(&r_vec, r);
 	cone->aabb_min = v_sub(cone->aabb_min, r_vec);
 	cone->aabb_max = v_add(cone->aabb_max, r_vec);
 }
 
 static void	calc_model_aabb(t_obj *model)
 {
+	t_vec3	min;
+	t_vec3	max;
+	t_tri	*tri;
+	int		i;
+
 	if (!model || !model->mesh || model->mesh->size <= 0)
-		return;
-	t_vec3	min = { INFINITY, INFINITY, INFINITY };
-	t_vec3	max = { -INFINITY, -INFINITY, -INFINITY };
-	for (int i = 0; i < model->mesh->size; ++i)
+		return ;
+	v_set(&min, INFINITY);
+	v_set(&max, -INFINITY);
+	i = -1;
+	while (++i < model->mesh->size)
 	{
-		t_tri	*tri = &model->mesh->triangles[i];
-		t_vec3 points[3] = { *tri->v0, *tri->v1, *tri->v2 };
-		for (int j = 0; j < 3; ++j)
-		{
-			t_vec3	p = points[j];
-			min = v_min(&min, &p);
-			max = v_max(&max, &p);
-		}
+		tri = &model->mesh->triangles[i];
+		min = v_min(&min, tri->v0);
+		max = v_max(&max, tri->v0);
+		min = v_min(&min, tri->v1);
+		max = v_max(&max, tri->v1);
+		min = v_min(&min, tri->v2);
+		max = v_max(&max, tri->v2);
 	}
 	min.y -= 0.01;
 	if (min.y == max.y)
@@ -91,7 +93,6 @@ static void	calc_model_aabb(t_obj *model)
 	model->aabb_min = min;
 	model->aabb_max = max;
 }
-
 
 void	calculate_aabb(t_obj *obj)
 {
