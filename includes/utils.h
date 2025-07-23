@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 21:58:38 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/21 21:58:41 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/23 18:39:44 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ t_vec3		v_normalize(t_vec3 v);
 t_vec3		v_sub(t_vec3 a, t_vec3 b);
 float		v_dot(t_vec3 a, t_vec3 b);
 float		v_len(t_vec3 v);
+void		v_set(t_vec3 *v, float value);
 
 /* colors */
 t_color		int_to_color(int icolor);

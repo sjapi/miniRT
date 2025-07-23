@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 14:28:35 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/20 19:05:41 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/23 19:47:32 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,43 +36,43 @@ void	v_to_min(t_vec3 *v0, t_vec3 *v1)
 		v0->z = v1->z;
 }
 
-t_bvh_node *build_bvh(t_obj *objects, int start, int end)
+static void	set_max_min(t_bvh_node *node, t_obj *obj, int start, int end)
 {
-    t_bvh_node *node = malloc(sizeof(t_bvh_node));
-    if (!node)
-        return NULL;
+	int	i;
 
-    // Compute combined AABB
-    node->aabb_min = (t_vec3){ INFINITY, INFINITY, INFINITY };
-    node->aabb_max = (t_vec3){ -INFINITY, -INFINITY, -INFINITY };
-    for (int i = start; i < end; i++)
-    {
-        v_to_min(&node->aabb_min, &objects[i].aabb_min);
-        v_to_max(&node->aabb_max, &objects[i].aabb_max);
-    }
-    int count = end - start;
-    if (count == 1)
-    {
-        // Leaf
-        node->left = node->right = NULL;
-        node->object = &objects[start];
-        return node;
-    }
-
-    // Choose axis with largest extent
-    t_vec3 extent = v_sub(node->aabb_max, node->aabb_min);
-    int axis = 0;
-    if (extent.y > extent.x) axis = 1;
-    if (extent.z > extent.y) axis = 2;
-
-    // Sort objects by AABB center along chosen axis
-    sort_by_axis(&objects[start], count, axis);
-
-    // Split in half
-    int mid = start + count / 2;
-    node->left = build_bvh(objects, start, mid);
-    node->right = build_bvh(objects, mid, end);
-    node->object = NULL;
-    return node;
+	i = start - end;
+	while (++i < end)
+	{
+		v_to_min(&node->aabb_min, &obj[i].aabb_min);
+		v_to_max(&node->aabb_max, &obj[i].aabb_max);
+	}
 }
 
+t_bvh_node	*build_bvh(t_obj *objects, int start, int end)
+{
+	t_bvh_node	*node;
+	t_vec3		extent;
+	int			axis;
+
+	node = ft_calloc(sizeof(t_bvh_node), 1);
+	if (!node)
+		return (NULL);
+	v_set(&node->aabb_min, INFINITY);
+	v_set(&node->aabb_max, -INFINITY);
+	set_max_min(node, objects, start, end);
+	if ((end - start) == 1)
+	{
+		node->object = &objects[start];
+		return (node);
+	}
+	extent = v_sub(node->aabb_max, node->aabb_min);
+	axis = 0;
+	if (extent.y > extent.x)
+		axis = 1;
+	if (extent.z > extent.y)
+		axis = 2;
+	sort_by_axis(&objects[start], (end - start), axis);
+	node->left = build_bvh(objects, start, (end + start) / 2);
+	node->right = build_bvh(objects, (end + start) / 2, end);
+	return (node);
+}
