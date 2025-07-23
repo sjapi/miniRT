@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 12:45:57 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/24 01:23:01 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/24 02:31:45 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ static int	render_pixel_light(int x, int y, t_rt *info)
 	t_ray	ray;
 	t_hit	hit;
 	t_color	result;
-	int		i;
 
 	init_ray(&ray, info, x, y);
 	result = manage_hit(&hit, &ray, info);
@@ -156,12 +155,10 @@ void	render(t_rt *info)
 	long	time;
 
 	time = current_time();
-
 	init_optimization(info);
 	render_scene(info);
 	draw_xyz_axis(info);
 	printf("Render time: %ld\n", current_time() - time);
-
 	mlx_put_image_to_window(info->mlx, info->win, info->img, 0, 0);
 	draw_info(info);
 }

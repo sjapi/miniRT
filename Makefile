@@ -1,16 +1,13 @@
-NAME    = miniRT
-SRCS_DIR = src/
-OBJS_DIR = objs/
-INC_DIR  = includes/
-MLX_DIR  = mlx
-MLX_LIB  = $(MLX_DIR)/libmlx.a
+NAME		= miniRT
+SRCS_DIR	= src/
+OBJS_DIR	= objs/
+INC_DIR  	= includes/
+MLX_DIR		= mlx/
+MLX_LIB		= $(MLX_DIR)/libmlx.a
 
-GREEN = \033[1;32m
-YELLOW = \033[1;33m
-CYAN = \033[1;36m
-RED = \033[1;31m
-PURPLE = \033[1;35m
-RESET = \033[0m
+YELLOW	= \033[1;33m
+RED		= \033[1;31m
+RESET	= \033[0m
 
 MAIN = \
 	main.c optimization.c \
@@ -28,8 +25,10 @@ UTILS = \
 	ft_bzero.c ft_abs.c time.c utils.c \
 	ft_strlen.c ft_strcmp.c vector2.c \
 	color2.c ft_isdigit.c
+
 GNL = \
 	get_next_line.c get_next_line_utils.c
+
 RENDERER = \
 	render.c img.c ray.c \
 	ray_utils.c \
@@ -56,6 +55,7 @@ RENDERER = \
 CONTROLS = \
 	mouse.c keys.c obj.c \
 	cam.c lights.c helper.c
+
 BOUNDING = \
 	bvh.c sort.c calculation.c \
 	bvh_utils.c
@@ -69,18 +69,17 @@ SRCS = \
 	$(addprefix $(SRCS_DIR)bounding/, $(BOUNDING)) \
 	$(addprefix $(SRCS_DIR)controls/, $(CONTROLS))
 
-OBJS = $(patsubst $(SRCS_DIR)%.c, $(OBJS_DIR)%.o, $(SRCS))
+OBJS	= $(patsubst $(SRCS_DIR)%.c, $(OBJS_DIR)%.o, $(SRCS))
 
-CC      = cc
-UNAME_S := $(shell uname -s)
+CC		= cc
+#CFLAGS	= -Wall -Wextra -Werror
+UNAME_S	:= $(shell uname -s)
+
 ifeq ($(UNAME_S), Darwin)
 	LGFLAGS = -Lmlx -lmlx -framework OpenGL -framework AppKit -lm 
-	SANITIZE = # sanitize disabled on macOS (optional)
 else
 	LGFLAGS = -Lmlx -lmlx -lXext -lX11 -lm
-	SANITIZE = -fsanitize=address
 endif
-
 
 all: $(MLX_LIB) $(NAME)
 
@@ -123,4 +122,6 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+bonus: all
+
+.PHONY: all clean fclean re bonus
