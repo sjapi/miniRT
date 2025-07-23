@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 15:08:58 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/22 16:29:56 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/23 20:25:32 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static bool	base(t_vec3 hit_point, t_obj *cyl, t_vec3 diff)
 	base_center = cyl->center;
 	if (v_dot(diff, cyl->norm_vector) > cyl->attrs[CYLINDER_H_I] * 0.5f)
 		base_center = v_add(cyl->center, v_scale(cyl->norm_vector,
-			cyl->attrs[CYLINDER_H_I]));
+					cyl->attrs[CYLINDER_H_I]));
 	diff = v_sub(hit_point, base_center);
 	init_xy_local(cyl, xy_local, diff);
 	theta = 0.5f + (atan2f(xy_local[1], xy_local[0]) / (2 * M_PI));

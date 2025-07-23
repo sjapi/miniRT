@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 21:06:54 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/22 17:17:20 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/23 20:22:24 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,17 +93,11 @@ int	handle_mouse_hook(int button, int x, int y, t_rt *info)
 	obj = mouse_click_obj(button, x, y, info);
 	if (obj != NULL)
 	{
-		if (info->scene->selected != NULL)
-		{
-			if (info->scene->selected->id == obj->id)
-				return (0);
+		if (info->scene->selected)
 			info->scene->selected->selected = false;
-			info->scene->selected = NULL;
-		}
 		obj->selected = true;
 		info->scene->selected = obj;
-		if (info->mode != OBJECT_MODE)
-			info->mode = OBJECT_MODE;
+		info->mode = OBJECT_MODE;
 	}
 	else
 	{
@@ -111,7 +105,6 @@ int	handle_mouse_hook(int button, int x, int y, t_rt *info)
 		{
 			info->scene->selected->selected = false;
 			info->scene->selected = NULL;
-			info->mode = RENDER_MODE;
 		}
 	}
 	render(info);

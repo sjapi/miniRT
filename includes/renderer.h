@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:51:00 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/23 14:03:11 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/23 22:02:05 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,9 @@ t_vec3	get_ray_dir(float nx, float ny, t_cam *cam);
 /* hit.c */
 bool	find_hit(t_ray *ray, t_scene *scene, t_hit *hit);
 bool	is_in_shadow(t_ray *ray, t_scene *scene, float d);
+bool	is_hittable_aabb(t_ray *ray, t_vec3 *box_min, t_vec3 *box_max);
+bool	is_hittable_object(t_ray *ray, t_hit *hit, t_obj *obj);
+bool	is_hittable_aabb(t_ray *ray, t_vec3 *box_min, t_vec3 *box_max);
 
 /* intersection */
 float	intersect_plane(t_ray *ray, t_obj *plane, bool *reverse);

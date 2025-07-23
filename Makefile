@@ -45,6 +45,7 @@ RENDERER = \
 	checkerboard_plane.c \
 	checkerboard_cylinder.c \
 	checkerboard_cone.c \
+	hit_utils.c
 
 CONTROLS = \
 	mouse.c keys.c obj.c \
