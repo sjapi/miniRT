@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:51:00 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/20 20:38:00 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/23 14:03:11 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ void	init_rays_msaa(t_ray rays[4], t_rt *info, int x, int y);
 t_vec3	get_ray_dir(float nx, float ny, t_cam *cam);
 
 /* hit.c */
-bool	find_hit(t_ray *ray, t_rt *info, t_hit *hit, bool shadow);
+bool	find_hit(t_ray *ray, t_scene *scene, t_hit *hit);
+bool	is_in_shadow(t_ray *ray, t_scene *scene, float d);
 
 /* intersection */
 float	intersect_plane(t_ray *ray, t_obj *plane, bool *reverse);

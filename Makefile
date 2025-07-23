@@ -21,7 +21,7 @@ PARSER = \
 	parse_elements.c parse_objects.c \
 	parse_model.c parser_utils1.c \
 	parser_utils2.c parser_tools1.c \
-	parse_objects1.c
+	parse_objects1.c model_utils.c
 UTILS = \
 	vector1.c ambient.c ft_atof.c ft_atoi.c \
 	ft_memcpy.c color1.c clamp.c ft_calloc.c \

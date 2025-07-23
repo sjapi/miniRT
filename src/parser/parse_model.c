@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 13:13:39 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/22 16:45:55 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/23 17:47:02 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,122 +20,60 @@
 #include "utils.h"
 #include "defines.h"
 
-static bool	get_model_size(char *file_name, int *p_size, int *m_size)
+bool	parse_mesh(char *line, t_mesh *mesh, int *pi, int *ti)
 {
-	int		fd;
-	char	*line;
-	char	*pline;
-
-	fd = open(file_name, O_RDONLY);
-	*p_size = 0;
-	*m_size = 0;
-	pline = NULL;
-	while (get_line(fd, &pline))
+	skip_spaces(&line);
+	if (ft_strncmp(line, "p ", 2) == 0)
 	{
-		line = pline;
-		skip_spaces(&line);
-		if (ft_strncmp(line, "p ", 2) == 0)
-			(*p_size)++;
-		else if (ft_strncmp(line, "t ", 2) == 0)
-			(*m_size)++;
-		else if (*line && *line != '\n')
-			return (free(pline), false);
-	}
-	close(fd);
-	if (*p_size == 0 || *m_size == 0)
-		return (false);
-	return (true);
-}
-
-static bool	get_point(char *data, t_vec3 *p, t_vec3 *center)
-{
-	if (!is_correct_coordinate(data))
-		return (false);
-	p->x = ft_atof(data) + center->x;
-	while (*data && *data != ',')
-		data++;
-	data++;
-	p->y = ft_atof(data) + center->y;
-	while (*data && *data != ',')
-		data++;
-	data++;
-	p->z = ft_atof(data) + center->z;
-	return (true);
-}
-
-static bool	get_next_index(char **data, int *index)
-{
-	*index = ft_atoi(*data);
-	while (**data && **data != ',')
-		(*data)++;
-	if (**data == ',')
-		(*data)++;
-	return (true);
-}
-
-static bool	get_triangle(char *data, t_tri *triangle, t_obj *model, int ps)
-{
-	t_vec3	*points;
-	int		i;
-
-	points = model->mesh->points;
-	if (!is_correct_coordinate(data))
-		return (false);
-	if (!get_next_index(&data, &i) || i < 0 || i >= ps)
-		return (false);
-	triangle->v0 = &points[i];
-	if (!get_next_index(&data, &i) || i < 0 || i >= ps)
-		return (false);
-	triangle->v1 = &points[i];
-	if (!get_next_index(&data, &i) || i < 0 || i >= ps)
-		return (false);
-	triangle->v2 = &points[i];
-	triangle->edge1 = v_sub(*triangle->v1, *triangle->v0);
-	triangle->edge2 = v_sub(*triangle->v2, *triangle->v0);
-	return (true);
-}
-
-bool	load_model(int fd, t_obj *model, int ps)
-{
-	char	*line;
-	char	*pline;
-	t_mesh	*mesh;
-	int		p_index;
-	int		t_index;
-
-	p_index = 0;
-	t_index = 0;
-	mesh = model->mesh;
-	pline = NULL;
-	while (get_line(fd, &pline))
-	{
-		line = pline;
-		skip_spaces(&line);
-		if (ft_strncmp(line, "p ", 2) == 0)
-		{
-			next_info(&line);
-			if (!get_point(line, &mesh->points[p_index], &model->center))
-				return (free(pline), false);
-			p_index++;
-		}
-		else if (ft_strncmp(line, "t ", 2) == 0)
-		{
-			next_info(&line);
-			if (!get_triangle(line, &mesh->triangles[t_index], model, ps))
-				return (free(pline), false);
-			t_index++;
-		}
 		next_info(&line);
-		if (*line && *line != '\n')
-			return (free(pline), false);
+		if (!get_point(line, &mesh->points[*pi]))
+			return (false);
+		(*pi)++;
 	}
+	else if (ft_strncmp(line, "t ", 2) == 0)
+	{
+		next_info(&line);
+		if (!get_triangle(line, &mesh->triangles[*ti], mesh->points, mesh->ps))
+			return (false);
+		(*ti)++;
+	}
+	next_info(&line);
+	if (*line && *line != '\n')
+		return (false);
+	return (true);
+}
+
+bool	load_model(int fd, t_obj *model)
+{
+	char	*line;
+	int		pi;
+	int		ti;
+	t_mesh	*mesh;
+
+	mesh = model->mesh;
+	pi = 0;
+	ti = 0;
+	line = NULL;
+	if (!get_model_size(mesh->file_name, &mesh->ps, &mesh->size))
+		return (print_err(".obj file contains invalid symbols"));
+	mesh->triangles = malloc(sizeof(t_tri) * mesh->size);
+	if (!mesh->triangles)
+		return (print_err("Can't allocate memory"));
+	mesh->points = malloc(sizeof(t_vec3) * mesh->ps);
+	if (!mesh->points)
+		return (print_err("Can't allocate memory"));
+	while (get_line(fd, &line))
+		if (!parse_mesh(line, mesh, &pi, &ti))
+			return (free(line), false);
+	pi = -1;
+	while (++pi < mesh->ps)
+		mesh->points[pi] = v_add(mesh->points[pi], model->center);
 	return (true);
 }
 
 bool	parse_model(char *model_data, t_obj *model)
 {
 	int		fd;
-	int		p_size;
 
 	model->type = MODEL;
 	next_info(&model_data);
@@ -150,22 +88,14 @@ bool	parse_model(char *model_data, t_obj *model)
 	fd = open(model->mesh->file_name, O_RDONLY);
 	if (fd == -1)
 		return (print_err("File not exitsts or permission error"));
-	if (!get_model_size(model->mesh->file_name, &p_size, &model->mesh->size))
-		return (close(fd), print_err(".obj file contains invalid symbols"));
-	model->mesh->triangles = malloc(sizeof(t_tri) * model->mesh->size);
-	if (!model->mesh->triangles)
-		return (close(fd), print_err("Can't allocate memory"));
-	model->mesh->points = malloc(sizeof(t_vec3) * p_size);
-	if (!model->mesh->points)
-		return (close(fd), print_err("Can't allocate memory"));
-	if (!load_model(fd, model, p_size))
+	if (!load_model(fd, model))
 		return (close(fd), print_err("Can't load the model"));
+	close(fd);
 	next_info(&model_data);
 	if (!get_color(model_data, &model->color))
-		return (close(fd), print_err("Model has invalid color"));
+		return (print_err("Model has invalid color"));
 	next_info(&model_data);
 	if (*model_data && *model_data != '\n')
-		return (close(fd), print_err("Model has invalid data"));
-	close(fd);
+		return (print_err("Model has invalid data"));
 	return (true);
 }

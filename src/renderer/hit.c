@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 10:52:17 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/20 19:19:23 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/23 16:16:23 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include "defines.h"
 #include "bounding.h"
 
-static bool is_hitable_aabb(t_ray *ray, t_vec3 *box_min, t_vec3 *box_max)
+static bool is_hittable_aabb(t_ray *ray, t_vec3 *box_min, t_vec3 *box_max)
 {
     float tmin = -INFINITY;
     float tmax = INFINITY;
@@ -47,9 +47,9 @@ static bool is_hitable_aabb(t_ray *ray, t_vec3 *box_min, t_vec3 *box_max)
     return true;
 }
 
-static bool traverse_bvh(t_bvh_node *node, t_ray *ray, t_hit *closest_hit, bool shadow_hit)
+static bool traverse_bvh(t_bvh_node *node, t_ray *ray, t_hit *closest_hit)
 {
-    if (!node || !is_hitable_aabb(ray, &node->aabb_min, &node->aabb_max))
+    if (!node || !is_hittable_aabb(ray, &node->aabb_min, &node->aabb_max))
         return false;
     bool hit = false;
     if (node->object) // Leaf node
@@ -71,38 +71,33 @@ static bool traverse_bvh(t_bvh_node *node, t_ray *ray, t_hit *closest_hit, bool 
             closest_hit->obj = obj;
 			closest_hit->reverse = tmp_reverse;
             hit = true;
-            if (shadow_hit)
-                return true; // early exit for shadow rays
         }
         return hit;
     }
-    bool hit_left = traverse_bvh(node->left, ray, closest_hit, shadow_hit);
-    if (shadow_hit && hit_left)
-        return true;
-    bool hit_right = traverse_bvh(node->right, ray, closest_hit, shadow_hit);
-    if (shadow_hit && hit_right)
-        return true;
+    bool hit_left = traverse_bvh(node->left, ray, closest_hit);
+    bool hit_right = traverse_bvh(node->right, ray, closest_hit);
     return hit_left || hit_right;
 }
 
-static void hit_planes(t_ray *ray, t_obj *objects, int count, t_hit *closest_hit, bool shadow_hit)
+static void hit_planes(t_ray *ray, t_scene *scene, t_hit *closest_hit)
 {
-    float t;
-    bool tmp_reverse = false;
+    float	t;
+    bool	tmp_reverse;
+	int		i;
+	t_obj	*obj;
 
-    for (int i = 0; i < count; ++i)
+	i = -1;
+	while (++i < scene->objs_count)
     {
-        t_obj *obj = &objects[i];
+        obj = &scene->objs[i];
         if (obj->type != PLANE)
-            continue;
-
+            continue ;
         t = intersect_plane(ray, obj, &tmp_reverse);
         if (t > 0.001f && t < closest_hit->t)
         {
             closest_hit->t = t;
             closest_hit->obj = obj;
-            if (shadow_hit)
-                return; // early exit
+			closest_hit->reverse = tmp_reverse;
         }
     }
 }
@@ -111,21 +106,18 @@ static void hit_planes(t_ray *ray, t_obj *objects, int count, t_hit *closest_hit
  * need to add normal for cylinder - done
  * need to add optimization for cylinder & cone
  */
-bool find_hit(t_ray *ray, t_rt *info, t_hit *hit, bool shadow_hit)
+bool	find_hit(t_ray *ray, t_scene *scene, t_hit *hit)
 {
-	t_obj *obj;
+	t_obj	*obj;
 
    	hit->t = INFINITY;
-	hit_planes(ray, info->scene->objs, info->scene->objs_count, hit, shadow_hit);
-	//printf("%f\n", hit->t);
-	if (shadow_hit && hit->t != INFINITY)
-		return true;
-	if (!traverse_bvh(info->scene->bvh, ray, hit, shadow_hit) && hit->t == INFINITY)
+	hit_planes(ray, scene, hit);
+	if (!traverse_bvh(scene->bvh, ray, hit) && hit->t == INFINITY)
 		return (false);
 	obj = hit->obj;
 	hit->hit_point = v_add(ray->origin, v_scale(ray->direction, hit->t));
-	if (shadow_hit)
-		return (true);
+	if (hit->t > 100)
+		return (false);
 	if (obj->type == PLANE)
 		hit->normal = obj->norm_vector;
 	else if (obj->type == SPHERE)
@@ -139,6 +131,16 @@ bool find_hit(t_ray *ray, t_rt *info, t_hit *hit, bool shadow_hit)
 	return (true);
 }
 
+bool is_in_shadow(t_ray *ray, t_scene *scene, float d)
+{
+	t_hit	hit;
 
-
+   	hit.t = INFINITY;
+	hit_planes(ray, scene, &hit);
+	if (hit.t > 1e-6 && hit.t < d)
+		return (true);
+	if (traverse_bvh(scene->bvh, ray, &hit) && hit.t > 1e-6 && hit.t < d)
+		return (true);
+	return (false);
+}
 

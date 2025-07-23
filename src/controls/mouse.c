@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   selection.c                                        :+:      :+:    :+:   */
+/*   mouse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 12:49:50 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/15 12:56:16 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/23 13:43:33 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_obj	*mouse_click_obj(int button, int x, int y, t_rt *info)
 	ny = get_ny(y, tan_fov);
 	ray.origin = info->scene->cam->viewpoint;
 	ray.direction = get_ray_dir(nx, ny, info->scene->cam);
-	if (find_hit(&ray, info, &hit, false))
+	if (find_hit(&ray, info->scene, &hit))
 		return (hit.obj);
 	else
 		return (NULL);
