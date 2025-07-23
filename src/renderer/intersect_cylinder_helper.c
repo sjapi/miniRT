@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 17:59:15 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/23 18:08:52 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/23 19:03:19 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,12 @@ void	intersect_cyl_all(float *t, t_obj *obj, t_ray *ray, char *side)
 		*t = surface;
 		*side = HIT_SURFACE;
 	}
-	if (bottom > 0 && (t < 0 || bottom < *t))
+	if (bottom > 0 && (*t < 0 || bottom < *t))
 	{
 		*t = bottom;
 		*side = HIT_BOTTOM;
 	}
-	if (top > 0 && (t < 0 || top < *t))
+	if (top > 0 && (*t < 0 || top < *t))
 	{
 		*t = top;
 		*side = HIT_TOP;
