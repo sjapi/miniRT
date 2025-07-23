@@ -39,11 +39,12 @@ RENDERER = \
 	intersect_sphere.c \
 	intersect_plane.c \
 	intersect_cylinder.c \
+	intersect_cylinder_helper.c \
 	intersect_cone.c \
 	checkerboard_sphere.c \
 	checkerboard_plane.c \
 	checkerboard_cylinder.c \
-	checkerboard_cone.c
+	checkerboard_cone.c \
 
 CONTROLS = \
 	mouse.c keys.c obj.c \

@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 14:34:24 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/23 17:45:21 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/23 18:09:45 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,8 @@ static float	intersect_cone_surface(t_ray *ray, t_obj *obj)
 	norm[1] = v_dot(co, obj->norm_vector);
 	norm[2] = v_dot(ray->direction, ray->direction);
 	norm[2] -= (norm[0] * norm[0]) / obj->attrs[CONE_COS2];
-	norm[3] = 2.0 * (v_dot(ray->direction, co) - (norm[0] * norm[1]);
-	norm[3] /= obj->attrs[CONE_COS2]);
+	norm[3] = 2.0 * (v_dot(ray->direction, co)
+			- (norm[0] * norm[1]) / obj->attrs[CONE_COS2]);
 	norm[4] = v_dot(co, co) - (norm[1] * norm[1]) / obj->attrs[CONE_COS2];
 	norm[5] = norm[3] * norm[3] - 4.0 * norm[2] * norm[4];
 	if (norm[5] < 0.0)
