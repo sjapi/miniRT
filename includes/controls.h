@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 14:57:20 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/20 19:02:30 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/24 00:40:35 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,12 @@ bool	handle_other_keys(int key, t_rt *info);
 bool	translate_obj(t_obj *obj, int key);
 bool	translate_cam(t_cam *cam, int key);
 bool	translate_lights(t_light *lights, int lights_count, int key);
+
 bool	rotate_obj(t_obj *obj, int key);
 bool	rotate_cam(t_cam *cam, int key);
 bool	resize_obj(t_obj *obj, int key);
+
+bool	change_ambient(t_amb_light *amb, int key);
 
 /* other */
 t_obj	*mouse_click_obj(int button, int x, int y, t_rt *info);

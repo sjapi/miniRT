@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 16:21:07 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/20 19:21:07 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/24 00:41:12 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,16 @@ bool	translate_lights(t_light *lights, int lights_count, int key)
 			return (false);
 		i++;
 	}
+	return (true);
+}
+
+bool	change_ambient(t_amb_light *amb, int key)
+{
+	if (key == KEY_O)
+		amb->ratio = clampf(amb->ratio - 0.1, 0.1, 1.0);
+	else if (key == KEY_P)
+		amb->ratio = clampf(amb->ratio + 0.1, 0.1, 1.0);
+	else
+		return (false);
 	return (true);
 }

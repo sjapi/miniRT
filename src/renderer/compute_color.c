@@ -6,9 +6,10 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 20:10:39 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/23 20:30:06 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/24 00:28:11 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "minirt.h"
 #include "utils.h"
 #include "renderer.h"
@@ -17,7 +18,6 @@
 #include <stdio.h>
 #include <math.h>
 #include <sys/time.h>
-
 
 t_color	get_obj_color(t_hit *hit)
 {
@@ -35,7 +35,7 @@ t_color	get_obj_color(t_hit *hit)
 static t_color	compute_amb_color(t_color obj_color, t_amb_light *amb)
 {
 	t_color	amb_color;
-	
+
 	amb_color = int_to_color(get_amb_color(amb));
 	amb_color.r = obj_color.r * amb_color.r / 255.0f * amb->ratio;
 	amb_color.g = obj_color.g * amb_color.g / 255.0f * amb->ratio;
@@ -56,7 +56,6 @@ t_color	compute_shadow_ray(t_color obj_col, t_light *light,
 	light_vec = v_sub(light->point, p_hit->hit_point);
 	shadow_ray.origin = p_hit->hit_point;
 	shadow_ray.direction = v_normalize(light_vec);
-	//final.r = 255;
 	if (is_in_shadow(&shadow_ray, info->scene, v_len(light_vec)))
 		return (final);
 	final.r = 0;
