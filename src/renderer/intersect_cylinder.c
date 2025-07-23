@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:56:16 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/23 17:49:17 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/23 18:14:16 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static float	get_t_surface(t_obj *cyl, float norm[6])
 }
 
 /* 0 - dv, 1 - ocv, 2 - a, 3 - b, 4 - c, 5 - disc, 6 - cyl radius*/
-static float	intersect_surface(t_ray *ray, t_obj *cyl)
+float	intersect_surface(t_ray *ray, t_obj *cyl)
 {
 	t_vec3	oc;
 	float	norm[7];
@@ -86,7 +86,7 @@ static float	intersect_surface(t_ray *ray, t_obj *cyl)
 	return (get_t_surface(cyl, norm));
 }
 
-static float	intersect_base(t_ray *ray, t_obj *cyl, int base)
+float	intersect_base(t_ray *ray, t_obj *cyl, int base)
 {
 	t_vec3	base_center;
 	float	denom;
@@ -112,33 +112,14 @@ static float	intersect_base(t_ray *ray, t_obj *cyl, int base)
 	return (-1.0);
 }
 
+void	intersect_cyl_all(float *t, t_obj *obj, t_ray *ray, char *side);
+
 float	intersect_cylinder(t_ray *ray, t_obj *obj, char *side, bool *reverse)
 {
-	float	surface;
-	float	top;
-	float	bottom;
 	float	t;
 	t_vec3	hit_point;
 
-	surface = intersect_surface(ray, obj);
-	top = intersect_base(ray, obj, HIT_TOP);
-	bottom = intersect_base(ray, obj, HIT_BOTTOM);
-	t = -1.0;
-	if (surface > 0)
-	{
-		t = surface;
-		*side = HIT_SURFACE;
-	}
-	if (bottom > 0 && (t < 0 || bottom < t))
-	{
-		t = bottom;
-		*side = HIT_BOTTOM;
-	}
-	if (top > 0 && (t < 0 || top < t))
-	{
-		t = top;
-		*side = HIT_TOP;
-	}
+	intersect_cyl_all(&t, obj, ray, side);
 	*reverse = false;
 	if (t > 0 && (obj->checkerboard || obj->selected))
 	{
