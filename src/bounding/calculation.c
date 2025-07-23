@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 16:11:02 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/23 15:15:38 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/23 18:11:05 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,33 +33,26 @@ static void calc_cylinder_aabb(t_obj *cylinder)
 {
 	float	height;
 	float	radius;
-	t_vec3	half_height;
-	t_vec3	top;
-	t_vec3	bottom;
-	t_vec3	r_vec;
-
+	
 	height = cylinder->attrs[CYLINDER_H_I];
-	radius = cylinder->attrs[CYLINDER_D_I];
-	half_height = v_scale(cylinder->norm_vector, height * 0.5f);
-	top = v_add(cylinder->center, half_height);
-	bottom = v_sub(cylinder->center, half_height);
+	radius = cylinder->attrs[CYLINDER_D_I] * 0.5f;
+	t_vec3 bottom = cylinder->center;
+	t_vec3 top = v_add(cylinder->center, v_scale(cylinder->norm_vector, height));
 	cylinder->aabb_min = v_min(&top, &bottom);
 	cylinder->aabb_max = v_max(&top, &bottom);
-	r_vec.x = radius;
-	r_vec.y = radius;
-	r_vec.z = radius;
+	t_vec3 r_vec = { radius, radius, radius };
 	cylinder->aabb_min = v_sub(cylinder->aabb_min, r_vec);
 	cylinder->aabb_max = v_add(cylinder->aabb_max, r_vec);
 }
 
-static void calc_cone_aabb(t_obj *cone)
+static void	calc_cone_aabb(t_obj *cone)
 {
-	float   h;
-	float   r;
-	t_vec3  half_height;
-	t_vec3  top;
-	t_vec3  bottom;
-	t_vec3  r_vec;
+	float	h;
+	float	r;
+	t_vec3	half_height;
+	t_vec3	top;
+	t_vec3	bottom;
+	t_vec3	r_vec;
 
 	h = cone->attrs[CONE_H_I];
 	r = tanf(cone->attrs[CONE_A_I] * (M_PI / 180.0f)) * (h);
@@ -74,7 +67,6 @@ static void calc_cone_aabb(t_obj *cone)
 	cone->aabb_min = v_sub(cone->aabb_min, r_vec);
 	cone->aabb_max = v_add(cone->aabb_max, r_vec);
 }
-
 
 static void	calc_model_aabb(t_obj *model)
 {
@@ -107,7 +99,7 @@ void	calculate_aabb(t_obj *obj)
 		calc_sphere_aabb(obj);
 	else if (obj->type == CYLINDER)
 		calc_cylinder_aabb(obj);
-	else if (obj->type == CONE) 
+	else if (obj->type == CONE)
 		calc_cone_aabb(obj);
 	else if (obj->type == MODEL)
 		calc_model_aabb(obj);

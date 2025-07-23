@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 18:56:28 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/23 15:17:08 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/23 18:05:44 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ bool	adjust_cylinder(t_obj *obj, int key)
 bool	adjust_cone(t_obj *obj, int key)
 {
 	if (key == KEY_RIGHT)
-		obj->attrs[CONE_A_I] = clampf(obj->attrs[CONE_A_I] - 1, 3, 49);
+		obj->attrs[CONE_A_I] = clampf(obj->attrs[CONE_A_I] - 1, 3, 79);
 	else if (key == KEY_LEFT)
-		obj->attrs[CONE_A_I] = clampf(obj->attrs[CONE_A_I] + 1, 3, 49);
+		obj->attrs[CONE_A_I] = clampf(obj->attrs[CONE_A_I] + 1, 3, 79);
 	else if (key == KEY_TOP)
 		adjust_attr(&obj->attrs[CONE_H_I], +0.1f);
 	else if (key == KEY_BOTTOM)

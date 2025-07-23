@@ -32,10 +32,14 @@ GNL = \
 	get_next_line.c get_next_line_utils.c
 RENDERER = \
 	render.c img.c ray.c \
-	hit.c plane.c sphere.c model.c \
-	cylinder.c cone.c skybox.c \
+	hit.c model.c \
+	skybox.c \
 	info.c specular.c diffuse.c \
 	compute_color.c \
+	intersect_sphere.c \
+	intersect_plane.c \
+	intersect_cylinder.c \
+	intersect_cone.c \
 	checkerboard_sphere.c \
 	checkerboard_plane.c \
 	checkerboard_cylinder.c \
