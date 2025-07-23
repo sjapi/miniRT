@@ -5,15 +5,15 @@
 **miniRT** is a ray tracer for the 42 curriculum. It renders basic shapes with lighting using clean C and the **minilibX** library.
 
 <p align="center">
-  <img src="https://github.com/sjapi/miniRT/blob/main/solar.png" width="800" />
+  <img src="https://github.com/sjapi/miniRT/blob/main/img/solar.png" width="800" />
 </p>
 
 <p align="center">
-  <img src="https://github.com/sjapi/miniRT/blob/main/rgb_cone.png" width="800" />
+  <img src="https://github.com/sjapi/miniRT/blob/main/img/rgb_cone.png" width="800" />
 </p>
 
 <p align="center">
-  <img src="https://github.com/sjapi/miniRT/blob/main/readme_example.png" width="800" />
+  <img src="https://github.com/sjapi/miniRT/blob/main/img/readme_example.png" width="800" />
 </p>
 
 ---
