@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:56:16 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/15 13:32:22 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/23 13:07:48 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,3 +146,13 @@ float	intersect_cylinder(t_ray *ray, t_obj *obj, char *side, bool *reverse)
 	}
 	return (t);
 }
+
+bool	is_hittable_cylinder(t_ray *ray, t_obj *obj)
+{
+	float surface = intersect_surface(ray, obj);
+	float top = intersect_base(ray, obj, HIT_TOP);
+	float bottom = intersect_base(ray, obj, HIT_BOTTOM);
+
+	return (surface > 0.0f || top > 0.0f || bottom > 0.0f);
+}
+

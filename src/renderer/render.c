@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 12:45:57 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/21 22:11:50 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/23 13:35:37 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static t_color	manage_hit(t_hit *hit, t_ray *ray, t_rt *info)
 
 	ft_bzero(hit, sizeof(t_hit));
 	ray->origin = info->scene->cam->viewpoint;
-	if (find_hit(ray, info, hit, false))
+	if (find_hit(ray, info->scene, hit))
 		result = compute_color(hit, info);
 	else if (info->scene->skybox)
 		result = draw_skybox(info, ray);

@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 16:11:02 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/21 18:14:59 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/23 15:15:38 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static void calc_cone_aabb(t_obj *cone)
 
 	h = cone->attrs[CONE_H_I];
 	r = tanf(cone->attrs[CONE_A_I] * (M_PI / 180.0f)) * (h);
-	half_height = v_scale(cone->norm_vector, h * 0.5f);
+	half_height = v_scale(cone->norm_vector, h);
 	top = v_add(cone->center, half_height);
 	bottom = v_sub(cone->center, half_height);
 	cone->aabb_min = v_min(&top, &bottom);

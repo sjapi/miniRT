@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 20:10:39 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/22 18:30:28 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/23 15:39:35 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ static t_color	compute_mirror(t_color obj_col, t_light *light,
 
 	ray.origin = v_add(p_hit->hit_point, v_scale(p_hit->normal, 1e-4));
 	ray.direction = p_hit->normal;
-	if (find_hit(&ray, info, &hit, false))
+	if (find_hit(&ray, info->scene, &hit))
 	{
 		obj_col = get_obj_color(&hit);
 		return (compute_shadow_ray(obj_col, light, &hit, info));
@@ -142,25 +142,21 @@ static t_color	compute_shadow_ray(t_color obj_col, t_light *light,
 					t_hit *p_hit, t_rt *info)
 {
 	t_ray	shadow_ray;
-	t_hit	shadow_hit;
 	t_vec3	light_vec;
 	t_color	final;
-	bool	in_shadow;
 
 	if (p_hit->obj->mirror)
 		return ((compute_mirror(obj_col, light, p_hit, info)));
+	ft_bzero(&final, sizeof(t_color));
 	light_vec = v_sub(light->point, p_hit->hit_point);
 	shadow_ray.origin = p_hit->hit_point;
 	shadow_ray.direction = v_normalize(light_vec);
-	in_shadow = find_hit(&shadow_ray, info, &shadow_hit, true);
-	in_shadow = in_shadow && shadow_hit.t > 1e-3
-		&& shadow_hit.t < v_len(light_vec);
-	ft_bzero(&final, sizeof(t_color));
-	if (!in_shadow)
-	{
-		compute_diffuse(&final, p_hit, &shadow_ray, light, &obj_col);
-		compute_specular(&final, p_hit, &shadow_ray, light, info->scene->cam);
-	}
+	//final.r = 255;
+	if (is_in_shadow(&shadow_ray, info->scene, v_len(light_vec)))
+		return (final);
+	final.r = 0;
+	compute_diffuse(&final, p_hit, &shadow_ray, light, &obj_col);
+	compute_specular(&final, p_hit, &shadow_ray, light, info->scene->cam);
 	return (final);
 }
 

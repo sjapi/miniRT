@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:00:29 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/22 16:21:43 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/23 17:42:07 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,9 @@ bool	parse_plane(char *plane_data, t_obj *plane);
 bool    parse_cone(char *data, t_obj *cone);
 bool	parse_model(char *model_data, t_obj *model);
 
+/* model_utils.c */
+bool	get_triangle(char *data, t_tri *triangle, t_vec3 *points, int ps);
+bool	get_point(char *data, t_vec3 *p);
+bool	get_model_size(char *file_name, int *p_size, int *m_size);
 #endif
+
