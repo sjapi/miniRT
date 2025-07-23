@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 10:52:17 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/23 16:16:23 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/23 19:26:08 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static bool traverse_bvh(t_bvh_node *node, t_ray *ray, t_hit *closest_hit)
         else if (obj->type == CONE)
             t = intersect_cone(ray, obj, &closest_hit->side, &tmp_reverse);
         else if (obj->type == MODEL)
-            t = intersect_model(ray, obj, closest_hit, &closest_hit->tri_i, &tmp_reverse);
+            t = intersect_model(ray, obj, closest_hit, &closest_hit->tri_i);
         if (t > 0.001f && t < closest_hit->t)
         {
             closest_hit->t = t;

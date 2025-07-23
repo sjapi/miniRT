@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 19:54:34 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/17 15:48:25 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/23 19:22:25 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,8 @@
 #include "defines.h"
 #include <math.h>
 
-float intersect_triangle(t_ray *ray, t_tri *triangle, bool *reverse)
+float intersect_triangle(t_ray *ray, t_tri *triangle)
 {
-	(void)reverse; // not used for now
-
 	const float EPSILON = 1e-6;
 	t_vec3 v0 = *triangle->v0;
 	t_vec3 v1 = *triangle->v1;
@@ -77,14 +75,14 @@ static bool is_hitable(t_ray *ray, t_obj *obj)
     return (half_b * half_b >= c);
 }
 
-float intersect_model(t_ray *ray, t_obj *obj, t_hit *hit, int *tj, bool *reverse)
+float intersect_model(t_ray *ray, t_obj *obj, t_hit *hit, int *tj)
 {
 	float t_min = -1;
 	int j = 0;
 
 	while (j < obj->mesh->size)
 	{
-		float t = intersect_triangle(ray, &obj->mesh->triangles[j], reverse);
+		float t = intersect_triangle(ray, &obj->mesh->triangles[j]);
 		if (t > 0 && (t_min < 0 || t < t_min))
 		{
 			t_min = t;

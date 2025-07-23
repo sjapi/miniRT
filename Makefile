@@ -45,6 +45,8 @@ RENDERER = \
 	checkerboard_plane.c \
 	checkerboard_cylinder.c \
 	checkerboard_cone.c \
+	mirror.c \
+	texture.c
 
 CONTROLS = \
 	mouse.c keys.c obj.c \
