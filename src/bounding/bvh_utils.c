@@ -6,12 +6,14 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 16:56:54 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/21 17:22:39 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/24 16:06:07 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <math.h>
+#include <stdlib.h>
 #include "minirt.h"
+#include "bounding.h"
 
 t_vec3	v_min(t_vec3 *v0, t_vec3 *v1)
 {
@@ -44,4 +46,16 @@ void	find_selected(t_scene *scene)
 			scene->selected = &scene->objs[i];
 		i++;
 	}
+}
+
+void	free_bvh(t_bvh_node *bvh)
+{
+	if (bvh->object)
+	{
+		free(bvh);
+		return ;
+	}
+	free_bvh(bvh->left);
+	free_bvh(bvh->right);
+	free(bvh);
 }
