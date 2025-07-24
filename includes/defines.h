@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 16:54:19 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/24 13:31:57 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/24 15:45:15 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,4 +119,5 @@
 # define CAMERA_MODE 2
 # define LIGHT_MODE 3
 
+# define EPS 1e-6
 #endif

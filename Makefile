@@ -78,7 +78,7 @@ SRCS = \
 OBJS	= $(patsubst $(SRCS_DIR)%.c, $(OBJS_DIR)%.o, $(SRCS))
 
 CC		= cc
-CFLAGS	= -Wall -Wextra -Werror
+CFLAGS	= -Wall -Wextra -Werror #-g3 -fsanitize=address
 UNAME_S	:= $(shell uname -s)
 
 ifeq ($(UNAME_S), Darwin)

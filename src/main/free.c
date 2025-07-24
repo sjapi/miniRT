@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 19:43:16 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/24 00:45:10 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/24 16:04:35 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "mlx.h"
+#include "bounding.h"
 
 static void	my_free(void *ptr)
 {
@@ -74,6 +75,8 @@ void	free_rt(t_rt *info)
 		my_free(info->optim->viewport_y);
 		my_free(info->optim);
 	}
+	if (info->scene->bvh)
+		free_bvh(info->scene->bvh);
 	free_scene(info, info->scene);
 	if (!info->mlx)
 		return ;

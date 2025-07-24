@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 18:26:53 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/20 18:28:39 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/24 16:04:11 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,5 @@ void		calculate_aabb(t_obj *model);
 t_vec3		v_min(t_vec3 *v0, t_vec3 *v1);
 t_vec3		v_max(t_vec3 *v0, t_vec3 *v1);
 void		find_selected(t_scene *scene);
+void	free_bvh(t_bvh_node *bvh);
 #endif
