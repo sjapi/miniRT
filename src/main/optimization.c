@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 18:36:01 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/24 13:09:08 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/24 16:16:43 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,9 +106,14 @@ bool	init_optimization(t_rt *info)
 {
 	t_optim	*optim;
 
-	optim = alloc_optim();
-	if (!optim)
-		return (false);
+	if (info->optim == NULL)
+	{
+		optim = alloc_optim();
+		if (!optim)
+			return (false);
+	}
+	else
+		optim = info->optim;
 	optimize_viewport(info, optim);
 	optimize_objs(info);
 	optimize_cam_basis(info->scene->cam);
