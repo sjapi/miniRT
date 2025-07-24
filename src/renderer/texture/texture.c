@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 20:30:44 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/24 14:30:47 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/24 14:35:40 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,5 +84,7 @@ t_color	get_texture_color(t_hit *hit)
 		return (get_cy_texture(hit));
 	if (hit->obj->type == PLANE)
 		return (get_pl_texture(hit));
-	return ((t_color){0, 0, 0});
+	if (hit->obj->type == CONE)
+		return (get_co_texture(hit));
+	return (int_to_color(hit->obj->color));
 }

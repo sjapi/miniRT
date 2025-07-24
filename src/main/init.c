@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 15:21:16 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/24 02:25:39 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/24 13:57:50 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static bool	init_obj_textures(t_rt *info)
 	while (++i < info->scene->objs_count)
 	{
 		obj = &info->scene->objs[i];
-		if ((obj->type != SPHERE && obj->type != CYLINDER && obj->type != PLANE) || !obj->texture)
+		if (obj->texture == NULL || obj->type == MODEL)
 			continue ;
 		obj->texture->mlx = mlx_xpm_file_to_image(info->mlx,
 				obj->texture->file_name, &obj->texture->width,

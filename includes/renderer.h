@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:51:00 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/24 13:53:09 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/24 14:36:50 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,23 +17,12 @@
 # include "utils.h"
 # include <stdbool.h>
 
-/*
- * origin is position of cam
- */
 typedef struct s_ray
 {
 	t_vec3	origin;
 	t_vec3	direction;
 }	t_ray;
 
-/*
- * t - distance from ray origin to hit point
- * hit_point - coords of hit
- * normal - ???
- * hit_object - hit object id
- * hit - hit or not
- * reverse - for checkerboard
- */
 typedef struct s_hit
 {
 	float	t;
@@ -55,6 +44,7 @@ void	render(t_rt *info);
 void	img_put_pixel_safe(t_rt *info, int x, int y, int color);
 void	img_draw_line(t_rt *info, t_vec3 a, t_vec3 b, int color);
 void	draw_xyz_axis(t_rt *info);
+void	draw_info(t_rt *info);
 
 /* skybox.c */
 t_color	draw_skybox(t_rt *info, t_ray *ray);
@@ -80,6 +70,9 @@ bool	is_hittable_aabb(t_ray *ray, t_vec3 *box_min, t_vec3 *box_max);
 /* intersection */
 float	intersect_cone(t_ray *ray, t_obj *obj, char *s, bool *reverse);
 float	intersect_model(t_ray *ray, t_obj *obj, t_hit *hit, int *ti);
+float	intersect_sphere(t_ray *ray, t_obj *obj, bool *reverse);
+float	intersect_plane(t_ray *ray, t_obj *obj, bool *reverse);
+float	intersect_cylinder(t_ray *ray, t_obj *obj, char *side, bool *reverse);
 
 /* normal */
 t_vec3	get_cylinder_normal(t_obj *obj, t_vec3 hit, t_vec3 dir, char side);
@@ -97,25 +90,14 @@ t_color	compute_color(t_hit *p_hit, t_rt *info);
 t_color	compute_specular(t_hit *phit, t_ray *sray, t_light *l, t_cam *c);
 t_color	compute_diffuse(t_hit *phit, t_ray *sray, t_light *l, t_color *obj_col);
 
-t_color	compute_mirror(t_color col, t_light *light, t_hit *p_hit, t_rt *info);
-t_color	get_texture_color(t_hit *hit);
-
-/* info */
-void	draw_info(t_rt *info);
-
 /* texture */
+t_color	get_texture_color(t_hit *hit);
+t_color	get_sp_texture(t_hit *hit);
+t_color	get_pl_texture(t_hit *hit);
+t_color	get_cy_texture(t_hit *hit);
+t_color	get_co_texture(t_hit *hit);
 void	apply_bump(t_hit *hit, float u, float v);
 
-/* sphere */
-t_color	get_sp_texture(t_hit *hit);
-float	intersect_sphere(t_ray *ray, t_obj *obj, bool *reverse);
-
-/* plane */
-float	intersect_plane(t_ray *ray, t_obj *obj, bool *reverse);
-t_color	get_pl_texture(t_hit *hit);
-
-/* cylinder */
-t_color	get_cy_texture(t_hit *hit);
-float	intersect_cylinder(t_ray *ray, t_obj *obj, char *side, bool *reverse);
+t_color	compute_mirror(t_color obj_col, t_light *l, t_hit *p_hit, t_rt *info);
 
 #endif
