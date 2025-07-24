@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 19:39:18 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/20 20:00:44 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/24 13:45:44 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 #include "utils.h"
 #include <math.h>
 
-void	compute_specular(t_color *final,
-			t_hit *phit, t_ray *sray, t_light	*l, t_cam *c)
+t_color	compute_specular(t_hit *phit, t_ray *sray, t_light *l, t_cam *c)
 {
 	float	specular;
 	t_color	light_col;
@@ -34,5 +33,5 @@ void	compute_specular(t_color *final,
 	spec.r = light_col.r * specular * l->ratio;
 	spec.g = light_col.g * specular * l->ratio;
 	spec.b = light_col.b * specular * l->ratio;
-	*final = color_add(*final, spec);
+	return (spec);
 }

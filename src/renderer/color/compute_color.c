@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 20:10:39 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/24 02:31:18 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/24 14:31:38 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 t_color	get_obj_color(t_hit *hit)
 {
 	t_color	color;
+
 	if (hit->obj->texture == NULL)
 		color = int_to_color(hit->obj->color);
 	else
@@ -57,8 +58,10 @@ t_color	compute_shadow_ray(t_color obj_col, t_light *light,
 	shadow_ray.direction = v_normalize(light_vec);
 	if (is_in_shadow(&shadow_ray, info->scene, v_len(light_vec)))
 		return (final);
-	compute_diffuse(&final, p_hit, &shadow_ray, light, &obj_col);
-	compute_specular(&final, p_hit, &shadow_ray, light, info->scene->cam);
+	final = color_add(final, compute_diffuse(p_hit, &shadow_ray,
+				light, &obj_col));
+	final = color_add(final, compute_specular(p_hit, &shadow_ray,
+				light, info->scene->cam));
 	return (final);
 }
 

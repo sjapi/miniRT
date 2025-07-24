@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 16:54:19 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/24 00:39:14 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/24 13:31:57 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@
 #  define KEY_BOTTOM 65364
 #  define KEY_LEFT 65361
 #  define KEY_RIGHT 65363
-#  define KEY_O 24
-#  define KEY_P 25
+#  define KEY_O 111
+#  define KEY_P 112
 # endif
 
 # ifdef __APPLE__

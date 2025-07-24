@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:51:00 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/24 13:51:36 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/24 14:36:50 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,8 @@ bool	cone_checkerboard(t_vec3 hit_point, t_obj *cone, bool base);
 
 /* color */
 t_color	compute_color(t_hit *p_hit, t_rt *info);
-void	compute_specular(t_color *fin, t_hit *phit, t_ray *sray, t_light *l, t_cam *cam);
-void	compute_diffuse(t_color *fin, t_hit *phit, t_ray *sray, t_light *l, t_color *obj_col);
-
-/* mirror */
-t_color	compute_mirror(t_color obj_col, t_light *light, t_hit *p_hit, t_rt *info);
+t_color	compute_specular(t_hit *phit, t_ray *sray, t_light *l, t_cam *c);
+t_color	compute_diffuse(t_hit *phit, t_ray *sray, t_light *l, t_color *obj_col);
 
 /* texture */
 t_color	get_texture_color(t_hit *hit);
@@ -100,5 +97,7 @@ t_color	get_pl_texture(t_hit *hit);
 t_color	get_cy_texture(t_hit *hit);
 t_color	get_co_texture(t_hit *hit);
 void	apply_bump(t_hit *hit, float u, float v);
+
+t_color	compute_mirror(t_color obj_col, t_light *l, t_hit *p_hit, t_rt *info);
 
 #endif
