@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 18:36:01 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/22 17:02:46 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/24 13:09:08 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,8 @@ static void	optimize_cam_basis(t_cam *cam)
 		world_up = (t_vec3){0, 0, 1};
 	else
 		world_up = (t_vec3){0, 1, 0};
-	cam->right = v_normalize(v_cross(world_up, cam->orient_v));
-	cam->up = v_cross(cam->orient_v, cam->right);
+	cam->right = v_normalize(v_cross(cam->orient_v, world_up));
+	cam->up = v_cross(cam->right, cam->orient_v);
 }
 
 bool	init_optimization(t_rt *info)

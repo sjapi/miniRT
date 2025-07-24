@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 12:45:57 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/24 02:31:45 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/24 13:53:58 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,57 +70,6 @@ static int	render_pixel_light(int x, int y, t_rt *info)
 	return (2);
 }
 
-//=====================================
-static int	project_point(t_cam *cam, t_vec3 p, int *sx, int *sy)
-{
-	t_vec3 rel = v_sub(p, cam->viewpoint);
-	float cx = v_dot(rel, cam->right);
-	float cy = v_dot(rel, cam->up);
-	float cz = v_dot(rel, cam->orient_v);
-	if (cz <= 0.01f) // behind camera
-		return (0);
-	float focal = (WIN_WIDTH / 2.0f) / tanf(cam->t_fov * 0.5f);
-	*sx = (int)((cx / cz) * focal + WIN_WIDTH / 2.0f);
-	*sy = (int)((cy / cz) * focal + WIN_HEIGHT / 2.0f);
-	return (1);
-}
-
-void	draw_bb(t_rt *info, t_obj *obj, int color)
-{
-	t_vec3 min = obj->aabb_min;
-	t_vec3 max = obj->aabb_max;
-	t_vec3 p[8] = {
-		{min.x, min.y, min.z}, {max.x, min.y, min.z},
-		{max.x, max.y, min.z}, {min.x, max.y, min.z},
-		{min.x, min.y, max.z}, {max.x, min.y, max.z},
-		{max.x, max.y, max.z}, {min.x, max.y, max.z}
-	};
-	int edges[12][2] = {
-		{0,1},{1,2},{2,3},{3,0}, // bottom
-		{4,5},{5,6},{6,7},{7,4}, // top
-		{0,4},{1,5},{2,6},{3,7}  // vertical
-	};
-	int proj[8][2];
-	int i;
-
-	// Project points
-	for (i = 0; i < 8; i++)
-	{
-		if (!project_point(info->scene->cam, p[i], &proj[i][0], &proj[i][1]))
-			return; // skip drawing if any point behind camera
-	}
-
-	// Draw edges
-	for (i = 0; i < 12; i++)
-	{
-		t_vec3 a = {proj[edges[i][0]][0], proj[edges[i][0]][1], 0};
-		t_vec3 b = {proj[edges[i][1]][0], proj[edges[i][1]][1], 0};
-		img_draw_line(info, a, b, color);
-	}
-}
-//===================================
-
-
 static void	render_scene(t_rt *info)
 {
 	int		x;
@@ -146,8 +95,6 @@ static void	render_scene(t_rt *info)
 		}
 		y += step;
 	}
-	if (info->scene->selected)
-		draw_bb(info, info->scene->selected, 0x00FF00);
 }
 
 void	render(t_rt *info)

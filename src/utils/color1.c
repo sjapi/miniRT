@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 12:12:04 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/23 22:33:43 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/24 14:05:38 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 t_color	int_to_color(int icolor)
 {
 	t_color	color;
+
 	color.r = (icolor >> 16) & 0xff;
 	color.g = (icolor >> 8) & 0xff;
 	color.b = icolor & 0xff;

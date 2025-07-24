@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 18:02:45 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/22 17:15:15 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/24 14:05:00 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ bool	translate_cam(t_cam *cam, int key)
 		cam->viewpoint = v_add(cam->viewpoint, v_scale(forward, val));
 	else if (key == KEY_S)
 		cam->viewpoint = v_sub(cam->viewpoint, v_scale(forward, val));
-	else if (key == KEY_A)
-		cam->viewpoint = v_sub(cam->viewpoint, v_scale(right, val));
 	else if (key == KEY_D)
+		cam->viewpoint = v_sub(cam->viewpoint, v_scale(right, val));
+	else if (key == KEY_A)
 		cam->viewpoint = v_add(cam->viewpoint, v_scale(right, val));
 	else if (key == KEY_Q)
 		cam->viewpoint = v_sub(cam->viewpoint, v_scale(up, val));
@@ -44,12 +44,27 @@ bool	translate_cam(t_cam *cam, int key)
 	return (true);
 }
 
+static void	recompute_cam_orient(t_cam *cam)
+{
+	t_vec3	world_up;
+
+	world_up.x = 0;
+	world_up.y = 1;
+	world_up.z = 0;
+	cam->orient_v.x = cosf(cam->pitch) * sinf(cam->yaw);
+	cam->orient_v.y = sinf(cam->pitch);
+	cam->orient_v.z = cosf(cam->pitch) * cosf(cam->yaw);
+	cam->orient_v = v_normalize(cam->orient_v);
+	cam->right = v_normalize(v_cross(cam->orient_v, world_up));
+	cam->up = v_cross(cam->right, cam->orient_v);
+}
+
 bool	rotate_cam(t_cam *cam, int key)
 {
 	if (key == KEY_H)
-		cam->yaw -= 0.1;
-	else if (key == KEY_L)
 		cam->yaw += 0.1;
+	else if (key == KEY_L)
+		cam->yaw -= 0.1;
 	else if (key == KEY_J)
 		cam->pitch += 0.1;
 	else if (key == KEY_K)
@@ -57,8 +72,6 @@ bool	rotate_cam(t_cam *cam, int key)
 	else
 		return (false);
 	cam->pitch = clampf(cam->pitch, -1.55, 1.55);
-	cam->orient_v.x = cosf(cam->pitch) * sinf(cam->yaw);
-	cam->orient_v.y = sinf(cam->pitch);
-	cam->orient_v.z = cosf(cam->pitch) * cosf(cam->yaw);
+	recompute_cam_orient(cam);
 	return (true);
 }

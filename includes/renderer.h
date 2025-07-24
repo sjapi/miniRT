@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:51:00 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/24 02:13:09 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/24 13:53:09 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,11 @@ void	draw_xyz_axis(t_rt *info);
 /* skybox.c */
 t_color	draw_skybox(t_rt *info, t_ray *ray);
 
-
 /* ray_utils.c */
 float	get_nx_sample(int x, float ratio, float tan_fov, float sample);
 float	get_ny_sample(int y, float tan_fov, float sample);
 float	get_nx(int x, float aspect_ratio, float tan_fov);
 float	get_ny(int y, float tan_fov);
-
-
 
 /* ray.c */
 void	init_ray(t_ray *ray, t_rt *info, int x, int y);
@@ -97,19 +94,17 @@ bool	cone_checkerboard(t_vec3 hit_point, t_obj *cone, bool base);
 
 /* color */
 t_color	compute_color(t_hit *p_hit, t_rt *info);
-void	compute_specular(t_color *fin, t_hit *phit, t_ray *sray, t_light *l, t_cam *cam);
-void	compute_diffuse(t_color *fin, t_hit *phit, t_ray *sray, t_light *l, t_color *obj_col);
+t_color	compute_specular(t_hit *phit, t_ray *sray, t_light *l, t_cam *c);
+t_color	compute_diffuse(t_hit *phit, t_ray *sray, t_light *l, t_color *obj_col);
 
-t_color	compute_mirror(t_color obj_col, t_light *light, t_hit *p_hit, t_rt *info);
+t_color	compute_mirror(t_color col, t_light *light, t_hit *p_hit, t_rt *info);
 t_color	get_texture_color(t_hit *hit);
 
 /* info */
 void	draw_info(t_rt *info);
 
-
 /* texture */
 void	apply_bump(t_hit *hit, float u, float v);
-
 
 /* sphere */
 t_color	get_sp_texture(t_hit *hit);
@@ -122,6 +117,5 @@ t_color	get_pl_texture(t_hit *hit);
 /* cylinder */
 t_color	get_cy_texture(t_hit *hit);
 float	intersect_cylinder(t_ray *ray, t_obj *obj, char *side, bool *reverse);
-
 
 #endif
