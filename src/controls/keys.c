@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 14:54:45 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/24 00:40:43 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/07/24 13:43:41 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,10 +122,8 @@ bool	handle_other_keys(int key, t_rt *info)
 		if (info->mode == OBJECT_MODE && info->scene->selected != NULL)
 			resize_obj(info->scene->selected, key);
 	}
-	else if (info->mode == LIGHT_MODE && key == KEY_O || key == KEY_P)
-	{
+	else if (info->mode == LIGHT_MODE && (key == KEY_O || key == KEY_P))
 		change_ambient(info->scene->amb, key);
-	}
 	else
 		render = false;
 	return (render);
