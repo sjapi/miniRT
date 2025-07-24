@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 20:10:39 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/24 14:31:38 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/24 15:09:48 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ t_color	compute_shadow_ray(t_color obj_col, t_light *light,
 	t_vec3	light_vec;
 	t_color	final;
 
-	if (p_hit->obj->mirror)
+	if (p_hit->obj->mirror && p_hit->obj->type == SPHERE)
 		return ((compute_mirror(obj_col, light, p_hit, info)));
 	ft_bzero(&final, sizeof(t_color));
 	light_vec = v_sub(light->point, p_hit->hit_point);

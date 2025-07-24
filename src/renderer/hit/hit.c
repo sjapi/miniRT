@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 10:52:17 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/24 02:17:18 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/24 15:31:52 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ bool	is_in_shadow(t_ray *ray, t_scene *scene, float d)
 	hit_planes(ray, scene, &hit);
 	if (hit.t > 1e-6 && hit.t < d)
 		return (true);
-	if (traverse_bvh(scene->bvh, ray, &hit) && hit.t < d)
+	if (traverse_bvh(scene->bvh, ray, &hit) && hit.t > 0 && hit.t < d)
 		return (true);
 	return (false);
 }

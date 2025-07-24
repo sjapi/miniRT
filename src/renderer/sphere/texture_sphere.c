@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   texture.c                                          :+:      :+:    :+:   */
+/*   texture_sphere.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 00:26:55 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/24 00:35:06 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/24 14:40:55 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	sp_sphere_uv(t_hit *hit, float *u, float *v)
 
 	p = v_sub(hit->hit_point, hit->obj->center);
 	radius = hit->obj->attrs[SPHERE_D_I] * 0.5;
-	*u = 0.5 - atan2(p.x, p.z) * INV_2PI;
+	*u = 0.5 + atan2(p.x, p.z) * INV_2PI;
 	*v = 0.5 - asin(clampf(p.y / radius, -1, 1)) * INV_PI;
 }
 
