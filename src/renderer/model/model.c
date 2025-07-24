@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 19:54:34 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/24 02:06:18 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/24 15:04:00 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,18 +60,6 @@ t_vec3	get_model_normal(t_obj *obj, t_vec3 ray_dir, int tri_j)
 	return (normal);
 }
 
-static bool	is_hitable(t_ray *ray, t_obj *obj)
-{
-	t_vec3	oc;
-	float	half_b;
-	float	c;
-
-	oc = v_sub(ray->origin, obj->center);
-	half_b = v_dot(oc, ray->direction);
-	c = v_dot(oc, oc) - obj->bounding_r * obj->bounding_r;
-	return (half_b * half_b >= c);
-}
-
 float	intersect_model(t_ray *ray, t_obj *obj, t_hit *hit, int *ti)
 {
 	float	t_min;
@@ -89,5 +77,6 @@ float	intersect_model(t_ray *ray, t_obj *obj, t_hit *hit, int *ti)
 			*ti = i;
 		}
 	}
+	(void)hit;
 	return (t_min);
 }

@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 12:49:50 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/23 13:43:33 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/24 15:04:38 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ t_obj	*mouse_click_obj(int button, int x, int y, t_rt *info)
 	float	nx;
 	float	ny;
 
+	(void)button;
 	tan_fov = tanf(info->scene->cam->fov * 0.5f * M_PI / 180.0f);
 	nx = get_nx(x, info->win_aspect_ratio, tan_fov);
 	ny = get_ny(y, tan_fov);
