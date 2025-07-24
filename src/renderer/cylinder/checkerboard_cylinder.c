@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 15:08:58 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/23 20:25:32 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/24 15:03:12 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ static bool	surface(t_vec3 hit_point, t_obj *cyl, t_vec3 diff)
 		cell_xy_i[0] = (int)(theta * CHECKER_X_COUNT);
 		cell_xy_i[1] = (int)(height * CHECKER_Y_COUNT);
 	}
+	(void)hit_point;
 	return (!((cell_xy_i[0] + cell_xy_i[1]) % 2));
 }
 

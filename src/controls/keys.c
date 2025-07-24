@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 14:54:45 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/24 14:35:27 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/24 15:06:07 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ bool	handle_qweasd(int key, t_rt *info)
 {
 	t_obj	*obj;
 
-	if (info->mode == OBJECT_MODE && obj != NULL)
+	if (info->mode == OBJECT_MODE)
 	{
 		obj = info->scene->selected;
 		return (translate_obj(obj, key));

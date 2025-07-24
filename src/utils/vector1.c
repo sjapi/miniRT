@@ -6,18 +6,13 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 09:45:42 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/20 17:53:41 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/07/24 15:04:16 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 #include <stdbool.h>
 #include <math.h>
-
-static bool	in_range(float val, float min, float max)
-{
-	return (val >= min && val <= max);
-}
 
 float	v_len(t_vec3 v)
 {
