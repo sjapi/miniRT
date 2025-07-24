@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 19:43:16 by azolotar          #+#    #+#             */
-/*   Updated: 2025/07/24 16:04:35 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/24 18:26:27 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,6 @@ void	free_rt(t_rt *info)
 		return ;
 	mlx_destroy_image(info->mlx, info->img);
 	mlx_destroy_window(info->mlx, info->win);
-	mlx_destroy_display(info->mlx);
+//	mlx_destroy_display(info->mlx);
 	my_free(info->mlx);
 }

@@ -9,6 +9,10 @@
 </p>
 
 <p align="center">
+  <img src="https://github.com/sjapi/miniRT/blob/main/img/cols.png" width="800" />
+</p>
+
+<p align="center">
   <img src="https://github.com/sjapi/miniRT/blob/main/img/rgb_cone.png" width="800" />
 </p>
 

@@ -6,7 +6,7 @@
 /*   By: 032zolotarev <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 14:34:24 by 032zolotarev      #+#    #+#             */
-/*   Updated: 2025/07/24 15:05:07 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/24 18:28:00 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,12 @@ t_vec3	get_cone_normal(t_obj *obj, t_vec3 hit_point, t_vec3 ray_dir, char side)
 /* 0 denom, 1 t, 2 radius, 3 dist_sq */
 static float	intersect_cone_base(t_ray *ray, t_obj *obj)
 {
-	t_vec3	apex;
 	t_vec3	base_center;
 	float	norm[4];
 	t_vec3	p;
 	t_vec3	diff;
 
 	base_center = obj->center;
-	apex = v_add(base_center, v_scale(obj->norm_vector, obj->attrs[CONE_H_I]));
 	norm[0] = v_dot(ray->direction, obj->norm_vector);
 	if (fabsf(norm[0]) < 1e-6)
 		return (-1.0);

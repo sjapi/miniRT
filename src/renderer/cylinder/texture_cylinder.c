@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   texture.c                                          :+:      :+:    :+:   */
+/*   texture_cylinder.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 00:35:53 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/24 00:41:15 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/24 18:27:37 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,9 @@ static void	cy_cylinder_uv(t_hit *hit, float *u, float *v)
 	t_vec3	p;
 	t_vec3	axis_p;
 	float	height;
-	float	radius;
 	float	proj;
 
 	height = hit->obj->attrs[CYLINDER_H_I];
-	radius = hit->obj->attrs[CYLINDER_D_I] * 0.5f;
 	p = v_sub(hit->hit_point, hit->obj->center);
 	proj = v_dot(p, hit->obj->norm_vector);
 	proj = clampf(proj, 0.0f, height);

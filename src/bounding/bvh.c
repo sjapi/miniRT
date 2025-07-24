@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 14:28:35 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/07/24 15:59:26 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/07/24 18:28:59 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,6 @@ static void	set_max_min(t_bvh_node *node, t_obj *obj, int start, int end)
 t_bvh_node	*build_bvh(t_obj *objects, int start, int end)
 {
 	t_bvh_node	*node;
-	t_vec3		extent;
-	int			axis;
 
 	node = ft_calloc(sizeof(t_bvh_node), 1);
 	if (!node)
@@ -66,12 +64,6 @@ t_bvh_node	*build_bvh(t_obj *objects, int start, int end)
 		node->object = &objects[start];
 		return (node);
 	}
-	extent = v_sub(node->aabb_max, node->aabb_min);
-	axis = 0;
-	if (extent.y > extent.x)
-		axis = 1;
-	if (extent.z > extent.y)
-		axis = 2;
 	node->left = build_bvh(objects, start, (end + start) / 2);
 	node->right = build_bvh(objects, (end + start) / 2, end);
 	return (node);
